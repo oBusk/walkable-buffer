@@ -3,7 +3,7 @@
   "author": "Oscar Busk <oscar.busk@gmail.com>",
   "name": "walkable-buffer",
   "version": "0.0.1",
-  "description": "A way to read data from bytes adjusted for binary files.",
+  "description": "A class for easily reading data from binary Buffers.",
   "main": "index.js",
   "scripts": {
     "postinstall": "tsc",
