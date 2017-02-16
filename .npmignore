@@ -6,7 +6,7 @@ test-files
 *.test.ts
 
 # Documentation files
-**/*.md
+/**/*.md
 
 # Development configurations
 tslint.json
