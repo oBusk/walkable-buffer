@@ -6,8 +6,10 @@ const LONGLONG = 8;
 export default class WalkableBuffer {
 
     private readInt: (offset: number, byteLength: number, noAssert?: boolean) => number;
+    private bufferSize: number;
 
     constructor(private sourceBuffer: Buffer, endianess?: 'BE' | 'LE', private cursor = 0) {
+        this.bufferSize = sourceBuffer.length;
         if (endianess === 'BE') {
             this.readInt = (offset, byteLength, noAssert) => sourceBuffer.readIntBE(offset, byteLength, noAssert);
         } else {
@@ -74,5 +76,14 @@ export default class WalkableBuffer {
     /** Simply extracts the buffer which was provided on creation */
     public getSourceBuffer(): Buffer {
         return this.sourceBuffer;
+    }
+
+    public size(): number {
+        return this.bufferSize;
+    }
+
+    /** Returns the number of bytes that are left */
+    public sizeRemainingBuffer(): number {
+        return this.bufferSize - this.cursor;
     }
 }
