@@ -86,4 +86,6 @@ export default class WalkableBuffer {
     public sizeRemainingBuffer(): number {
         return this.bufferSize - this.cursor;
     }
+
+    // TODO: `peek(), peek(number), peek(number, number)`
 }
