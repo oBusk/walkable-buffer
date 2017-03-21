@@ -20,10 +20,10 @@
   },
   "homepage": "https://bitbucket.org/oBusk/walkable-buffer#readme",
   "dependencies": {
-    "@types/node": "^7.0.4",
-    "typescript": "^2.2.0"
+    "@types/node": "^7.0.8",
+    "typescript": "^2.2.1"
   },
   "devDependencies": {
-    "tslint": "^4.4.2"
+    "tslint": "^4.5.1"
   }
 }
