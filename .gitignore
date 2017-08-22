@@ -22,3 +22,6 @@ jspm_packages/
 # Build
 *.js
 *.js.map
+
+# Yarn lock file
+yarn.lock
