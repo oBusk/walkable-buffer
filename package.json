@@ -2,7 +2,7 @@
   "private": true,
   "author": "Oscar Busk <oscar.busk@gmail.com>",
   "name": "walkable-buffer",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A class for easily reading data from binary Buffers.",
   "main": "bin/index.js",
   "scripts": {
