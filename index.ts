@@ -10,11 +10,10 @@ export default class WalkableBuffer {
 
     constructor(private sourceBuffer: Buffer, endianess?: 'BE' | 'LE', private cursor = 0) {
         this.bufferSize = sourceBuffer.length;
-        if (endianess === 'BE') {
-            this.readInt = (offset, byteLength, noAssert) => sourceBuffer.readIntBE(offset, byteLength, noAssert);
-        } else {
-            this.readInt = (offset, byteLength, noAssert) => sourceBuffer.readIntLE(offset, byteLength, noAssert);
-        }
+
+        this.readInt = endianess === 'BE'
+            ? (offset, byteLength, noAssert) => sourceBuffer.readIntBE(offset, byteLength, noAssert)
+            : (offset, byteLength, noAssert) => sourceBuffer.readIntLE(offset, byteLength, noAssert);
     }
 
     public get(size: number): number {
@@ -23,11 +22,23 @@ export default class WalkableBuffer {
         return result;
     }
 
+    public peek(offset: number, size: number = BYTE): number {
+        return this.readInt(this.cursor + offset, size);
+    }
+
     public getString(size: number, encoding = 'utf8'): string {
         return this.sourceBuffer.toString(
             encoding,
             this.cursor,
             this.cursor += size,
+        );
+    }
+
+    public peekString(offset: number, size: number, encoding = 'utf8'): string {
+        return this.sourceBuffer.toString(
+            encoding,
+            this.cursor + offset,
+            this.cursor + offset + size,
         );
     }
 
@@ -86,6 +97,4 @@ export default class WalkableBuffer {
     public sizeRemainingBuffer(): number {
         return this.bufferSize - this.cursor;
     }
-
-    // TODO: `peek(), peek(number), peek(number, number)`
 }
