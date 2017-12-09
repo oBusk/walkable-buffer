@@ -23,5 +23,4 @@ jspm_packages/
 *.js
 *.js.map
 
-# Yarn lock file
-yarn.lock
+dist
