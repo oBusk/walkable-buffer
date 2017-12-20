@@ -19,8 +19,7 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
-# Build
-*.js
-*.js.map
-
-dist
+# Built files
+*.spec.js
+*.spec.d.ts
+*.map

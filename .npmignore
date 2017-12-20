@@ -1,7 +1,13 @@
+# ignore .ts files
+*.ts
+
+# include .d.ts files
+!*.d.ts
+
 # test files
 test-files
-*.test.ts
 
 # Development configurations
 tslint.json
 .vscode
+.editorconfig
