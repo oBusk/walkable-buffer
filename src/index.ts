@@ -72,60 +72,97 @@ export default class WalkableBuffer {
 
     /** Peek string of `byteLength` bytes from current cursor position plus `byteOffset` without advancing cursor. */
     public peekString(byteLength: number, byteOffset = 0, encoding = this.getEncoding()): string {
+        const size = this.size();
+        const cursor = this.getCurrentPos();
+        const minByteOffset = -cursor;
+        const maxByteOffset = size - cursor - 1; // Since size has to be greater than zero
+
+        if (byteOffset < minByteOffset || byteOffset > maxByteOffset) {
+            throw new Error(
+                `The value of "byteOffset" is out of range.`
+                + ` It must be >= ${minByteOffset} and <= ${maxByteOffset}. Recieved ${byteOffset}`,
+            );
+        }
+
+        const startPos = cursor + byteOffset;
+        const max = size - startPos;
+
+        if (byteLength < 1 || byteLength > max) {
+            throw new Error(
+                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
+            );
+        }
+
         return this.sourceBuffer.toString(
             encoding,
-            this.cursor + byteOffset,
-            this.cursor + byteOffset + byteLength,
+            startPos,
+            startPos + byteLength,
         );
     }
 
     /** Reads a string with size-describer in front of it. Usually for names and such */
-    public getSizedString(sizeOfSize = LONG, encoding = this.getEncoding()): string {
-        return this.getString(
-            this.get(sizeOfSize),
-            encoding,
-        );
+    public getSizedString(sizeOfSize = LONG, endianness = this.getEndianness(), encoding = this.getEncoding()): string {
+        let size = this.get(sizeOfSize, endianness);
+
+        if (encoding === 'utf16le' || encoding === 'ucs2') {
+            size = size * 2;
+        }
+
+        try {
+            return this.getString(size, encoding);
+        } catch (e) {
+            this.cursor -= sizeOfSize;
+            throw e;
+        }
     }
 
     /** Gets a buffer of size `size`. If no `size` is specified, returns remaining buffer. */
-    public getBuffer(size?: number): Buffer {
-        if (!!size && size > 0) {
-            return this.sourceBuffer.slice(
-                this.cursor,
-                this.cursor += size,
-            );
-        } else {
-            const result = this.sourceBuffer.slice(
-                this.cursor,
-            );
+    public getBuffer(byteLength?: number): Buffer {
+        if (byteLength == null) {
+            const result = this.sourceBuffer.slice(this.cursor);
             this.cursor = this.sourceBuffer.length;
             return result;
+        } else {
+            const max = this.size() - this.getCurrentPos();
+
+            if (byteLength < 1 || byteLength > max) {
+                throw new Error(
+                    `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
+                );
+            }
+
+            return this.sourceBuffer.slice(this.cursor, this.cursor += byteLength);
         }
     }
 
     /** Advances cursor without reading any data. */
-    public skip(size: number): number {
-        return this.cursor += size;
+    public skip(byteLength: number): number {
+        const max = this.size() - this.getCurrentPos();
+
+        if (byteLength < 1 || byteLength > max) {
+            throw new Error(
+                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
+            );
+        }
+
+        return this.cursor += byteLength;
     }
 
     public getCurrentPos(): number {
         return this.cursor;
     }
 
-    public goTo(offset: number): number {
-        return this.cursor = offset;
-    }
+    public goTo(byteOffset: number): number {
+        const max = this.size() - 1;
 
-    public getSourceBuffer(): Buffer {
-        return this.sourceBuffer;
-    }
+        if (byteOffset < 0 || byteOffset > max) {
+            throw new Error(
+                `The value of "byteLength" is out of range. `
+                + `It must be >= 0 and <= ${max}. Received ${byteOffset}`,
+            );
+        }
 
-    public size(): number {
-        return this.sourceBuffer.length;
-    }
-
-    public sizeRemainingBuffer(): number {
-        return this.size() - this.cursor;
+        return this.cursor = byteOffset;
     }
 
     public getEndianness(): Endianness {
@@ -156,6 +193,18 @@ export default class WalkableBuffer {
         return this.getEncoding();
     }
 
+    public getSourceBuffer(): Buffer {
+        return this.sourceBuffer;
+    }
+
+    public size(): number {
+        return this.sourceBuffer.length;
+    }
+
+    public sizeRemainingBuffer(): number {
+        return this.size() - this.cursor;
+    }
+
     /** Wrapper for `Buffer.readIntLE()` and `Buffer.readIntBE()` that takes `endianness` into account. */
     private readInt(offset: number, byteLength: number, endianness: Endianness, noAssert?: boolean): number {
         if (endianness === 'BE') {
@@ -163,7 +212,7 @@ export default class WalkableBuffer {
         } else if (endianness === 'LE') {
             return this.sourceBuffer.readIntLE(offset, byteLength, noAssert);
         } else {
-            throw new Error(`Unknown endianness '${endianness}'`);
+            throw new Error(`Invalid endianness '${endianness}'`);
         }
     }
 }
