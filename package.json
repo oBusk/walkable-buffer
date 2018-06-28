@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "A class for easily reading data from binary Buffers.",
     "license": "MIT",
-    "repository": "git+https://bitbucket.org/oBusk/walkable-buffer",
+    "repository": "git+https://github.com/oBusk/walkable-buffer.git",
     "main": "lib/index.js",
     "module": "es/index.js",
     "browser": "dist/bundle.js",
