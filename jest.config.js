@@ -14,4 +14,9 @@ module.exports = {
         '!src/**/*.d.ts',
     ],
     moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
+    globals: {
+        "ts-jest": {
+            skipBabel: true,
+        },
+    },
 };
