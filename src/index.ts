@@ -5,7 +5,7 @@ export const LONG = 4;
 export const LONGLONG = 8;
 
 /**
- * The endianness to read integers with.
+ * The endianness to read integers with
  *
  * * `LE` - for little-endian
  * * `BE` - for big-endian
