@@ -1,41 +1,25 @@
 {
-    /*
-    * Possible values:
-    * - the name of a built-in config
-    * - the name of an NPM module which has a "main" file that exports a config object
-    * - a relative path to a JSON file
-    */
-    "extends": "tslint:latest",
-    "rules": {
-        /*
-        * Any rules specified here will override those from the base config we are extending.
-        */
-        "quotemark": [
-            true,
-            "single",
-            "avoid-escape"
-        ],
-        "object-literal-sort-keys": [
-            "match-declaration-order"
-        ]
-    },
-    "jsRules": {
-        /*
-        * Any rules specified here will override those from the base config we are extending.
-        */
-        "quotemark": [
-            true,
-            "single",
-            "avoid-escape"
-        ],
-        "object-literal-sort-keys": [
-            "match-declaration-order"
-        ]
-    },
-    "rulesDirectory": [
-        /*
-        * A list of relative or absolute paths to directories that contain custom rules.
-        * See the Custom Rules documentation below for more details.
-        */
+  "extends": "tslint:latest",
+  "rules": {
+    "object-literal-sort-keys": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
     ]
+  },
+  "jsRules": {
+    "object-literal-sort-keys": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ]
+  },
+  "rulesDirectory": [
+    /*
+      * A list of relative or absolute paths to directories that contain custom rules.
+      * See the Custom Rules documentation below for more details.
+      */
+  ]
 }

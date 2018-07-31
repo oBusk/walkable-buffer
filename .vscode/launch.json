@@ -1,20 +1,44 @@
 {
   "version": "0.2.0",
   "configurations": [{
-    "name": "Debug",
+    "name": "Run Related Tests",
     "type": "node",
     "request": "launch",
-    "protocol": "inspector",
-    "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+    "program": "${workspaceFolder}/node_modules/.bin/jest",
     "args": [
       "--env=jsdom",
       "--no-cache",
       "--runInBand",
       "--findRelatedTests",
-      "${file}"
+      "${relativeFile}"
     ],
+    "console": "integratedTerminal",
+    "internalConsoleOptions": "neverOpen",
     "skipFiles": [
       "<node_internals>/**/*.js"
-    ]
-  }]
+    ],
+    "windows": {
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+    }
+  },
+  {
+    "name": "Run All Tests",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/jest",
+    "args": [
+      "--env=jsdom",
+      "--no-cache",
+      "--runInBand"
+    ],
+    "console": "integratedTerminal",
+    "internalConsoleOptions": "neverOpen",
+    "skipFiles": [
+      "<node_internals>/**/*.js"
+    ],
+    "windows": {
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+    }
+  },
+]
 }

@@ -20,8 +20,8 @@ export default class WalkableBuffer {
     }
 
     private sourceBuffer: Buffer;
-    private endianness: Endianness;
-    private encoding: Encoding;
+    private endianness!: Endianness;
+    private encoding!: Encoding;
 
     /**
      * @param sourceBuffer The `Buffer` to read and walk.
