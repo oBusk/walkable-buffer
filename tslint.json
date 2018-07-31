@@ -1,25 +1,35 @@
 {
-  "extends": "tslint:latest",
-  "rules": {
-    "object-literal-sort-keys": false,
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
+    "extends": "tslint:latest",
+    "rules": {
+        "indent": [
+            true,
+            "spaces",
+            4
+        ],
+        "object-literal-sort-keys": false,
+        "quotemark": [
+            true,
+            "single",
+            "avoid-escape"
+        ]
+    },
+    "jsRules": {
+        "indent": [
+            true,
+            "spaces",
+            4
+        ],
+        "object-literal-sort-keys": false,
+        "quotemark": [
+            true,
+            "single",
+            "avoid-escape"
+        ]
+    },
+    "rulesDirectory": [
+        /*
+    * A list of relative or absolute paths to directories that contain custom rules.
+    * See the Custom Rules documentation below for more details.
+    */
     ]
-  },
-  "jsRules": {
-    "object-literal-sort-keys": false,
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ]
-  },
-  "rulesDirectory": [
-    /*
-      * A list of relative or absolute paths to directories that contain custom rules.
-      * See the Custom Rules documentation below for more details.
-      */
-  ]
 }
