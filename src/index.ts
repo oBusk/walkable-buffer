@@ -57,9 +57,9 @@ export default class WalkableBuffer {
     public getString(byteLength: number, encoding = this.getEncoding()): string {
         const max = this.size() - this.cursor;
 
-        if (byteLength < 1 || byteLength > max) {
+        if (byteLength < 0 || byteLength > max) {
             throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
+                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`,
             );
         }
 
@@ -87,9 +87,9 @@ export default class WalkableBuffer {
         const startPos = cursor + byteOffset;
         const max = size - startPos;
 
-        if (byteLength < 1 || byteLength > max) {
+        if (byteLength < 0 || byteLength > max) {
             throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
+                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`,
             );
         }
 

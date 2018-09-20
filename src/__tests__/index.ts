@@ -237,8 +237,8 @@ describe('string functions', () => {
                 expect(u16walkableBuffer.getCurrentPos()).toBe(10);
             });
 
-            test('fails when using 0 size, without changing cursor', () => {
-                expect(() => u16walkableBuffer.getString(0)).toThrow();
+            test('does not fail when using 0 size, without changing cursor', () => {
+                expect(() => u16walkableBuffer.getString(0)).not.toThrow();
                 expect(u16walkableBuffer.getCurrentPos()).toBe(0);
             });
 
@@ -297,7 +297,7 @@ describe('string functions', () => {
 
             describe('sizes', () => {
                 test('handles size 1', () => expect(() => wBuf.peekString(1)).not.toThrow());
-                test('throws on 0 size', () => expect(() => wBuf.peekString(0)).toThrow(/out of range/i));
+                test('handles size 0', () => expect(() => wBuf.peekString(0)).not.toThrow());
                 test('throws on negative size', () => expect(() => wBuf.peekString(-1)).toThrow(/out of range/i));
                 test(
                     'handles maxiumum size',
@@ -401,7 +401,7 @@ describe('string functions', () => {
             expect(u8le.getCurrentPos()).toBe(0);
         });
 
-        test('fails on size descriptor 0, without advancing cursor', () => {
+        test('handles descriptor being value 0', () => {
             const u8le = new WalkableBuffer(
                 Buffer.from([
                     0x00, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
@@ -411,8 +411,8 @@ describe('string functions', () => {
                 'utf8',
             );
 
-            expect(() => u8le.getSizedString(SHORT)).toThrow(/out of range/i);
-            expect(u8le.getCurrentPos()).toBe(0);
+            expect(() => u8le.getSizedString(SHORT)).not.toThrow();
+            expect(u8le.getCurrentPos()).toBe(0x02);
         });
     });
 
