@@ -1,7 +1,7 @@
 module.exports = {
   testURL: 'http://localhost',
   transform: {
-    '.(tsx?)': '<rootDir>/node_modules/ts-jest/preprocessor.js'
+    '.(tsx?)': 'ts-jest'
   },
   testMatch: [
     '**/__tests__/**/*.{t,j}s?(x)',
@@ -17,7 +17,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
   globals: {
     "ts-jest": {
-      skipBabel: true,
+      babelConfig: undefined,
     },
   },
 };
