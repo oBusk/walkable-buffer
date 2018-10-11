@@ -76,6 +76,8 @@ describe('integer functions', () => {
     let buffer: Buffer;
     let walkableBuffer: WalkableBuffer;
 
+    describe('48bits', () => {
+
     beforeEach(() => {
         buffer = Buffer.from([0x00, 0xFF]);
         walkableBuffer = new WalkableBuffer(buffer);
@@ -187,6 +189,92 @@ describe('integer functions', () => {
 
             test('reads BE', () => {
                 expect(walkableBuffer.peek(SHORT, undefined, 'BE')).toBe(255);
+            });
+        });
+    });
+    });
+
+    describe('64bits', () => {
+        describe('values', () => {
+            test('can get 0', () => {
+                buffer = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                walkableBuffer = new WalkableBuffer(buffer);
+
+                expect(walkableBuffer.get64().toString()).toBe('0');
+            });
+
+            test('can get maximum number', () => {
+                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                walkableBuffer = new WalkableBuffer(buffer);
+
+                expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
+            });
+
+            test('can get minimum number', () => {
+                buffer = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
+                walkableBuffer = new WalkableBuffer(buffer);
+
+                expect(walkableBuffer.get64().toString()).toBe('-9223372036854775807');
+            });
+        });
+
+        describe('positioning', () => {
+            beforeEach(() => {
+                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                walkableBuffer = new WalkableBuffer(buffer);
+            });
+
+            test('advances position', () => {
+                expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
+                expect(walkableBuffer.getCurrentPos()).toBe(8);
+            });
+
+            test('throws if trying to get more than left and does not advance position when failing', () => {
+                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                walkableBuffer = new WalkableBuffer(buffer);
+
+                expect(() => walkableBuffer.get64()).toThrow();
+                expect(walkableBuffer.getCurrentPos()).toBe(0);
+            });
+
+            test('throws if trying to get more than left and does not advance position when failing', () => {
+                buffer = Buffer.from([
+                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
+                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
+                ]);
+                walkableBuffer = new WalkableBuffer(buffer);
+
+                expect(() => walkableBuffer.get64()).not.toThrow();
+                expect(walkableBuffer.getCurrentPos()).toBe(8);
+                expect(() => walkableBuffer.get64()).not.toThrow();
+                expect(walkableBuffer.getCurrentPos()).toBe(16);
+                expect(() => walkableBuffer.get64()).toThrow();
+                expect(walkableBuffer.getCurrentPos()).toBe(16);
+                expect(() => walkableBuffer.get64()).toThrow();
+                expect(walkableBuffer.getCurrentPos()).toBe(16);
+            });
+        });
+
+        describe('endianness', () => {
+            beforeEach(() => {
+                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                walkableBuffer = new WalkableBuffer(buffer);
+            });
+
+            test('reads default (LE)', () => {
+                expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
+            });
+
+            test('reads LE', () => {
+                expect(walkableBuffer.get64('LE').toString()).toBe('9223372036854775807');
+            });
+
+            test('reads BE', () => {
+                expect(walkableBuffer.get64('BE').toString()).toBe('-129');
+            });
+
+            test('reads NOT (throws)', () => {
+                expect(() => walkableBuffer.get64('NOT' as any)).toThrow(/invalid endianness/i);
             });
         });
     });
