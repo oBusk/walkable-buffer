@@ -277,6 +277,25 @@ describe('integer functions', () => {
                 expect(() => walkableBuffer.get64('NOT' as any)).toThrow(/invalid endianness/i);
             });
         });
+
+        describe('signed', () => {
+            beforeEach(() => {
+                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                walkableBuffer = new WalkableBuffer(buffer);
+            });
+
+            test('reads default (signed)', () => {
+                expect(walkableBuffer.get64('LE').toString()).toBe('-1');
+            });
+
+            test('reads unsigned', () => {
+                expect(walkableBuffer.get64('LE', true).toString()).toBe('18446744073709551615');
+            });
+
+            test('reads signed', () => {
+                expect(walkableBuffer.get64('LE', false).toString()).toBe('-1');
+            });
+        });
     });
 });
 

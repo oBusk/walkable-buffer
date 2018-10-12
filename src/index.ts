@@ -1,4 +1,4 @@
-import { Int64, Int64BE, Int64LE } from 'int64-buffer';
+import { Int64, Int64BE, Int64LE, Uint64BE, Uint64LE } from 'int64-buffer';
 
 export const OCTET = 1;
 export const BYTE = OCTET;
@@ -51,8 +51,8 @@ export default class WalkableBuffer {
     }
 
     /** Reads the next 8 bytes as a 64bit number. Returns a `int64-buffer` Int64. */
-    public get64(endianness = this.getEndianness()): Int64 {
-        const result = this.readIn64(this.cursor, endianness);
+    public get64(endianness = this.getEndianness(), unsigned = false): Int64 {
+        const result = this.readIn64(this.cursor, endianness, unsigned);
         this.cursor += 8;
         return result;
     }
@@ -225,14 +225,23 @@ export default class WalkableBuffer {
         }
     }
 
-    private readIn64(offset: number, endianness: Endianness): Int64 {
+    private readIn64(offset: number, endianness: Endianness, unsigned: boolean): Int64 {
         if (offset + 8 > this.sourceBuffer.length) {
             throw new Error('Attempt to write outside buffer bounds');
         }
 
         if (endianness === 'BE') {
-            return new Int64BE(this.sourceBuffer, offset);
+            if (unsigned) {
+                return new Uint64BE(this.sourceBuffer, offset);
+            } else {
+                return new Int64BE(this.sourceBuffer, offset);
+            }
         } else if (endianness === 'LE') {
+            if (unsigned) {
+                return new Uint64LE(this.sourceBuffer, offset);
+            } else {
+                return new Int64LE(this.sourceBuffer, offset);
+            }
             return new Int64LE(this.sourceBuffer, offset);
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
