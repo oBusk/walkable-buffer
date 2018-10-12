@@ -51,7 +51,6 @@
     ],
     "exclude": [
         "node_modules",
-        "dist",
         "es",
         "lib"
     ],
