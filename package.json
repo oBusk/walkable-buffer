@@ -1,7 +1,7 @@
 {
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "name": "walkable-buffer",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "A class for easily reading data from binary Buffers.",
     "license": "MIT",
     "repository": "git+https://github.com/oBusk/walkable-buffer.git",
