@@ -279,21 +279,56 @@ describe('integer functions', () => {
         });
 
         describe('signed', () => {
+            let ff: Buffer;
+            let ffWB: WalkableBuffer;
+            let ze: Buffer;
+            let zeWB: WalkableBuffer;
+
             beforeEach(() => {
-                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                zeWB = new WalkableBuffer(ze);
+
+                ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                ffWB = new WalkableBuffer(ff);
+
+                buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77]);
                 walkableBuffer = new WalkableBuffer(buffer);
             });
 
-            test('reads default (signed)', () => {
-                expect(walkableBuffer.get64('LE').toString()).toBe('-1');
+            test('reads default (signed) LE', () => {
+                expect(zeWB.get64('LE').toString()).toBe('0');
+                expect(ffWB.get64('LE').toString()).toBe('-1');
+                expect(walkableBuffer.get64('LE').toString()).toBe('8603657889541918976');
             });
 
-            test('reads unsigned', () => {
-                expect(walkableBuffer.get64('LE', true).toString()).toBe('18446744073709551615');
+            test('reads default (signed) BE', () => {
+                expect(zeWB.get64('BE').toString()).toBe('0');
+                expect(ffWB.get64('BE').toString()).toBe('-1');
+                expect(walkableBuffer.get64('BE').toString()).toBe('4822678189205111');
             });
 
-            test('reads signed', () => {
-                expect(walkableBuffer.get64('LE', false).toString()).toBe('-1');
+            test('reads signed LE', () => {
+                expect(zeWB.get64('LE').toString()).toBe('0');
+                expect(ffWB.get64('LE').toString()).toBe('-1');
+                expect(walkableBuffer.get64('LE').toString()).toBe('8603657889541918976');
+            });
+
+            test('reads signed BE', () => {
+                expect(zeWB.get64('BE').toString()).toBe('0');
+                expect(ffWB.get64('BE').toString()).toBe('-1');
+                expect(walkableBuffer.get64('BE').toString()).toBe('4822678189205111');
+            });
+
+            test('reads unsigned LE', () => {
+                expect(zeWB.get64('LE', true).toString()).toBe('0');
+                expect(ffWB.get64('LE', true).toString()).toBe('18446744073709551615');
+                expect(walkableBuffer.get64('LE', true).toString()).toBe('8603657889541918976');
+            });
+
+            test('reads unsigned BE', () => {
+                expect(zeWB.get64('BE', true).toString()).toBe('0');
+                expect(ffWB.get64('BE', true).toString()).toBe('18446744073709551615');
+                expect(walkableBuffer.get64('BE', true).toString()).toBe('4822678189205111');
             });
         });
     });
