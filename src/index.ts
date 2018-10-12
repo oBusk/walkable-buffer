@@ -242,7 +242,6 @@ export default class WalkableBuffer {
             } else {
                 return new Int64LE(this.sourceBuffer, offset);
             }
-            return new Int64LE(this.sourceBuffer, offset);
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
