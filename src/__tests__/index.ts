@@ -78,120 +78,120 @@ describe('integer functions', () => {
 
     describe('48bits', () => {
 
-    beforeEach(() => {
-        buffer = Buffer.from([0x00, 0xFF]);
-        walkableBuffer = new WalkableBuffer(buffer);
-    });
-
-    describe('get', () => {
-        test('reads specified amount of bytes', () => {
-            expect(walkableBuffer.get(BYTE)).toBe(0);
-            expect(walkableBuffer.get(BYTE)).toBe(-1);
+        beforeEach(() => {
+            buffer = Buffer.from([0x00, 0xFF]);
+            walkableBuffer = new WalkableBuffer(buffer);
         });
 
-        describe('positioning', () => {
-            test('advances position', () => {
+        describe('get', () => {
+            test('reads specified amount of bytes', () => {
                 expect(walkableBuffer.get(BYTE)).toBe(0);
-                expect(walkableBuffer.getCurrentPos()).toBe(1);
+                expect(walkableBuffer.get(BYTE)).toBe(-1);
             });
 
-            test('throws when using negative size', () => {
-                expect(() => walkableBuffer.get(-BYTE)).toThrow();
+            describe('positioning', () => {
+                test('advances position', () => {
+                    expect(walkableBuffer.get(BYTE)).toBe(0);
+                    expect(walkableBuffer.getCurrentPos()).toBe(1);
+                });
+
+                test('throws when using negative size', () => {
+                    expect(() => walkableBuffer.get(-BYTE)).toThrow();
+                });
+
+                test('throws if trying to get more than left', () => {
+                    expect(() => walkableBuffer.get(3)).toThrow();
+                });
+
+                test('throws if trying to get more than left', () => {
+                    expect(() => walkableBuffer.get(1)).not.toThrow();
+                    expect(() => walkableBuffer.get(1)).not.toThrow();
+                    expect(() => walkableBuffer.get(1)).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(2);
+                    expect(() => walkableBuffer.get(1)).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(2);
+                });
+
+                test('does not advance position when failing', () => {
+                    expect(walkableBuffer.get(SHORT)).toBe(-256);
+                    expect(walkableBuffer.getCurrentPos()).toBe(2);
+                    expect(() => walkableBuffer.get(BYTE)).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(2);
+                });
+
+                test('does not advance position when failing', () => {
+                    expect(() => walkableBuffer.get(3)).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                });
             });
 
-            test('throws if trying to get more than left', () => {
-                expect(() => walkableBuffer.get(3)).toThrow();
-            });
+            describe('endianness', () => {
+                test('reads default (LE)', () => {
+                    expect(walkableBuffer.get(SHORT)).toBe(-256);
+                });
 
-            test('throws if trying to get more than left', () => {
-                expect(() => walkableBuffer.get(1)).not.toThrow();
-                expect(() => walkableBuffer.get(1)).not.toThrow();
-                expect(() => walkableBuffer.get(1)).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(2);
-                expect(() => walkableBuffer.get(1)).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(2);
-            });
+                test('reads LE', () => {
+                    expect(walkableBuffer.get(SHORT, 'LE')).toBe(-256);
+                });
 
-            test('does not advance position when failing', () => {
-                expect(walkableBuffer.get(SHORT)).toBe(-256);
-                expect(walkableBuffer.getCurrentPos()).toBe(2);
-                expect(() => walkableBuffer.get(BYTE)).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(2);
-            });
+                test('reads BE', () => {
+                    expect(walkableBuffer.get(SHORT, 'BE')).toBe(255);
+                });
 
-            test('does not advance position when failing', () => {
-                expect(() => walkableBuffer.get(3)).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(0);
+                test('reads NOT (throws)', () => {
+                    expect(() => walkableBuffer.get(SHORT, 'NOT' as any)).toThrow(/invalid endianness/i);
+                });
             });
         });
 
-        describe('endianness', () => {
-            test('reads default (LE)', () => {
-                expect(walkableBuffer.get(SHORT)).toBe(-256);
-            });
-
-            test('reads LE', () => {
-                expect(walkableBuffer.get(SHORT, 'LE')).toBe(-256);
-            });
-
-            test('reads BE', () => {
-                expect(walkableBuffer.get(SHORT, 'BE')).toBe(255);
-            });
-
-            test('reads NOT (throws)', () => {
-                expect(() => walkableBuffer.get(SHORT, 'NOT' as any)).toThrow(/invalid endianness/i);
-            });
-        });
-    });
-
-    describe('peek', () => {
-        test('reads specified amount of bytes', () => {
-            expect(walkableBuffer.peek(BYTE)).toBe(0);
-        });
-
-        describe('positioning', () => {
-            test('does not advance position', () => {
+        describe('peek', () => {
+            test('reads specified amount of bytes', () => {
                 expect(walkableBuffer.peek(BYTE)).toBe(0);
-                expect(walkableBuffer.getCurrentPos()).toBe(0);
-                expect(walkableBuffer.peek(BYTE)).toBe(0);
             });
 
-            test('throws when using negative size', () => {
-                expect(() => walkableBuffer.peek(-BYTE)).toThrow();
+            describe('positioning', () => {
+                test('does not advance position', () => {
+                    expect(walkableBuffer.peek(BYTE)).toBe(0);
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                    expect(walkableBuffer.peek(BYTE)).toBe(0);
+                });
+
+                test('throws when using negative size', () => {
+                    expect(() => walkableBuffer.peek(-BYTE)).toThrow();
+                });
+
+                test('handles byteOffset', () => {
+                    expect(walkableBuffer.peek(BYTE, BYTE)).toBe(-1);
+                });
+
+                test('handles negative byteOffset', () => {
+                    walkableBuffer = new WalkableBuffer(buffer, undefined, undefined, 1);
+
+                    expect(walkableBuffer.peek(BYTE)).toBe(-1);
+                    expect(walkableBuffer.peek(BYTE, -BYTE)).toBe(0);
+                });
+
+                test('throws when trying to peek outside buffer', () => {
+                    expect(() => walkableBuffer.peek(LONG)).toThrow();
+                    expect(() => walkableBuffer.peek(BYTE, 2)).toThrow();
+                    expect(() => walkableBuffer.peek(BYTE, -1)).toThrow();
+                });
             });
 
-            test('handles byteOffset', () => {
-                expect(walkableBuffer.peek(BYTE, BYTE)).toBe(-1);
-            });
+            describe('endianness', () => {
+                test('reads default (LE)', () => {
+                    expect(walkableBuffer.peek(SHORT)).toBe(-256);
+                });
 
-            test('handles negative byteOffset', () => {
-                walkableBuffer = new WalkableBuffer(buffer, undefined, undefined, 1);
+                test('reads LE', () => {
+                    expect(walkableBuffer.peek(SHORT, undefined, 'LE')).toBe(-256);
+                });
 
-                expect(walkableBuffer.peek(BYTE)).toBe(-1);
-                expect(walkableBuffer.peek(BYTE, -BYTE)).toBe(0);
-            });
-
-            test('throws when trying to peek outside buffer', () => {
-                expect(() => walkableBuffer.peek(LONG)).toThrow();
-                expect(() => walkableBuffer.peek(BYTE, 2)).toThrow();
-                expect(() => walkableBuffer.peek(BYTE, -1)).toThrow();
+                test('reads BE', () => {
+                    expect(walkableBuffer.peek(SHORT, undefined, 'BE')).toBe(255);
+                });
             });
         });
-
-        describe('endianness', () => {
-            test('reads default (LE)', () => {
-                expect(walkableBuffer.peek(SHORT)).toBe(-256);
-            });
-
-            test('reads LE', () => {
-                expect(walkableBuffer.peek(SHORT, undefined, 'LE')).toBe(-256);
-            });
-
-            test('reads BE', () => {
-                expect(walkableBuffer.peek(SHORT, undefined, 'BE')).toBe(255);
-            });
-        });
-    });
     });
 
     describe('64bits', () => {
