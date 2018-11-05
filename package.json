@@ -34,7 +34,7 @@
         "es"
     ],
     "engines": {
-        "node": ">=8.0.0"
+        "node": ">=6.5.0"
     },
     "dependencies": {
         "@types/node": "^8.0.0",
