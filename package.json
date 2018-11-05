@@ -42,11 +42,11 @@
         "tslib": "^1.9.3"
     },
     "devDependencies": {
-        "@types/jest": "^23.3.2",
-        "jest": "^23.6.0",
-        "rimraf": "^2.6.2",
-        "ts-jest": "^23.10.1",
+        "@types/jest": "^23.3.0",
+        "jest": "^23.3.0",
+        "rimraf": "^2.6.0",
+        "ts-jest": "^23.10.0",
         "tslint": "^5.11.0",
-        "typescript": "^3.0.3"
+        "typescript": "^3.1.0"
     }
 }
