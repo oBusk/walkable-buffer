@@ -12,7 +12,7 @@
         "build": "npm run build:lib & npm run build:es",
         "build:lib": "tsc --p src/tsconfig.app.json --outDir lib --module commonjs",
         "build:es": "tsc --p src/tsconfig.app.json --outDir es --module es2015",
-        "clean": "rimraf es lib coverage",
+        "clean": "rimraf tsc-out es lib coverage",
         "typecheck": "tsc --noEmit",
         "lint": "tslint --project tsconfig.json --format stylish",
         "test": "jest --coverage",
