@@ -1,7 +1,7 @@
 # walkable-buffer
 
-[![npm version](https://badge.fury.io/js/walkable-buffer.svg)](https://www.npmjs.com/package/walkable-buffer)
-[![install size](https://packagephobia.now.sh/badge?p=walkable-buffer)](https://packagephobia.now.sh/result?p=walkable-buffer)
+[![npm version](https://badgen.net/npm/v/walkable-buffer)](https://www.npmjs.com/package/walkable-buffer)
+[![install size](https://badgen.net/packagephobia/publish/walkable-buffer)](https://packagephobia.now.sh/result?p=walkable-buffer)
 [![Build Status](https://travis-ci.org/oBusk/walkable-buffer.svg?branch=master)](https://travis-ci.org/oBusk/walkable-buffer)
 [![Coverage Status](https://coveralls.io/repos/github/oBusk/walkable-buffer/badge.svg?branch=master)](https://coveralls.io/github/oBusk/walkable-buffer?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/oBusk/walkable-buffer.svg)](https://greenkeeper.io/)
