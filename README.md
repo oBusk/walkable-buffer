@@ -27,10 +27,6 @@ const v = wb.get(8);
 const s = wb.getString(16);
 ```
 
-## Contributing
-
-PRs accepted.
-
 ## License
 
 MIT © Oscar Busk
