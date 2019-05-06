@@ -33,19 +33,19 @@
         "es"
     ],
     "engines": {
-        "node": ">=6.9.0"
+        "node": ">=6.14.0"
     },
     "dependencies": {
-        "@types/node": "^6.9.0",
+        "@types/node": "^6.14.0",
         "int64-buffer": "~0.99.0",
         "tslib": "^1.9.0"
     },
     "devDependencies": {
-        "@types/jest": "^24.0.11",
-        "jest": "^24.5.0",
+        "@types/jest": "^24.0.12",
+        "jest": "^24.8.0",
         "rimraf": "^2.6.3",
-        "ts-jest": "^24.0.0",
-        "tslint": "^5.13.1",
-        "typescript": "^3.3.3333"
+        "ts-jest": "^24.0.2",
+        "tslint": "^5.16.0",
+        "typescript": "^3.4.5"
     }
 }
