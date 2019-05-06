@@ -63,7 +63,7 @@ describe('constructor', () => {
 
             const wBuf = new WalkableBuffer(buffer);
 
-            buffer.write('XXXX', 0, 8);
+            buffer.write('XXXX', 0, 4);
 
             expect(buffer.toString()).toBe('XXXX');
             expect(wBuf.getString(4)).toBe('ABCD');
