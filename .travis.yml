@@ -6,14 +6,16 @@ cache:
 jobs:
   include:
     - stage: lint
-      - node_js: stable
-        script: npm run lint
-        script: npm run typecheck
+      node_js: stable
+      script: npm run lint
+      script: npm run typecheck
     - stage: test
-      - node_js: lts/dubnium # just test in lts
-        script: npm run jest
-      - node_js: stable # test and coveralls
-        script: npm run jest -- --coverage
-        after_success: cat coverage/lcov.info | npx coveralls
-      - node_js: stable # make sure build works and all that
-        script: npm run build
+      node_js: lts/dubnium # just test in lts
+      script: npm run jest
+    - stage: test
+      node_js: stable # test and coveralls
+      script: npm run jest -- --coverage
+      after_success: cat coverage/lcov.info | npx coveralls
+    - stage: test
+      node_js: stable # make sure build works and all that
+      script: npm run build
