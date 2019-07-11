@@ -171,6 +171,4 @@ $RECYCLE.BIN/
 
 # Generated stuff
 out-tsc/
-dist/
-lib/
-es/
+pkg/

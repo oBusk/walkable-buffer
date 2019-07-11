@@ -9,17 +9,13 @@
     "module": "es/index.js",
     "types": "es/index.d.ts",
     "scripts": {
-        "build": "npm run build:lib & npm run build:es",
-        "build:lib": "tsc --p src/tsconfig.app.json --outDir lib --module commonjs",
-        "build:es": "tsc --p src/tsconfig.app.json --outDir es --module es2015",
-        "clean": "rimraf tsc-out es lib coverage",
+        "build": "pack build",
         "typecheck": "tsc --noEmit",
         "lint": "tslint --project tsconfig.json --format stylish",
         "test": "jest --coverage",
+        "posttest": "npm run typecheck && npm run lint",
         "test:watch": "jest --watch --updateSnapshot",
         "prepublishOnly": "npm run build",
-        "prebuild": "npm run clean",
-        "posttest": "npm run typecheck && npm run lint",
         "preversion": "npm test && npm run build",
         "postversion": "git push && git push --tags"
     },
@@ -41,12 +37,35 @@
         "tslib": "^1.10.0"
     },
     "devDependencies": {
+        "@pika/pack": "^0.4.0",
+        "@pika/plugin-build-node": "^0.4.0",
+        "@pika/plugin-build-types": "^0.4.0",
+        "@pika/plugin-build-web": "^0.4.0",
+        "@pika/plugin-ts-standard-pkg": "^0.4.0",
         "@types/jest": "^24.0.15",
         "jest": "^24.8.0",
-        "rimraf": "^2.6.3",
         "ts-jest": "^24.0.2",
         "tslint": "^5.18.0",
         "typescript": "^3.5.2",
         "typescript-tslint-plugin": "^0.5.3"
+    },
+    "@pika/pack": {
+        "pipeline": [
+            [
+                "@pika/plugin-ts-standard-pkg",
+                {
+                    "tsconfig": "src/tsconfig.app.json"
+                }
+            ],
+            [
+                "@pika/plugin-build-node",
+                {
+                    "minNodeVersion": 10
+                }
+            ],
+            [
+                "@pika/plugin-build-web"
+            ]
+        ]
     }
 }
