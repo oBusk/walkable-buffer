@@ -10,14 +10,12 @@
     "types": "es/index.d.ts",
     "scripts": {
         "build": "pack build",
-        "typecheck": "tsc --noEmit",
-        "lint": "tslint --project tsconfig.json --format stylish",
         "test": "jest --coverage",
         "posttest": "npm run typecheck && npm run lint",
+        "lint": "tslint --project tsconfig.json --format stylish",
+        "typecheck": "tsc --noEmit",
         "test:watch": "jest --watch --updateSnapshot",
-        "prepublishOnly": "npm run build",
-        "preversion": "npm test && npm run build",
-        "postversion": "git push && git push --tags"
+        "version": "npm run build"
     },
     "keywords": [
         "binary",
