@@ -27,10 +27,10 @@
         "es"
     ],
     "engines": {
-        "node": ">=6.14.0"
+        "node": ">=10.4.0"
     },
     "dependencies": {
-        "@types/node": "^6.14.0",
+        "@types/node": "^10.4.0",
         "int64-buffer": "~0.99.0",
         "tslib": "^1.10.0"
     },
