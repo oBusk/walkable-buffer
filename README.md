@@ -4,7 +4,6 @@
 [![install size](https://badgen.net/packagephobia/publish/walkable-buffer)](https://packagephobia.now.sh/result?p=walkable-buffer)
 [![Build Status](https://travis-ci.org/oBusk/walkable-buffer.svg?branch=master)](https://travis-ci.org/oBusk/walkable-buffer)
 [![Coverage Status](https://coveralls.io/repos/github/oBusk/walkable-buffer/badge.svg?branch=master)](https://coveralls.io/github/oBusk/walkable-buffer?branch=master)
-[![Greenkeeper badge](https://badges.greenkeeper.io/oBusk/walkable-buffer.svg)](https://greenkeeper.io/)
 
 > 🚶🛡️ A class for easily reading data from binary Buffers
 
