@@ -1,11 +1,19 @@
 language: node_js
-node_js:
-  - lts/dubnium
-  - stable
 cache:
   directories:
     - $HOME/.npm
-    - .cache
-after_success:
-  - npm i -g coveralls
-  - cat coverage/lcov.info | coveralls
+
+jobs:
+  include:
+    - stage: lint
+      - node_js: stable
+        script: npm run lint
+        script: npm run typecheck
+    - stage: test
+      - node_js: lts/dubnium # just test in lts
+        script: npm run jest
+      - node_js: stable # test and coveralls
+        script: npm run jest -- --coverage
+        after_success: cat coverage/lcov.info | npx coveralls
+      - node_js: stable # make sure build works and all that
+        script: npm run build

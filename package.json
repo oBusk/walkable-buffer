@@ -10,7 +10,8 @@
     "types": "es/index.d.ts",
     "scripts": {
         "build": "pack build",
-        "test": "jest --coverage",
+        "jest": "jest",
+        "test": "jest",
         "posttest": "npm run typecheck && npm run lint",
         "lint": "tslint --project tsconfig.json --format stylish",
         "typecheck": "tsc --noEmit",
