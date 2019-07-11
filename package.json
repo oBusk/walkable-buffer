@@ -5,9 +5,6 @@
     "description": "🚶🛡️ A class for easily reading data from binary Buffers",
     "license": "MIT",
     "repository": "git+https://github.com/oBusk/walkable-buffer.git",
-    "main": "lib/index.js",
-    "module": "es/index.js",
-    "types": "es/index.d.ts",
     "scripts": {
         "build": "pack build",
         "jest": "jest",
@@ -22,10 +19,6 @@
         "binary",
         "buffer",
         "walk"
-    ],
-    "files": [
-        "lib",
-        "es"
     ],
     "engines": {
         "node": ">=10.4.0"
