@@ -10,9 +10,7 @@
                 "--no-cache",
                 "--runInBand",
                 "--findRelatedTests",
-                "${relativeFile}",
-                "--",
-                "--debuggable"
+                "${relativeFile}"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
@@ -30,9 +28,7 @@
             "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": [
                 "--no-cache",
-                "--runInBand",
-                "--",
-                "--debuggable"
+                "--runInBand"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",

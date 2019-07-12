@@ -1,5 +1,3 @@
-import { Int64, Int64BE, Int64LE, Uint64BE, Uint64LE } from 'int64-buffer';
-
 export const OCTET = 1;
 export const BYTE = OCTET;
 export const SHORT = 2;
@@ -50,10 +48,9 @@ export default class WalkableBuffer {
         return result;
     }
 
-    /** Reads the next 8 bytes as a 64bit number. Returns a `int64-buffer` Int64. */
-    public get64(endianness = this.getEndianness(), unsigned = false): Int64 {
+    /** Reads the next 8 bytes as a 64bit number. */
+    public get64(endianness = this.getEndianness(), unsigned = false): bigint {
         const result = this.readIn64(this.cursor, endianness, unsigned);
-        this.cursor += 8;
         return result;
     }
 
@@ -225,22 +222,56 @@ export default class WalkableBuffer {
         }
     }
 
-    private readIn64(offset: number, endianness: Endianness, unsigned: boolean): Int64 {
+    private readIn64(offset: number, endianness: Endianness, unsigned: boolean): bigint {
         if (offset + 8 > this.sourceBuffer.length) {
             throw new Error('Attempt to write outside buffer bounds');
         }
 
-        if (endianness === 'BE') {
+        const byteBuf = this.getBuffer(8);
+        return this.bufToBigint(byteBuf, endianness, unsigned);
+        // let hex = this.peekString(8, 0, 'hex');
+        // if (endianness === 'BE') {
+        //     if (unsigned) {
+        //         return BigInt(`0x${hex}`);
+        //     } else {
+        //         return BigInt.asIntN(64, BigInt(`0x${hex}`));
+        //     }
+        // } else if (endianness === 'LE') {
+        //     hex = hex.split('').reverse().join('');
+        //     console.log(hex)
+
+        //     if (unsigned) {
+        //         return BigInt(`0x${hex}`);
+        //     } else {
+        //         return BigInt.asIntN(64, BigInt(`0x${hex}`));
+        //     }
+        // } else {
+        //     throw new Error(`Invalid endianness '${endianness}'`);
+        // }
+    }
+
+    private bufToBigint(buf: Buffer, endianness: Endianness, unsigned: boolean): bigint {
+        // https://github.com/nodejs/node/blob/ed8fc7e11d688cbcdf33d0d149830064758bdcd2/lib/internal/buffer.js#L98-L116
+        var octal = new Array<string>();
+        const u8 = Uint8Array.from(buf);
+        unsigned;
+
+        u8.forEach(function (i) {
+            var o = i.toString(8);
+            octal.push(o);
+        });
+
+        if (endianness === 'LE') {
             if (unsigned) {
-                return new Uint64BE(this.sourceBuffer, offset);
+                return BigInt('0o' + octal.join(''));
             } else {
-                return new Int64BE(this.sourceBuffer, offset);
+                return BigInt.asIntN(64, BigInt('0o' + octal.join('')));
             }
-        } else if (endianness === 'LE') {
+        } else if (endianness === 'BE') {
             if (unsigned) {
-                return new Uint64LE(this.sourceBuffer, offset);
+                return BigInt('0o' + octal.reverse().join(''));
             } else {
-                return new Int64LE(this.sourceBuffer, offset);
+                return BigInt.asIntN(64, BigInt('0o' + octal.reverse().join('')));
             }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);

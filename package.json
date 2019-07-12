@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "@types/node": "^10.4.0",
-        "int64-buffer": "~0.99.0",
+        "bigint-buffer": "^1.1.2",
         "tslib": "^1.10.0"
     },
     "devDependencies": {
