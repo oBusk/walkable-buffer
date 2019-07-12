@@ -257,7 +257,7 @@ export default class WalkableBuffer {
             this.sourceBuffer[++offset] * 2 ** 16 +
             last * 2 ** 24;
 
-        return BigInt(lo) + (BigInt(hi) << 32n);
+        return BigInt(lo) + (BigInt(hi) << BigInt(32));
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L98-L116
@@ -278,7 +278,7 @@ export default class WalkableBuffer {
             this.sourceBuffer[++offset] * 2 ** 8 +
             last;
 
-        return (BigInt(hi) << 32n) + BigInt(lo);
+        return (BigInt(hi) << BigInt(32)) + BigInt(lo);
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L118-L134
@@ -293,7 +293,7 @@ export default class WalkableBuffer {
             this.sourceBuffer[offset + 5] * 2 ** 8 +
             this.sourceBuffer[offset + 6] * 2 ** 16 +
             (last << 24); // Overflow
-        return (BigInt(val) << 32n) +
+        return (BigInt(val) << BigInt(32)) +
             BigInt(first +
                 this.sourceBuffer[++offset] * 2 ** 8 +
                 this.sourceBuffer[++offset] * 2 ** 16 +
@@ -312,7 +312,7 @@ export default class WalkableBuffer {
             this.sourceBuffer[++offset] * 2 ** 16 +
             this.sourceBuffer[++offset] * 2 ** 8 +
             this.sourceBuffer[++offset];
-        return (BigInt(val) << 32n) +
+        return (BigInt(val) << BigInt(32)) +
             BigInt(this.sourceBuffer[++offset] * 2 ** 24 +
                 this.sourceBuffer[++offset] * 2 ** 16 +
                 this.sourceBuffer[++offset] * 2 ** 8 +
