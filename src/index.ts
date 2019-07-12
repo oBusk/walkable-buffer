@@ -50,7 +50,24 @@ export default class WalkableBuffer {
 
     /** Reads the next 8 bytes as a 64bit number. */
     public get64(endianness = this.getEndianness(), unsigned = false): bigint {
-        const result = this.readIn64(this.cursor, endianness, unsigned);
+        let result: bigint;
+        if (endianness === 'LE') {
+            if (unsigned) {
+                result = this.readBigUInt64LE(this.cursor);
+            } else {
+                result = this.readBigInt64LE(this.cursor);
+            }
+        } else if (endianness === 'BE') {
+            if (unsigned) {
+                result = this.readBigUInt64BE(this.cursor);
+            } else {
+                result = this.readBigInt64BE(this.cursor);
+            }
+        } else {
+            throw new Error(`Invalid endianness '${endianness}'`);
+        }
+        // Only do this if the read didn't throw
+        this.cursor += 8;
         return result;
     }
 
@@ -222,59 +239,83 @@ export default class WalkableBuffer {
         }
     }
 
-    private readIn64(offset: number, endianness: Endianness, unsigned: boolean): bigint {
-        if (offset + 8 > this.sourceBuffer.length) {
-            throw new Error('Attempt to write outside buffer bounds');
+    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L78-L96
+    private readBigUInt64LE(offset = 0) {
+        const first = this.sourceBuffer[offset];
+        const last = this.sourceBuffer[offset + 7];
+        if (first === undefined || last === undefined) {
+            throw new Error('Out of bounds');
         }
 
-        const byteBuf = this.getBuffer(8);
-        return this.bufToBigint(byteBuf, endianness, unsigned);
-        // let hex = this.peekString(8, 0, 'hex');
-        // if (endianness === 'BE') {
-        //     if (unsigned) {
-        //         return BigInt(`0x${hex}`);
-        //     } else {
-        //         return BigInt.asIntN(64, BigInt(`0x${hex}`));
-        //     }
-        // } else if (endianness === 'LE') {
-        //     hex = hex.split('').reverse().join('');
-        //     console.log(hex)
+        const lo = first +
+            this.sourceBuffer[++offset] * 2 ** 8 +
+            this.sourceBuffer[++offset] * 2 ** 16 +
+            this.sourceBuffer[++offset] * 2 ** 24;
 
-        //     if (unsigned) {
-        //         return BigInt(`0x${hex}`);
-        //     } else {
-        //         return BigInt.asIntN(64, BigInt(`0x${hex}`));
-        //     }
-        // } else {
-        //     throw new Error(`Invalid endianness '${endianness}'`);
-        // }
+        const hi = this.sourceBuffer[++offset] +
+            this.sourceBuffer[++offset] * 2 ** 8 +
+            this.sourceBuffer[++offset] * 2 ** 16 +
+            last * 2 ** 24;
+
+        return BigInt(lo) + (BigInt(hi) << 32n);
     }
 
-    private bufToBigint(buf: Buffer, endianness: Endianness, unsigned: boolean): bigint {
-        // https://github.com/nodejs/node/blob/ed8fc7e11d688cbcdf33d0d149830064758bdcd2/lib/internal/buffer.js#L98-L116
-        var octal = new Array<string>();
-        const u8 = Uint8Array.from(buf);
-        unsigned;
-
-        u8.forEach(function (i) {
-            var o = i.toString(8);
-            octal.push(o);
-        });
-
-        if (endianness === 'LE') {
-            if (unsigned) {
-                return BigInt('0o' + octal.join(''));
-            } else {
-                return BigInt.asIntN(64, BigInt('0o' + octal.join('')));
-            }
-        } else if (endianness === 'BE') {
-            if (unsigned) {
-                return BigInt('0o' + octal.reverse().join(''));
-            } else {
-                return BigInt.asIntN(64, BigInt('0o' + octal.reverse().join('')));
-            }
-        } else {
-            throw new Error(`Invalid endianness '${endianness}'`);
+    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L98-L116
+    private readBigUInt64BE(offset = 0) {
+        const first = this.sourceBuffer[offset];
+        const last = this.sourceBuffer[offset + 7];
+        if (first === undefined || last === undefined) {
+            throw new Error('Out of bounds');
         }
+
+        const hi = first * 2 ** 24 +
+            this.sourceBuffer[++offset] * 2 ** 16 +
+            this.sourceBuffer[++offset] * 2 ** 8 +
+            this.sourceBuffer[++offset];
+
+        const lo = this.sourceBuffer[++offset] * 2 ** 24 +
+            this.sourceBuffer[++offset] * 2 ** 16 +
+            this.sourceBuffer[++offset] * 2 ** 8 +
+            last;
+
+        return (BigInt(hi) << 32n) + BigInt(lo);
+    }
+
+    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L118-L134
+    private readBigInt64LE(offset = 0) {
+        const first = this.sourceBuffer[offset];
+        const last = this.sourceBuffer[offset + 7];
+        if (first === undefined || last === undefined) {
+            throw new Error('Out of bounds');
+        }
+
+        const val = this.sourceBuffer[offset + 4] +
+            this.sourceBuffer[offset + 5] * 2 ** 8 +
+            this.sourceBuffer[offset + 6] * 2 ** 16 +
+            (last << 24); // Overflow
+        return (BigInt(val) << 32n) +
+            BigInt(first +
+                this.sourceBuffer[++offset] * 2 ** 8 +
+                this.sourceBuffer[++offset] * 2 ** 16 +
+                this.sourceBuffer[++offset] * 2 ** 24);
+    }
+
+    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L136-L152
+    private readBigInt64BE(offset = 0) {
+        const first = this.sourceBuffer[offset];
+        const last = this.sourceBuffer[offset + 7];
+        if (first === undefined || last === undefined) {
+            throw new Error('Out of bounds');
+        }
+
+        const val = (first << 24) + // Overflow
+            this.sourceBuffer[++offset] * 2 ** 16 +
+            this.sourceBuffer[++offset] * 2 ** 8 +
+            this.sourceBuffer[++offset];
+        return (BigInt(val) << 32n) +
+            BigInt(this.sourceBuffer[++offset] * 2 ** 24 +
+                this.sourceBuffer[++offset] * 2 ** 16 +
+                this.sourceBuffer[++offset] * 2 ** 8 +
+                last);
     }
 }

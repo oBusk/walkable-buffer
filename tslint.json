@@ -6,11 +6,13 @@
             "spaces",
             4
         ],
+        "no-bitwise": false,
         "object-literal-sort-keys": [
             true,
             "locale-compare",
             "match-declaration-order"
         ],
+        "prefer-conditional-expression": false,
         "quotemark": [
             true,
             "single",
