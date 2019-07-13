@@ -50,18 +50,24 @@ export default class WalkableBuffer {
 
     /** Reads the next 8 bytes as a 64bit number. */
     public get64(endianness = this.getEndianness(), unsigned = false): bigint {
+        const first = this.sourceBuffer[this.cursor];
+        const last = this.sourceBuffer[this.cursor + 7];
+        if (first === undefined || last === undefined) {
+            throw new Error('Out of bounds');
+        }
+
         let result: bigint;
         if (endianness === 'LE') {
             if (unsigned) {
-                result = this.readBigUInt64LE(this.cursor);
+                result = this.readBigUInt64LE(this.cursor, first, last);
             } else {
-                result = this.readBigInt64LE(this.cursor);
+                result = this.readBigInt64LE(this.cursor, first, last);
             }
         } else if (endianness === 'BE') {
             if (unsigned) {
-                result = this.readBigUInt64BE(this.cursor);
+                result = this.readBigUInt64BE(this.cursor, first, last);
             } else {
-                result = this.readBigInt64BE(this.cursor);
+                result = this.readBigInt64BE(this.cursor, first, last);
             }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
@@ -240,13 +246,7 @@ export default class WalkableBuffer {
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L78-L96
-    private readBigUInt64LE(offset = 0) {
-        const first = this.sourceBuffer[offset];
-        const last = this.sourceBuffer[offset + 7];
-        if (first === undefined || last === undefined) {
-            throw new Error('Out of bounds');
-        }
-
+    private readBigUInt64LE(offset: number, first: number, last: number) {
         const lo = first +
             this.sourceBuffer[++offset] * 2 ** 8 +
             this.sourceBuffer[++offset] * 2 ** 16 +
@@ -261,13 +261,7 @@ export default class WalkableBuffer {
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L98-L116
-    private readBigUInt64BE(offset = 0) {
-        const first = this.sourceBuffer[offset];
-        const last = this.sourceBuffer[offset + 7];
-        if (first === undefined || last === undefined) {
-            throw new Error('Out of bounds');
-        }
-
+    private readBigUInt64BE(offset: number, first: number, last: number) {
         const hi = first * 2 ** 24 +
             this.sourceBuffer[++offset] * 2 ** 16 +
             this.sourceBuffer[++offset] * 2 ** 8 +
@@ -282,13 +276,7 @@ export default class WalkableBuffer {
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L118-L134
-    private readBigInt64LE(offset = 0) {
-        const first = this.sourceBuffer[offset];
-        const last = this.sourceBuffer[offset + 7];
-        if (first === undefined || last === undefined) {
-            throw new Error('Out of bounds');
-        }
-
+    private readBigInt64LE(offset: number, first: number, last: number) {
         const val = this.sourceBuffer[offset + 4] +
             this.sourceBuffer[offset + 5] * 2 ** 8 +
             this.sourceBuffer[offset + 6] * 2 ** 16 +
@@ -301,13 +289,7 @@ export default class WalkableBuffer {
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L136-L152
-    private readBigInt64BE(offset = 0) {
-        const first = this.sourceBuffer[offset];
-        const last = this.sourceBuffer[offset + 7];
-        if (first === undefined || last === undefined) {
-            throw new Error('Out of bounds');
-        }
-
+    private readBigInt64BE(offset: number, first: number, last: number) {
         const val = (first << 24) + // Overflow
             this.sourceBuffer[++offset] * 2 ** 16 +
             this.sourceBuffer[++offset] * 2 ** 8 +
