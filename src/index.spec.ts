@@ -215,21 +215,21 @@ describe('integer functions', () => {
                 buffer = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
                 walkableBuffer = new WalkableBuffer({ buffer });
 
-                expect(walkableBuffer.get64().toString()).toBe('0');
+                expect(walkableBuffer.getBigInt().toString()).toBe('0');
             });
 
             test('can get maximum number', () => {
                 buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
                 walkableBuffer = new WalkableBuffer({ buffer });
 
-                expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
+                expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
             });
 
             test('can get minimum number', () => {
                 buffer = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
                 walkableBuffer = new WalkableBuffer({ buffer });
 
-                expect(walkableBuffer.get64().toString()).toBe('-9223372036854775807');
+                expect(walkableBuffer.getBigInt().toString()).toBe('-9223372036854775807');
             });
         });
 
@@ -240,7 +240,7 @@ describe('integer functions', () => {
             });
 
             test('advances position', () => {
-                expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
+                expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
                 expect(walkableBuffer.getCurrentPos()).toBe(8);
             });
 
@@ -248,7 +248,7 @@ describe('integer functions', () => {
                 buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
                 walkableBuffer = new WalkableBuffer({ buffer });
 
-                expect(() => walkableBuffer.get64()).toThrow();
+                expect(() => walkableBuffer.getBigInt()).toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(0);
             });
 
@@ -259,13 +259,13 @@ describe('integer functions', () => {
                 ]);
                 walkableBuffer = new WalkableBuffer({ buffer });
 
-                expect(() => walkableBuffer.get64()).not.toThrow();
+                expect(() => walkableBuffer.getBigInt()).not.toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(8);
-                expect(() => walkableBuffer.get64()).not.toThrow();
+                expect(() => walkableBuffer.getBigInt()).not.toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(16);
-                expect(() => walkableBuffer.get64()).toThrow();
+                expect(() => walkableBuffer.getBigInt()).toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(16);
-                expect(() => walkableBuffer.get64()).toThrow();
+                expect(() => walkableBuffer.getBigInt()).toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(16);
             });
         });
@@ -277,19 +277,19 @@ describe('integer functions', () => {
             });
 
             test('reads default (LE)', () => {
-                expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
+                expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
             });
 
             test('reads LE', () => {
-                expect(walkableBuffer.get64('LE').toString()).toBe('9223372036854775807');
+                expect(walkableBuffer.getBigInt('LE').toString()).toBe('9223372036854775807');
             });
 
             test('reads BE', () => {
-                expect(walkableBuffer.get64('BE').toString()).toBe('-129');
+                expect(walkableBuffer.getBigInt('BE').toString()).toBe('-129');
             });
 
             test('reads NOT (throws)', () => {
-                expect(() => walkableBuffer.get64('NOT' as any)).toThrow(/invalid endianness/i);
+                expect(() => walkableBuffer.getBigInt('NOT' as any)).toThrow(/invalid endianness/i);
             });
         });
 
@@ -311,39 +311,39 @@ describe('integer functions', () => {
             });
 
             test('reads default (signed) LE', () => {
-                expect(zeWB.get64('LE').toString()).toBe('0');
-                expect(ffWB.get64('LE').toString()).toBe('-1');
-                expect(walkableBuffer.get64('LE').toString()).toBe('8603657889541918976');
+                expect(zeWB.getBigInt('LE').toString()).toBe('0');
+                expect(ffWB.getBigInt('LE').toString()).toBe('-1');
+                expect(walkableBuffer.getBigInt('LE').toString()).toBe('8603657889541918976');
             });
 
             test('reads default (signed) BE', () => {
-                expect(zeWB.get64('BE').toString()).toBe('0');
-                expect(ffWB.get64('BE').toString()).toBe('-1');
-                expect(walkableBuffer.get64('BE').toString()).toBe('4822678189205111');
+                expect(zeWB.getBigInt('BE').toString()).toBe('0');
+                expect(ffWB.getBigInt('BE').toString()).toBe('-1');
+                expect(walkableBuffer.getBigInt('BE').toString()).toBe('4822678189205111');
             });
 
             test('reads signed LE', () => {
-                expect(zeWB.get64('LE').toString()).toBe('0');
-                expect(ffWB.get64('LE').toString()).toBe('-1');
-                expect(walkableBuffer.get64('LE').toString()).toBe('8603657889541918976');
+                expect(zeWB.getBigInt('LE').toString()).toBe('0');
+                expect(ffWB.getBigInt('LE').toString()).toBe('-1');
+                expect(walkableBuffer.getBigInt('LE').toString()).toBe('8603657889541918976');
             });
 
             test('reads signed BE', () => {
-                expect(zeWB.get64('BE').toString()).toBe('0');
-                expect(ffWB.get64('BE').toString()).toBe('-1');
-                expect(walkableBuffer.get64('BE').toString()).toBe('4822678189205111');
+                expect(zeWB.getBigInt('BE').toString()).toBe('0');
+                expect(ffWB.getBigInt('BE').toString()).toBe('-1');
+                expect(walkableBuffer.getBigInt('BE').toString()).toBe('4822678189205111');
             });
 
             test('reads unsigned LE', () => {
-                expect(zeWB.get64('LE', true).toString()).toBe('0');
-                expect(ffWB.get64('LE', true).toString()).toBe('18446744073709551615');
-                expect(walkableBuffer.get64('LE', true).toString()).toBe('8603657889541918976');
+                expect(zeWB.getBigInt('LE', true).toString()).toBe('0');
+                expect(ffWB.getBigInt('LE', true).toString()).toBe('18446744073709551615');
+                expect(walkableBuffer.getBigInt('LE', true).toString()).toBe('8603657889541918976');
             });
 
             test('reads unsigned BE', () => {
-                expect(zeWB.get64('BE', true).toString()).toBe('0');
-                expect(ffWB.get64('BE', true).toString()).toBe('18446744073709551615');
-                expect(walkableBuffer.get64('BE', true).toString()).toBe('4822678189205111');
+                expect(zeWB.getBigInt('BE', true).toString()).toBe('0');
+                expect(ffWB.getBigInt('BE', true).toString()).toBe('18446744073709551615');
+                expect(walkableBuffer.getBigInt('BE', true).toString()).toBe('4822678189205111');
             });
         });
     });
