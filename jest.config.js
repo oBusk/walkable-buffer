@@ -1,10 +1,9 @@
 'use strict';
 
 module.exports = {
+    rootDir: 'src',
     testEnvironment: 'node',
     preset: 'ts-jest',
-    collectCoverageFrom: [
-        'src/**/*.{t,j}s?(x)',
-        '!src/**/*.d.ts',
-    ],
+    collectCoverage: true,
+    coverageDirectory: '../coverage',
 };
