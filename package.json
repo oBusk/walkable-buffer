@@ -14,7 +14,9 @@
         "lint": "tslint --project tsconfig.json --format stylish",
         "typecheck": "tsc --noEmit",
         "test:watch": "jest --watch --updateSnapshot",
-        "version": "npm run build"
+        "version": "npm run build",
+        "docs": "typedoc --out api --mode file --excludeExternals --excludeNotExported --excludePrivate --excludeProtected --tsconfig src/tsconfig.app.json --theme markdown --readme none",
+        "precommit": "npm run docs && git add api && git add api -u"
     },
     "keywords": [
         "binary",
@@ -39,6 +41,8 @@
         "pika-plugin-unpkg-field": "^1.1.0",
         "ts-jest": "^24.0.2",
         "tslint": "^5.18.0",
+        "typedoc": "^0.14.2",
+        "typedoc-plugin-markdown": "^2.0.9",
         "typescript": "^3.5.3",
         "typescript-tslint-plugin": "^0.5.4"
     },
