@@ -13,7 +13,7 @@ jobs:
       script: npm run jest
     - stage: test
       node_js: stable # test and coveralls
-      script: npm run jest -- --coverage
+      script: npm run jest
       after_success: cat coverage/lcov.info | npx coveralls
     - stage: test
       node_js: stable # make sure build works and all that
