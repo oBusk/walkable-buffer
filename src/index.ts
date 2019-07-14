@@ -90,28 +90,8 @@ export default class WalkableBuffer {
 
     /** Reads the next 8 bytes as a 64bit `bigint`. */
     public getBigInt(endianness = this.getEndianness(), signed = this.getSigned()): bigint {
-        const first = this.buffer[this.cursor];
-        const last = this.buffer[this.cursor + 7];
-        if (first === undefined || last === undefined) {
-            throw new Error('Out of bounds');
-        }
+        const result: bigint = this.readBigInt(this.cursor, endianness, signed);
 
-        let result: bigint;
-        if (endianness === 'LE') {
-            if (signed) {
-                result = this.readBigInt64LE(this.cursor, first, last);
-            } else {
-                result = this.readBigUInt64LE(this.cursor, first, last);
-            }
-        } else if (endianness === 'BE') {
-            if (signed) {
-                result = this.readBigInt64BE(this.cursor, first, last);
-            } else {
-                result = this.readBigUInt64BE(this.cursor, first, last);
-            }
-        } else {
-            throw new Error(`Invalid endianness '${endianness}'`);
-        }
         // Only do this if the read didn't throw
         this.cursor += 8;
         return result;
@@ -120,6 +100,11 @@ export default class WalkableBuffer {
     /** Peeks integer of `byteLength` bytes from current cursor position plus `byteOffset`, without advancing cursor. */
     public peek(byteLength: number, byteOffset = 0, endianness = this.getEndianness()): number {
         return this.readInt(this.cursor + byteOffset, byteLength, endianness);
+    }
+
+    /** Reads 8 bytes as a 64bit `bigint`. Reads forward from `this.cursor + byteOffset`. Does not advance cursor. */
+    public peekBigInt(byteOffset = 0, endianness = this.getEndianness(), signed = this.getSigned()): bigint {
+        return this.readBigInt(this.cursor + byteOffset, endianness, signed);
     }
 
     /** Reads strings of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps. */
@@ -297,6 +282,31 @@ export default class WalkableBuffer {
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
+    }
+
+    private readBigInt(offset: number, endianness: string, signed: boolean) {
+        const first = this.buffer[offset];
+        const last = this.buffer[offset + 7];
+        if (first === undefined || last === undefined) {
+            throw new Error('Out of bounds');
+        }
+        let result: bigint;
+        if (endianness === 'LE') {
+            if (signed) {
+                result = this.readBigInt64LE(offset, first, last);
+            } else {
+                result = this.readBigUInt64LE(offset, first, last);
+            }
+        } else if (endianness === 'BE') {
+            if (signed) {
+                result = this.readBigInt64BE(offset, first, last);
+            } else {
+                result = this.readBigUInt64BE(offset, first, last);
+            }
+        } else {
+            throw new Error(`Invalid endianness '${endianness}'`);
+        }
+        return result;
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L78-L96

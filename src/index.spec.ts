@@ -239,163 +239,325 @@ describe('integer functions', () => {
     });
 
     describe('64bits', () => {
-        describe('values', () => {
-            test('can get 0', () => {
-                buffer = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-                walkableBuffer = new WalkableBuffer({ buffer });
+        describe('getBigInt', () => {
+            describe('values', () => {
+                test('can get 0', () => {
+                    buffer = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
 
-                expect(walkableBuffer.getBigInt().toString()).toBe('0');
+                    expect(walkableBuffer.getBigInt().toString()).toBe('0');
+                });
+
+                test('can get maximum number', () => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
+                });
+
+                test('can get minimum number', () => {
+                    buffer = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(walkableBuffer.getBigInt().toString()).toBe('-9223372036854775807');
+                });
             });
 
-            test('can get maximum number', () => {
-                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer({ buffer });
+            describe('positioning', () => {
+                beforeEach(() => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
 
-                expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
+                test('advances position', () => {
+                    expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
+                    expect(walkableBuffer.getCurrentPos()).toBe(8);
+                });
+
+                test('throws if trying to get more than left and does not advance position when failing', () => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(() => walkableBuffer.getBigInt()).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                });
+
+                test('throws if trying to get more than left and does not advance position when failing', () => {
+                    buffer = Buffer.from([
+                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
+                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
+                    ]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(() => walkableBuffer.getBigInt()).not.toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(8);
+                    expect(() => walkableBuffer.getBigInt()).not.toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(16);
+                    expect(() => walkableBuffer.getBigInt()).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(16);
+                    expect(() => walkableBuffer.getBigInt()).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(16);
+                });
             });
 
-            test('can get minimum number', () => {
-                buffer = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
-                walkableBuffer = new WalkableBuffer({ buffer });
+            describe('endianness', () => {
+                beforeEach(() => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
 
-                expect(walkableBuffer.getBigInt().toString()).toBe('-9223372036854775807');
+                test('reads default (LE)', () => {
+                    expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
+                });
+
+                test('reads LE', () => {
+                    expect(walkableBuffer.getBigInt('LE').toString()).toBe('9223372036854775807');
+                });
+
+                test('reads BE', () => {
+                    expect(walkableBuffer.getBigInt('BE').toString()).toBe('-129');
+                });
+
+                test('reads NOT (throws)', () => {
+                    expect(() => walkableBuffer.getBigInt('NOT' as any)).toThrow(/invalid endianness/i);
+                });
+            });
+
+            describe('signed', () => {
+                let ff: Buffer;
+                let ffWB: WalkableBuffer;
+                let ze: Buffer;
+                let zeWB: WalkableBuffer;
+
+                beforeEach(() => {
+                    ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                    zeWB = new WalkableBuffer({ buffer: ze });
+
+                    ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                    ffWB = new WalkableBuffer({ buffer: ff });
+
+                    buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
+
+                test('reads default (signed) LE', () => {
+                    expect(zeWB.getBigInt('LE').toString()).toBe('0');
+                    expect(ffWB.getBigInt('LE').toString()).toBe('-1');
+                    expect(walkableBuffer.getBigInt('LE').toString()).toBe('8603657889541918976');
+                });
+
+                test('reads default (signed) BE', () => {
+                    expect(zeWB.getBigInt('BE').toString()).toBe('0');
+                    expect(ffWB.getBigInt('BE').toString()).toBe('-1');
+                    expect(walkableBuffer.getBigInt('BE').toString()).toBe('4822678189205111');
+                });
+
+                test('reads signed LE', () => {
+                    expect(zeWB.getBigInt('LE', true).toString()).toBe('0');
+                    expect(ffWB.getBigInt('LE', true).toString()).toBe('-1');
+                    expect(walkableBuffer.getBigInt('LE', true).toString()).toBe('8603657889541918976');
+                });
+
+                test('reads signed BE', () => {
+                    expect(zeWB.getBigInt('BE', true).toString()).toBe('0');
+                    expect(ffWB.getBigInt('BE', true).toString()).toBe('-1');
+                    expect(walkableBuffer.getBigInt('BE', true).toString()).toBe('4822678189205111');
+                });
+
+                test('reads unsigned LE', () => {
+                    expect(zeWB.getBigInt('LE', false).toString()).toBe('0');
+                    expect(ffWB.getBigInt('LE', false).toString()).toBe('18446744073709551615');
+                    expect(walkableBuffer.getBigInt('LE', false).toString()).toBe('8603657889541918976');
+                });
+
+                test('reads unsigned BE', () => {
+                    expect(zeWB.getBigInt('BE', false).toString()).toBe('0');
+                    expect(ffWB.getBigInt('BE', false).toString()).toBe('18446744073709551615');
+                    expect(walkableBuffer.getBigInt('BE', false).toString()).toBe('4822678189205111');
+                });
+
+                test('uses global default', () => {
+                    const signed = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(signed.getBigInt().toString()).toBe('-1');
+
+                    const unsigned = new WalkableBuffer({
+                        buffer: ff,
+                        signed: false,
+                    });
+                    expect(unsigned.getBigInt().toString()).toBe('18446744073709551615');
+
+                    const toChange = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(toChange.getBigInt().toString()).toBe('-1');
+                    expect(toChange.setSigned(false)).toBe(false);
+                    expect(toChange.goTo(0)).toBe(0);
+                    expect(toChange.getBigInt().toString()).toBe('18446744073709551615');
+                });
             });
         });
 
-        describe('positioning', () => {
-            beforeEach(() => {
-                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer({ buffer });
-            });
+        describe('peekBIgInt', () => {
+            describe('values', () => {
+                test('can get 0', () => {
+                    buffer = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
 
-            test('advances position', () => {
-                expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
-                expect(walkableBuffer.getCurrentPos()).toBe(8);
-            });
-
-            test('throws if trying to get more than left and does not advance position when failing', () => {
-                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer({ buffer });
-
-                expect(() => walkableBuffer.getBigInt()).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(0);
-            });
-
-            test('throws if trying to get more than left and does not advance position when failing', () => {
-                buffer = Buffer.from([
-                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
-                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
-                ]);
-                walkableBuffer = new WalkableBuffer({ buffer });
-
-                expect(() => walkableBuffer.getBigInt()).not.toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(8);
-                expect(() => walkableBuffer.getBigInt()).not.toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(16);
-                expect(() => walkableBuffer.getBigInt()).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(16);
-                expect(() => walkableBuffer.getBigInt()).toThrow();
-                expect(walkableBuffer.getCurrentPos()).toBe(16);
-            });
-        });
-
-        describe('endianness', () => {
-            beforeEach(() => {
-                buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer({ buffer });
-            });
-
-            test('reads default (LE)', () => {
-                expect(walkableBuffer.getBigInt().toString()).toBe('9223372036854775807');
-            });
-
-            test('reads LE', () => {
-                expect(walkableBuffer.getBigInt('LE').toString()).toBe('9223372036854775807');
-            });
-
-            test('reads BE', () => {
-                expect(walkableBuffer.getBigInt('BE').toString()).toBe('-129');
-            });
-
-            test('reads NOT (throws)', () => {
-                expect(() => walkableBuffer.getBigInt('NOT' as any)).toThrow(/invalid endianness/i);
-            });
-        });
-
-        describe('signed', () => {
-            let ff: Buffer;
-            let ffWB: WalkableBuffer;
-            let ze: Buffer;
-            let zeWB: WalkableBuffer;
-
-            beforeEach(() => {
-                ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-                zeWB = new WalkableBuffer({ buffer: ze });
-
-                ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
-                ffWB = new WalkableBuffer({ buffer: ff });
-
-                buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77]);
-                walkableBuffer = new WalkableBuffer({ buffer });
-            });
-
-            test('reads default (signed) LE', () => {
-                expect(zeWB.getBigInt('LE').toString()).toBe('0');
-                expect(ffWB.getBigInt('LE').toString()).toBe('-1');
-                expect(walkableBuffer.getBigInt('LE').toString()).toBe('8603657889541918976');
-            });
-
-            test('reads default (signed) BE', () => {
-                expect(zeWB.getBigInt('BE').toString()).toBe('0');
-                expect(ffWB.getBigInt('BE').toString()).toBe('-1');
-                expect(walkableBuffer.getBigInt('BE').toString()).toBe('4822678189205111');
-            });
-
-            test('reads signed LE', () => {
-                expect(zeWB.getBigInt('LE', true).toString()).toBe('0');
-                expect(ffWB.getBigInt('LE', true).toString()).toBe('-1');
-                expect(walkableBuffer.getBigInt('LE', true).toString()).toBe('8603657889541918976');
-            });
-
-            test('reads signed BE', () => {
-                expect(zeWB.getBigInt('BE', true).toString()).toBe('0');
-                expect(ffWB.getBigInt('BE', true).toString()).toBe('-1');
-                expect(walkableBuffer.getBigInt('BE', true).toString()).toBe('4822678189205111');
-            });
-
-            test('reads unsigned LE', () => {
-                expect(zeWB.getBigInt('LE', false).toString()).toBe('0');
-                expect(ffWB.getBigInt('LE', false).toString()).toBe('18446744073709551615');
-                expect(walkableBuffer.getBigInt('LE', false).toString()).toBe('8603657889541918976');
-            });
-
-            test('reads unsigned BE', () => {
-                expect(zeWB.getBigInt('BE', false).toString()).toBe('0');
-                expect(ffWB.getBigInt('BE', false).toString()).toBe('18446744073709551615');
-                expect(walkableBuffer.getBigInt('BE', false).toString()).toBe('4822678189205111');
-            });
-
-            test('uses global default', () => {
-                const signed = new WalkableBuffer({
-                    buffer: ff,
-                    signed: true,
+                    expect(walkableBuffer.peekBigInt().toString()).toBe('0');
                 });
-                expect(signed.getBigInt().toString()).toBe('-1');
 
-                const unsigned = new WalkableBuffer({
-                    buffer: ff,
-                    signed: false,
-                });
-                expect(unsigned.getBigInt().toString()).toBe('18446744073709551615');
+                test('can get maximum number', () => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
 
-                const toChange = new WalkableBuffer({
-                    buffer: ff,
-                    signed: true,
+                    expect(walkableBuffer.peekBigInt().toString()).toBe('9223372036854775807');
                 });
-                expect(toChange.getBigInt().toString()).toBe('-1');
-                expect(toChange.setSigned(false)).toBe(false);
-                expect(toChange.goTo(0)).toBe(0);
-                expect(toChange.getBigInt().toString()).toBe('18446744073709551615');
+
+                test('can get minimum number', () => {
+                    buffer = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(walkableBuffer.peekBigInt().toString()).toBe('-9223372036854775807');
+                });
+            });
+
+            describe('positioning', () => {
+                beforeEach(() => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
+
+                test('does not advances position', () => {
+                    expect(walkableBuffer.peekBigInt().toString()).toBe('9223372036854775807');
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                });
+
+                test('throws if trying to get more than left and does not advance position when failing', () => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(() => walkableBuffer.peekBigInt()).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                });
+
+                test('throws if trying to get more than left and does not advance position when failing', () => {
+                    buffer = Buffer.from([
+                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
+                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
+                    ]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+
+                    expect(() => walkableBuffer.peekBigInt()).not.toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                    expect(() => walkableBuffer.peekBigInt(8)).not.toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                    expect(() => walkableBuffer.peekBigInt(9)).toThrow();
+                    expect(walkableBuffer.getCurrentPos()).toBe(0);
+                });
+            });
+
+            describe('endianness', () => {
+                beforeEach(() => {
+                    buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
+
+                test('reads default (LE)', () => {
+                    expect(walkableBuffer.peekBigInt().toString()).toBe('9223372036854775807');
+                });
+
+                test('reads LE', () => {
+                    expect(walkableBuffer.peekBigInt(0, 'LE').toString()).toBe('9223372036854775807');
+                });
+
+                test('reads BE', () => {
+                    expect(walkableBuffer.peekBigInt(0, 'BE').toString()).toBe('-129');
+                });
+
+                test('reads NOT (throws)', () => {
+                    expect(() => walkableBuffer.peekBigInt(0, 'NOT' as any)).toThrow(/invalid endianness/i);
+                });
+            });
+
+            describe('signed', () => {
+                let ff: Buffer;
+                let ffWB: WalkableBuffer;
+                let ze: Buffer;
+                let zeWB: WalkableBuffer;
+
+                beforeEach(() => {
+                    ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                    zeWB = new WalkableBuffer({ buffer: ze });
+
+                    ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                    ffWB = new WalkableBuffer({ buffer: ff });
+
+                    buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
+
+                test('reads default (signed) LE', () => {
+                    expect(zeWB.peekBigInt(0, 'LE').toString()).toBe('0');
+                    expect(ffWB.peekBigInt(0, 'LE').toString()).toBe('-1');
+                    expect(walkableBuffer.peekBigInt(0, 'LE').toString()).toBe('8603657889541918976');
+                });
+
+                test('reads default (signed) BE', () => {
+                    expect(zeWB.peekBigInt(0, 'BE').toString()).toBe('0');
+                    expect(ffWB.peekBigInt(0, 'BE').toString()).toBe('-1');
+                    expect(walkableBuffer.peekBigInt(0, 'BE').toString()).toBe('4822678189205111');
+                });
+
+                test('reads signed LE', () => {
+                    expect(zeWB.peekBigInt(0, 'LE', true).toString()).toBe('0');
+                    expect(ffWB.peekBigInt(0, 'LE', true).toString()).toBe('-1');
+                    expect(walkableBuffer.peekBigInt(0, 'LE', true).toString()).toBe('8603657889541918976');
+                });
+
+                test('reads signed BE', () => {
+                    expect(zeWB.peekBigInt(0, 'BE', true).toString()).toBe('0');
+                    expect(ffWB.peekBigInt(0, 'BE', true).toString()).toBe('-1');
+                    expect(walkableBuffer.peekBigInt(0, 'BE', true).toString()).toBe('4822678189205111');
+                });
+
+                test('reads unsigned LE', () => {
+                    expect(zeWB.peekBigInt(0, 'LE', false).toString()).toBe('0');
+                    expect(ffWB.peekBigInt(0, 'LE', false).toString()).toBe('18446744073709551615');
+                    expect(walkableBuffer.peekBigInt(0, 'LE', false).toString()).toBe('8603657889541918976');
+                });
+
+                test('reads unsigned BE', () => {
+                    expect(zeWB.peekBigInt(0, 'BE', false).toString()).toBe('0');
+                    expect(ffWB.peekBigInt(0, 'BE', false).toString()).toBe('18446744073709551615');
+                    expect(walkableBuffer.peekBigInt(0, 'BE', false).toString()).toBe('4822678189205111');
+                });
+
+                test('uses global default', () => {
+                    const signed = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(signed.peekBigInt().toString()).toBe('-1');
+
+                    const unsigned = new WalkableBuffer({
+                        buffer: ff,
+                        signed: false,
+                    });
+                    expect(unsigned.peekBigInt().toString()).toBe('18446744073709551615');
+
+                    const toChange = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(toChange.peekBigInt().toString()).toBe('-1');
+                    expect(toChange.setSigned(false)).toBe(false);
+                    expect(toChange.goTo(0)).toBe(0);
+                    expect(toChange.peekBigInt().toString()).toBe('18446744073709551615');
+                });
             });
         });
     });
