@@ -72,6 +72,30 @@ describe('constructor', () => {
                 initialCursor: LONGLONG,
             })).toThrow(/Invalid initialCursor/);
         });
+
+        test('providing signed', () => {
+            const def = new WalkableBuffer({ buffer });
+            expect(def.getSigned()).toBe(true);
+
+            const signed = new WalkableBuffer({
+                buffer,
+                signed: true,
+            });
+            expect(signed.getSigned()).toBe(true);
+
+            const unsigned = new WalkableBuffer({
+                buffer,
+                signed: false,
+            });
+            expect(unsigned.getSigned()).toBe(false);
+        });
+
+        test('providing invalid signed value', () => {
+            expect(() => new WalkableBuffer({
+                buffer,
+                signed: 'hello' as any,
+            })).toThrow();
+        });
     });
 
     describe('buffer copying', () => {
@@ -349,6 +373,29 @@ describe('integer functions', () => {
                 expect(zeWB.getBigInt('BE', false).toString()).toBe('0');
                 expect(ffWB.getBigInt('BE', false).toString()).toBe('18446744073709551615');
                 expect(walkableBuffer.getBigInt('BE', false).toString()).toBe('4822678189205111');
+            });
+
+            test('uses global default', () => {
+                const signed = new WalkableBuffer({
+                    buffer: ff,
+                    signed: true,
+                });
+                expect(signed.getBigInt().toString()).toBe('-1');
+
+                const unsigned = new WalkableBuffer({
+                    buffer: ff,
+                    signed: false,
+                });
+                expect(unsigned.getBigInt().toString()).toBe('18446744073709551615');
+
+                const toChange = new WalkableBuffer({
+                    buffer: ff,
+                    signed: true,
+                });
+                expect(toChange.getBigInt().toString()).toBe('-1');
+                expect(toChange.setSigned(false)).toBe(false);
+                expect(toChange.goTo(0)).toBe(0);
+                expect(toChange.getBigInt().toString()).toBe('18446744073709551615');
             });
         });
     });

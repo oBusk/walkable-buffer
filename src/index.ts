@@ -6,6 +6,7 @@ export const LONGLONG = 8;
 export const DEFAULT_ENDIANNESS: Endianness = 'LE';
 export const DEFAULT_ENCODING: Encoding = 'utf8';
 export const DEFAULT_INITIAL_CURSOR: number = 0;
+export const DEFAULT_SIGNED = true;
 
 /**
  * The endianness to read integers with.
@@ -39,6 +40,12 @@ export interface WalkableBufferOptions {
      * _Defaults to `0`_
      */
     initialCursor?: number;
+    /**
+     * If number functions (`getBigInt()`) should default to read numbers as signed integers
+     *
+     * _Defaults to `true` (signed integers)_
+     */
+    signed?: boolean;
 }
 
 export default class WalkableBuffer {
@@ -50,12 +57,14 @@ export default class WalkableBuffer {
     private readonly buffer: Buffer;
     private endianness!: Endianness;
     private encoding!: Encoding;
+    private signed!: boolean;
 
     constructor(readonly options: WalkableBufferOptions) {
         const buffer = options.buffer;
         const initialCursor = options.initialCursor || DEFAULT_INITIAL_CURSOR;
         const endianness = options.endianness || DEFAULT_ENDIANNESS;
         const encoding = options.encoding || DEFAULT_ENCODING;
+        const signed = options.signed != null ? options.signed : DEFAULT_SIGNED;
 
         if (!buffer || !Buffer.isBuffer(buffer)) {
             throw new Error('No buffer in options!');
@@ -69,6 +78,7 @@ export default class WalkableBuffer {
 
         this.setEndianness(endianness);
         this.setEncoding(encoding);
+        this.setSigned(signed);
     }
 
     /** Reads integer of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps. */
@@ -79,7 +89,7 @@ export default class WalkableBuffer {
     }
 
     /** Reads the next 8 bytes as a 64bit `bigint`. */
-    public getBigInt(endianness = this.getEndianness(), signed = true): bigint {
+    public getBigInt(endianness = this.getEndianness(), signed = this.getSigned()): bigint {
         const first = this.buffer[this.cursor];
         const last = this.buffer[this.cursor + 7];
         if (first === undefined || last === undefined) {
@@ -250,6 +260,20 @@ export default class WalkableBuffer {
         }
 
         return this.getEncoding();
+    }
+
+    public getSigned(): boolean {
+        return this.signed;
+    }
+
+    public setSigned(signed: boolean): boolean {
+        if (typeof signed === 'boolean') {
+            this.signed = signed;
+        } else {
+            throw new Error(`Invalid value for signed '${signed}'`);
+        }
+
+        return this.getSigned();
     }
 
     public getSourceBuffer(): Buffer {
