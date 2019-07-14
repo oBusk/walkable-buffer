@@ -78,8 +78,8 @@ export default class WalkableBuffer {
         return result;
     }
 
-    /** Reads the next 8 bytes as a 64bit number. */
-    public get64(endianness = this.getEndianness(), unsigned = false): bigint {
+    /** Reads the next 8 bytes as a 64bit `bigint`. */
+    public getBigInt(endianness = this.getEndianness(), unsigned = false): bigint {
         const first = this.buffer[this.cursor];
         const last = this.buffer[this.cursor + 7];
         if (first === undefined || last === undefined) {
