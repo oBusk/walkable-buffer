@@ -13,6 +13,11 @@ describe('constructor', () => {
             expect(walkableBuffer.getSourceBuffer().toString()).toBe(buffer.toString());
         });
 
+        test('throws when providing no or incorrect buffer', () => {
+            expect(() => new WalkableBuffer({ buffer: null as any })).toThrow();
+            expect(() => new WalkableBuffer({ buffer: { a: 1, b: 2 } as any })).toThrow();
+        });
+
         test('providing endianness', () => {
             const def = new WalkableBuffer({ buffer });
             expect(def.getEndianness()).toBe('LE');
