@@ -47,22 +47,22 @@ export default class WalkableBuffer {
     }
 
     private cursor: number;
-    private readonly sourceBuffer: Buffer;
+    private readonly buffer: Buffer;
     private endianness!: Endianness;
     private encoding!: Encoding;
 
     constructor(readonly options: WalkableBufferOptions) {
-        const sourceBuffer = options.buffer;
+        const buffer = options.buffer;
         const initialCursor = options.initialCursor || DEFAULT_INITIAL_CURSOR;
         const endianness = options.endianness || DEFAULT_ENDIANNESS;
         const encoding = options.encoding || DEFAULT_ENCODING;
 
-        if (!sourceBuffer || !Buffer.isBuffer(sourceBuffer)) {
-            throw new Error('No sourceBuffer in options!');
+        if (!buffer || !Buffer.isBuffer(buffer)) {
+            throw new Error('No buffer in options!');
         }
-        this.sourceBuffer = Buffer.from(sourceBuffer); // Make sure to copy, not reference.
+        this.buffer = Buffer.from(buffer); // Make sure to copy, not reference.
 
-        if ((sourceBuffer.length - 1) < initialCursor || initialCursor < 0) {
+        if ((buffer.length - 1) < initialCursor || initialCursor < 0) {
             throw new Error(`Invalid initialCursor '${initialCursor}'`);
         }
         this.cursor = initialCursor;
@@ -80,8 +80,8 @@ export default class WalkableBuffer {
 
     /** Reads the next 8 bytes as a 64bit number. */
     public get64(endianness = this.getEndianness(), unsigned = false): bigint {
-        const first = this.sourceBuffer[this.cursor];
-        const last = this.sourceBuffer[this.cursor + 7];
+        const first = this.buffer[this.cursor];
+        const last = this.buffer[this.cursor + 7];
         if (first === undefined || last === undefined) {
             throw new Error('Out of bounds');
         }
@@ -122,7 +122,7 @@ export default class WalkableBuffer {
             );
         }
 
-        return this.sourceBuffer.toString(
+        return this.buffer.toString(
             encoding,
             this.cursor,
             this.cursor += byteLength,
@@ -152,7 +152,7 @@ export default class WalkableBuffer {
             );
         }
 
-        return this.sourceBuffer.toString(
+        return this.buffer.toString(
             encoding,
             startPos,
             startPos + byteLength,
@@ -178,8 +178,8 @@ export default class WalkableBuffer {
     /** Gets a buffer of size `size`. If no `size` is specified, returns remaining buffer. */
     public getBuffer(byteLength?: number): Buffer {
         if (byteLength == null) {
-            const result = this.sourceBuffer.slice(this.cursor);
-            this.cursor = this.sourceBuffer.length;
+            const result = this.buffer.slice(this.cursor);
+            this.cursor = this.buffer.length;
             return result;
         } else {
             const max = this.size() - this.getCurrentPos();
@@ -190,7 +190,7 @@ export default class WalkableBuffer {
                 );
             }
 
-            return this.sourceBuffer.slice(this.cursor, this.cursor += byteLength);
+            return this.buffer.slice(this.cursor, this.cursor += byteLength);
         }
     }
 
@@ -253,11 +253,11 @@ export default class WalkableBuffer {
     }
 
     public getSourceBuffer(): Buffer {
-        return this.sourceBuffer;
+        return this.buffer;
     }
 
     public size(): number {
-        return this.sourceBuffer.length;
+        return this.buffer.length;
     }
 
     public sizeRemainingBuffer(): number {
@@ -267,9 +267,9 @@ export default class WalkableBuffer {
     /** Wrapper for `Buffer.readIntLE()` and `Buffer.readIntBE()` that takes `endianness` into account. */
     private readInt(offset: number, byteLength: number, endianness: Endianness, noAssert?: boolean): number {
         if (endianness === 'BE') {
-            return this.sourceBuffer.readIntBE(offset, byteLength, noAssert);
+            return this.buffer.readIntBE(offset, byteLength, noAssert);
         } else if (endianness === 'LE') {
-            return this.sourceBuffer.readIntLE(offset, byteLength, noAssert);
+            return this.buffer.readIntLE(offset, byteLength, noAssert);
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
@@ -278,13 +278,13 @@ export default class WalkableBuffer {
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L78-L96
     private readBigUInt64LE(offset: number, first: number, last: number) {
         const lo = first +
-            this.sourceBuffer[++offset] * 2 ** 8 +
-            this.sourceBuffer[++offset] * 2 ** 16 +
-            this.sourceBuffer[++offset] * 2 ** 24;
+            this.buffer[++offset] * 2 ** 8 +
+            this.buffer[++offset] * 2 ** 16 +
+            this.buffer[++offset] * 2 ** 24;
 
-        const hi = this.sourceBuffer[++offset] +
-            this.sourceBuffer[++offset] * 2 ** 8 +
-            this.sourceBuffer[++offset] * 2 ** 16 +
+        const hi = this.buffer[++offset] +
+            this.buffer[++offset] * 2 ** 8 +
+            this.buffer[++offset] * 2 ** 16 +
             last * 2 ** 24;
 
         return BigInt(lo) + (BigInt(hi) << BigInt(32));
@@ -293,13 +293,13 @@ export default class WalkableBuffer {
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L98-L116
     private readBigUInt64BE(offset: number, first: number, last: number) {
         const hi = first * 2 ** 24 +
-            this.sourceBuffer[++offset] * 2 ** 16 +
-            this.sourceBuffer[++offset] * 2 ** 8 +
-            this.sourceBuffer[++offset];
+            this.buffer[++offset] * 2 ** 16 +
+            this.buffer[++offset] * 2 ** 8 +
+            this.buffer[++offset];
 
-        const lo = this.sourceBuffer[++offset] * 2 ** 24 +
-            this.sourceBuffer[++offset] * 2 ** 16 +
-            this.sourceBuffer[++offset] * 2 ** 8 +
+        const lo = this.buffer[++offset] * 2 ** 24 +
+            this.buffer[++offset] * 2 ** 16 +
+            this.buffer[++offset] * 2 ** 8 +
             last;
 
         return (BigInt(hi) << BigInt(32)) + BigInt(lo);
@@ -307,27 +307,27 @@ export default class WalkableBuffer {
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L118-L134
     private readBigInt64LE(offset: number, first: number, last: number) {
-        const val = this.sourceBuffer[offset + 4] +
-            this.sourceBuffer[offset + 5] * 2 ** 8 +
-            this.sourceBuffer[offset + 6] * 2 ** 16 +
+        const val = this.buffer[offset + 4] +
+            this.buffer[offset + 5] * 2 ** 8 +
+            this.buffer[offset + 6] * 2 ** 16 +
             (last << 24); // Overflow
         return (BigInt(val) << BigInt(32)) +
             BigInt(first +
-                this.sourceBuffer[++offset] * 2 ** 8 +
-                this.sourceBuffer[++offset] * 2 ** 16 +
-                this.sourceBuffer[++offset] * 2 ** 24);
+                this.buffer[++offset] * 2 ** 8 +
+                this.buffer[++offset] * 2 ** 16 +
+                this.buffer[++offset] * 2 ** 24);
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L136-L152
     private readBigInt64BE(offset: number, first: number, last: number) {
         const val = (first << 24) + // Overflow
-            this.sourceBuffer[++offset] * 2 ** 16 +
-            this.sourceBuffer[++offset] * 2 ** 8 +
-            this.sourceBuffer[++offset];
+            this.buffer[++offset] * 2 ** 16 +
+            this.buffer[++offset] * 2 ** 8 +
+            this.buffer[++offset];
         return (BigInt(val) << BigInt(32)) +
-            BigInt(this.sourceBuffer[++offset] * 2 ** 24 +
-                this.sourceBuffer[++offset] * 2 ** 16 +
-                this.sourceBuffer[++offset] * 2 ** 8 +
+            BigInt(this.buffer[++offset] * 2 ** 24 +
+                this.buffer[++offset] * 2 ** 16 +
+                this.buffer[++offset] * 2 ** 8 +
                 last);
     }
 }
