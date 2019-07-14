@@ -323,27 +323,27 @@ describe('integer functions', () => {
             });
 
             test('reads signed LE', () => {
-                expect(zeWB.getBigInt('LE').toString()).toBe('0');
-                expect(ffWB.getBigInt('LE').toString()).toBe('-1');
-                expect(walkableBuffer.getBigInt('LE').toString()).toBe('8603657889541918976');
-            });
-
-            test('reads signed BE', () => {
-                expect(zeWB.getBigInt('BE').toString()).toBe('0');
-                expect(ffWB.getBigInt('BE').toString()).toBe('-1');
-                expect(walkableBuffer.getBigInt('BE').toString()).toBe('4822678189205111');
-            });
-
-            test('reads unsigned LE', () => {
                 expect(zeWB.getBigInt('LE', true).toString()).toBe('0');
-                expect(ffWB.getBigInt('LE', true).toString()).toBe('18446744073709551615');
+                expect(ffWB.getBigInt('LE', true).toString()).toBe('-1');
                 expect(walkableBuffer.getBigInt('LE', true).toString()).toBe('8603657889541918976');
             });
 
-            test('reads unsigned BE', () => {
+            test('reads signed BE', () => {
                 expect(zeWB.getBigInt('BE', true).toString()).toBe('0');
-                expect(ffWB.getBigInt('BE', true).toString()).toBe('18446744073709551615');
+                expect(ffWB.getBigInt('BE', true).toString()).toBe('-1');
                 expect(walkableBuffer.getBigInt('BE', true).toString()).toBe('4822678189205111');
+            });
+
+            test('reads unsigned LE', () => {
+                expect(zeWB.getBigInt('LE', false).toString()).toBe('0');
+                expect(ffWB.getBigInt('LE', false).toString()).toBe('18446744073709551615');
+                expect(walkableBuffer.getBigInt('LE', false).toString()).toBe('8603657889541918976');
+            });
+
+            test('reads unsigned BE', () => {
+                expect(zeWB.getBigInt('BE', false).toString()).toBe('0');
+                expect(ffWB.getBigInt('BE', false).toString()).toBe('18446744073709551615');
+                expect(walkableBuffer.getBigInt('BE', false).toString()).toBe('4822678189205111');
             });
         });
     });
