@@ -9,51 +9,63 @@ describe('constructor', () => {
         });
 
         test('basic case', () => {
-            const walkableBuffer = new WalkableBuffer(buffer);
+            const walkableBuffer = new WalkableBuffer({ buffer });
             expect(walkableBuffer.getSourceBuffer().toString()).toBe(buffer.toString());
         });
 
         test('providing endianness', () => {
-            const def = new WalkableBuffer(buffer);
+            const def = new WalkableBuffer({ buffer });
             expect(def.getEndianness()).toBe('LE');
 
-            const be = new WalkableBuffer(buffer, 'BE');
+            const be = new WalkableBuffer({ buffer, endianness: 'BE' });
             expect(be.getEndianness()).toBe('BE');
 
-            const le = new WalkableBuffer(buffer, 'LE');
+            const le = new WalkableBuffer({ buffer, endianness: 'LE' });
             expect(le.getEndianness()).toBe('LE');
         });
 
         test('providing invalid endianness', () => {
-            expect(() => new WalkableBuffer(buffer, 'QQ' as any)).toThrow(/Invalid endianness/);
+            expect(() => new WalkableBuffer({
+                buffer,
+                endianness: 'QQ' as any,
+            })).toThrow(/Invalid endianness/);
         });
 
         test('providing encoding', () => {
-            const def = new WalkableBuffer(buffer);
+            const def = new WalkableBuffer({ buffer });
             expect(def.getEncoding()).toBe('utf8');
 
-            const ascii = new WalkableBuffer(buffer, undefined, 'ascii');
+            const ascii = new WalkableBuffer({ buffer, encoding: 'ascii' });
             expect(ascii.getEncoding()).toBe('ascii');
 
-            const hex = new WalkableBuffer(buffer, undefined, 'hex');
+            const hex = new WalkableBuffer({ buffer, encoding: 'hex' });
             expect(hex.getEncoding()).toBe('hex');
         });
 
         test('providing invalid encoding', () => {
-            expect(() => new WalkableBuffer(buffer, undefined, 'STEVEN' as any)).toThrow(/Invalid encoding/);
+            expect(() => new WalkableBuffer({
+                buffer,
+                encoding: 'STEVEN' as any,
+            })).toThrow(/Invalid encoding/);
         });
 
-        test('providing cursor', () => {
-            const def = new WalkableBuffer(buffer);
+        test('providing initialCursor', () => {
+            const def = new WalkableBuffer({ buffer });
             expect(def.getCurrentPos()).toBe(0);
 
-            const five = new WalkableBuffer(buffer, undefined, undefined, 5);
+            const five = new WalkableBuffer({
+                buffer,
+                initialCursor: 5,
+            });
             expect(five.getCurrentPos()).toBe(5);
         });
 
-        test('providing invalid cursor', () => {
-            expect(() => new WalkableBuffer(buffer, undefined, undefined, LONGLONG - 1)).not.toThrow();
-            expect(() => new WalkableBuffer(buffer, undefined, undefined, LONGLONG)).toThrow(/Invalid cursor/);
+        test('providing invalid initialCursor', () => {
+            expect(() => new WalkableBuffer({ buffer, initialCursor: LONGLONG - 1 })).not.toThrow();
+            expect(() => new WalkableBuffer({
+                buffer,
+                initialCursor: LONGLONG,
+            })).toThrow(/Invalid initialCursor/);
         });
     });
 
@@ -61,7 +73,7 @@ describe('constructor', () => {
         test('changes to original array not reflected in walkable buffer', () => {
             const buffer = Buffer.from('ABCD');
 
-            const wBuf = new WalkableBuffer(buffer);
+            const wBuf = new WalkableBuffer({ buffer });
 
             buffer.write('XXXX', 0, 4);
 
@@ -80,7 +92,7 @@ describe('integer functions', () => {
 
         beforeEach(() => {
             buffer = Buffer.from([0x00, 0xFF]);
-            walkableBuffer = new WalkableBuffer(buffer);
+            walkableBuffer = new WalkableBuffer({ buffer });
         });
 
         describe('get', () => {
@@ -165,7 +177,10 @@ describe('integer functions', () => {
                 });
 
                 test('handles negative byteOffset', () => {
-                    walkableBuffer = new WalkableBuffer(buffer, undefined, undefined, 1);
+                    walkableBuffer = new WalkableBuffer({
+                        buffer,
+                        initialCursor: 1,
+                    });
 
                     expect(walkableBuffer.peek(BYTE)).toBe(-1);
                     expect(walkableBuffer.peek(BYTE, -BYTE)).toBe(0);
@@ -198,21 +213,21 @@ describe('integer functions', () => {
         describe('values', () => {
             test('can get 0', () => {
                 buffer = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
 
                 expect(walkableBuffer.get64().toString()).toBe('0');
             });
 
             test('can get maximum number', () => {
                 buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
 
                 expect(walkableBuffer.get64().toString()).toBe('9223372036854775807');
             });
 
             test('can get minimum number', () => {
                 buffer = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
 
                 expect(walkableBuffer.get64().toString()).toBe('-9223372036854775807');
             });
@@ -221,7 +236,7 @@ describe('integer functions', () => {
         describe('positioning', () => {
             beforeEach(() => {
                 buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
             });
 
             test('advances position', () => {
@@ -231,7 +246,7 @@ describe('integer functions', () => {
 
             test('throws if trying to get more than left and does not advance position when failing', () => {
                 buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
 
                 expect(() => walkableBuffer.get64()).toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(0);
@@ -242,7 +257,7 @@ describe('integer functions', () => {
                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F,
                 ]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
 
                 expect(() => walkableBuffer.get64()).not.toThrow();
                 expect(walkableBuffer.getCurrentPos()).toBe(8);
@@ -258,7 +273,7 @@ describe('integer functions', () => {
         describe('endianness', () => {
             beforeEach(() => {
                 buffer = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
             });
 
             test('reads default (LE)', () => {
@@ -286,13 +301,13 @@ describe('integer functions', () => {
 
             beforeEach(() => {
                 ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-                zeWB = new WalkableBuffer(ze);
+                zeWB = new WalkableBuffer({ buffer: ze });
 
                 ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
-                ffWB = new WalkableBuffer(ff);
+                ffWB = new WalkableBuffer({ buffer: ff });
 
                 buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77]);
-                walkableBuffer = new WalkableBuffer(buffer);
+                walkableBuffer = new WalkableBuffer({ buffer });
             });
 
             test('reads default (signed) LE', () => {
@@ -343,7 +358,10 @@ describe('string functions', () => {
             0x48, 0x00, 0x65, 0x00, 0x6C, 0x00, 0x6C, 0x00, 0xF6, 0x00, 0x20,
             0x00, 0x57, 0x00, 0x6F, 0x00, 0x72, 0x00, 0x6C, 0x00, 0xB4, 0x03,
         ]); // Hellö Worlδ in uni16le
-        u16walkableBuffer = new WalkableBuffer(u16buffer, undefined, 'utf16le');
+        u16walkableBuffer = new WalkableBuffer({
+            buffer: u16buffer,
+            encoding: 'utf16le',
+        });
     });
 
     describe('getString', () => {
@@ -356,14 +374,20 @@ describe('string functions', () => {
                 const u8Buffer = Buffer.from(
                     [0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4],
                 ); // Hellö Worlδ in Unicode
-                const u8WalkableBuffer = new WalkableBuffer(u8Buffer, undefined, 'utf8');
+                const u8WalkableBuffer = new WalkableBuffer({
+                    buffer: u8Buffer,
+                    encoding: 'utf8',
+                });
 
                 expect(u8WalkableBuffer.getString(0xD)).toBe('Hellö Worlδ');
             });
 
             test('read string as ascii', () => {
                 const asciiBuffer = Buffer.from([0x48, 0x65, 0x6C, 0x6C, 0x6F]); // Hello in ascii
-                const asciiWalkableBuffer = new WalkableBuffer(asciiBuffer, undefined, 'ascii');
+                const asciiWalkableBuffer = new WalkableBuffer({
+                    buffer: asciiBuffer,
+                    encoding: 'ascii',
+                });
 
                 expect(asciiWalkableBuffer.getString(0x5)).toBe('Hello');
             });
@@ -404,14 +428,20 @@ describe('string functions', () => {
                 const u8Buffer = Buffer.from(
                     [0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4],
                 ); // Hellö Worlδ in Unicode
-                const u8WalkableBuffer = new WalkableBuffer(u8Buffer, undefined, 'utf8');
+                const u8WalkableBuffer = new WalkableBuffer({
+                    buffer: u8Buffer,
+                    encoding: 'utf8',
+                });
 
                 expect(u8WalkableBuffer.peekString(0xD)).toBe('Hellö Worlδ');
             });
 
             test('read string as ascii', () => {
                 const asciiBuffer = Buffer.from([0x48, 0x65, 0x6C, 0x6C, 0x6F]); // Hello in ascii
-                const asciiWalkableBuffer = new WalkableBuffer(asciiBuffer, undefined, 'ascii');
+                const asciiWalkableBuffer = new WalkableBuffer({
+                    buffer: asciiBuffer,
+                    encoding: 'ascii',
+                });
 
                 expect(asciiWalkableBuffer.peekString(0x5)).toBe('Hello');
             });
@@ -430,7 +460,11 @@ describe('string functions', () => {
             const maxByteOffset = length - startingPosition - 1; // 10
 
             beforeEach(() => {
-                wBuf = new WalkableBuffer(u16buffer, undefined, 'utf16le', startingPosition);
+                wBuf = new WalkableBuffer({
+                    buffer: u16buffer,
+                    encoding: 'utf16le',
+                    initialCursor: startingPosition,
+                });
             });
 
             afterEach(() => {
@@ -471,44 +505,44 @@ describe('string functions', () => {
 
     describe('getSizedString', () => {
         test('utf-8, LE, SHORT size-describer', () => {
-            const u8le = new WalkableBuffer(
-                Buffer.from([
+            const u8le = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x0D, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                'LE',
-                'utf8',
-            );
+                endianness: 'LE',
+                encoding: 'utf8',
+            });
 
             expect(u8le.getSizedString(SHORT)).toBe('Hellö Worlδ');
             expect(u8le.getCurrentPos()).toBe(0x0F);
         });
 
         test('utf-8, BE, SHORT size-describer', () => {
-            const u8be = new WalkableBuffer(
-                Buffer.from([
+            const u8be = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x00, 0x0D, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                'BE',
-                'utf8',
-            );
+                endianness: 'BE',
+                encoding: 'utf8',
+            });
 
             expect(u8be.getSizedString(SHORT)).toBe('Hellö Worlδ');
             expect(u8be.getCurrentPos()).toBe(0x0F);
         });
 
         test('UTF16le, LE, LONG size-describer', () => {
-            const u16le = new WalkableBuffer(
-                Buffer.from([
+            const u16le = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x0B, 0x00, 0x00, 0x00, 0x48, 0x00, 0x65, 0x00,
                     0x6C, 0x00, 0x6C, 0x00, 0xF6, 0x00, 0x20, 0x00,
                     0x57, 0x00, 0x6F, 0x00, 0x72, 0x00, 0x6C, 0x00,
                     0xB4, 0x03,
                 ]),
-                'LE',
-                'utf16le',
-            );
+                endianness: 'LE',
+                encoding: 'utf16le',
+            });
 
             expect(u16le.getSizedString()).toBe('Hellö Worlδ');
             expect(u16le.getCurrentPos()).toBe(0x1A);
@@ -516,42 +550,42 @@ describe('string functions', () => {
 
         test('override defaults', () => {
             /** A walkable buffer with incorrect endianness and encoding. */
-            const wBuf = new WalkableBuffer(
-                Buffer.from([
+            const wBuf = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x00, 0x0D, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                'LE',
-                'utf16le',
-            );
+                endianness: 'LE',
+                encoding: 'utf16le',
+            });
 
             expect(wBuf.getSizedString(SHORT, 'BE', 'utf8')).toBe('Hellö Worlδ');
             expect(wBuf.getCurrentPos()).toBe(0x0F);
         });
 
         test('fails on too large size descriptor, without advancing cursor', () => {
-            const u8le = new WalkableBuffer(
-                Buffer.from([
+            const u8le = new WalkableBuffer({
+                buffer: Buffer.from([
                     0xFF, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                'LE',
-                'utf8',
-            );
+                endianness: 'LE',
+                encoding: 'utf8',
+            });
 
             expect(() => u8le.getSizedString(SHORT)).toThrow(/out of range/i);
             expect(u8le.getCurrentPos()).toBe(0);
         });
 
         test('handles descriptor being value 0', () => {
-            const u8le = new WalkableBuffer(
-                Buffer.from([
+            const u8le = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x00, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                'LE',
-                'utf8',
-            );
+                endianness: 'LE',
+                encoding: 'utf8',
+            });
 
             expect(() => u8le.getSizedString(SHORT)).not.toThrow();
             expect(u8le.getCurrentPos()).toBe(0x02);
@@ -562,15 +596,13 @@ describe('string functions', () => {
         let wBuf: WalkableBuffer;
 
         beforeEach(() => {
-            wBuf = new WalkableBuffer(
-                Buffer.from([
+            wBuf = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                     0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
                 ]),
-                undefined,
-                undefined,
-                0x04,
-            );
+                initialCursor: 0x04,
+            });
         });
 
         test('Basic case, return remaining buffer', () => {
@@ -612,15 +644,13 @@ describe('string functions', () => {
         let wBuf: WalkableBuffer;
 
         beforeEach(() => {
-            wBuf = new WalkableBuffer(
-                Buffer.from([
+            wBuf = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                     0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
                 ]),
-                undefined,
-                undefined,
-                0x04,
-            );
+                initialCursor: 0x04,
+            });
         });
 
         test('-1 (throws)', () => {
@@ -653,15 +683,13 @@ describe('string functions', () => {
         let wBuf: WalkableBuffer;
 
         beforeEach(() => {
-            wBuf = new WalkableBuffer(
-                Buffer.from([
+            wBuf = new WalkableBuffer({
+                buffer: Buffer.from([
                     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                     0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
                 ]),
-                undefined,
-                undefined,
-                0x04,
-            );
+                initialCursor: 0x04,
+            });
         });
 
         describe('position', () => {
@@ -767,12 +795,10 @@ describe('string functions', () => {
 
     describe('getSourceBuffer', () => {
         test('returns buffer', () => {
-            const wBuf = new WalkableBuffer(
-                Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]),
-                undefined,
-                undefined,
-                0x02,
-            );
+            const wBuf = new WalkableBuffer({
+                buffer: Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]),
+                initialCursor: 0x02,
+            });
 
             const buffer = wBuf.getSourceBuffer();
 
@@ -783,12 +809,10 @@ describe('string functions', () => {
 
     describe('size', () => {
         test('gets size matching actual buffer', () => {
-            const wBuf = new WalkableBuffer(
-                Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]),
-                undefined,
-                undefined,
-                0x02,
-            );
+            const wBuf = new WalkableBuffer({
+                buffer: Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]),
+                initialCursor: 0x02,
+            });
 
             const buffer = wBuf.getSourceBuffer();
 
@@ -804,19 +828,28 @@ describe('string functions', () => {
         });
 
         test('when cursor is 0', () => {
-            const wBuf = new WalkableBuffer(buffer, undefined, undefined, 0);
+            const wBuf = new WalkableBuffer({
+                buffer,
+                initialCursor: 0,
+            });
 
             expect(wBuf.sizeRemainingBuffer()).toBe(8);
         });
 
         test('when cursor is 4', () => {
-            const wBuf = new WalkableBuffer(buffer, undefined, undefined, 4);
+            const wBuf = new WalkableBuffer({
+                buffer,
+                initialCursor: 4,
+            });
 
             expect(wBuf.sizeRemainingBuffer()).toBe(4);
         });
 
         test('when cursor is 7', () => {
-            const wBuf = new WalkableBuffer(buffer, undefined, undefined, 7);
+            const wBuf = new WalkableBuffer({
+                buffer,
+                initialCursor: 7,
+            });
 
             expect(wBuf.sizeRemainingBuffer()).toBe(1);
         });
