@@ -14,9 +14,8 @@
         "lint": "tslint --project tsconfig.json --format stylish",
         "typecheck": "tsc --noEmit",
         "test:watch": "jest --watch --updateSnapshot",
-        "version": "npm run build",
-        "docs": "typedoc --out api --mode file --excludeExternals --excludeNotExported --excludePrivate --excludeProtected --tsconfig src/tsconfig.app.json --theme markdown --readme none",
-        "precommit": "npm run docs && git add api && git add api -u"
+        "version": "npm run build && npm run docs && git add api && git add api -u",
+        "docs": "typedoc --out api --mode file --excludeExternals --excludeNotExported --excludePrivate --excludeProtected --tsconfig src/tsconfig.app.json --theme markdown --readme none"
     },
     "pre-commit": ["precommit"],
     "keywords": [
@@ -40,7 +39,6 @@
         "@types/jest": "^24.0.15",
         "jest": "^24.8.0",
         "pika-plugin-unpkg-field": "^1.1.0",
-        "pre-commit": "^1.2.2",
         "ts-jest": "^24.0.2",
         "tslint": "^5.18.0",
         "typedoc": "^0.14.2",
