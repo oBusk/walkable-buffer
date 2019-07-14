@@ -877,8 +877,8 @@ describe('string functions', () => {
                     0x0D, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                endianness: 'LE',
                 encoding: 'utf8',
+                endianness: 'LE',
             });
 
             expect(u8le.getSizedString(SHORT)).toBe('Hellö Worlδ');
@@ -891,8 +891,8 @@ describe('string functions', () => {
                     0x00, 0x0D, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                endianness: 'BE',
                 encoding: 'utf8',
+                endianness: 'BE',
             });
 
             expect(u8be.getSizedString(SHORT)).toBe('Hellö Worlδ');
@@ -907,8 +907,8 @@ describe('string functions', () => {
                     0x57, 0x00, 0x6F, 0x00, 0x72, 0x00, 0x6C, 0x00,
                     0xB4, 0x03,
                 ]),
-                endianness: 'LE',
                 encoding: 'utf16le',
+                endianness: 'LE',
             });
 
             expect(u16le.getSizedString()).toBe('Hellö Worlδ');
@@ -922,8 +922,8 @@ describe('string functions', () => {
                     0x00, 0x0D, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                endianness: 'LE',
                 encoding: 'utf16le',
+                endianness: 'LE',
             });
 
             expect(wBuf.getSizedString(SHORT, 'BE', 'utf8')).toBe('Hellö Worlδ');
@@ -936,8 +936,8 @@ describe('string functions', () => {
                     0xFF, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                endianness: 'LE',
                 encoding: 'utf8',
+                endianness: 'LE',
             });
 
             expect(() => u8le.getSizedString(SHORT)).toThrow(/out of range/i);
@@ -950,8 +950,8 @@ describe('string functions', () => {
                     0x00, 0x00, 0x48, 0x65, 0x6C, 0x6C, 0xC3, 0xB6,
                     0x20, 0x57, 0x6F, 0x72, 0x6C, 0xCE, 0xB4,
                 ]),
-                endianness: 'LE',
                 encoding: 'utf8',
+                endianness: 'LE',
             });
 
             expect(() => u8le.getSizedString(SHORT)).not.toThrow();
