@@ -28,7 +28,7 @@ const s = wb.getString(16);
 
 ## API
 
-See [`/api`](/api)
+See [`/api`](/api/classes/walkablebuffer.md)
 
 ## License
 
