@@ -6,6 +6,7 @@
             "spaces",
             4
         ],
+        "interface-name": false,
         "no-bitwise": false,
         "object-literal-sort-keys": [
             true,
