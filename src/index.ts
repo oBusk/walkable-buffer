@@ -79,7 +79,7 @@ export default class WalkableBuffer {
     }
 
     /** Reads the next 8 bytes as a 64bit `bigint`. */
-    public getBigInt(endianness = this.getEndianness(), unsigned = false): bigint {
+    public getBigInt(endianness = this.getEndianness(), signed = true): bigint {
         const first = this.buffer[this.cursor];
         const last = this.buffer[this.cursor + 7];
         if (first === undefined || last === undefined) {
@@ -88,16 +88,16 @@ export default class WalkableBuffer {
 
         let result: bigint;
         if (endianness === 'LE') {
-            if (unsigned) {
-                result = this.readBigUInt64LE(this.cursor, first, last);
-            } else {
+            if (signed) {
                 result = this.readBigInt64LE(this.cursor, first, last);
+            } else {
+                result = this.readBigUInt64LE(this.cursor, first, last);
             }
         } else if (endianness === 'BE') {
-            if (unsigned) {
-                result = this.readBigUInt64BE(this.cursor, first, last);
-            } else {
+            if (signed) {
                 result = this.readBigInt64BE(this.cursor, first, last);
+            } else {
+                result = this.readBigUInt64BE(this.cursor, first, last);
             }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
