@@ -3,6 +3,9 @@ export const BYTE = OCTET;
 export const SHORT = 2;
 export const LONG = 4;
 export const LONGLONG = 8;
+export const DEFAULT_ENDIANNESS: Endianness = 'LE';
+export const DEFAULT_ENCODING: Encoding = 'utf8';
+export const DEFAULT_INITIAL_CURSOR: number = 0;
 
 /**
  * The endianness to read integers with.
@@ -14,28 +17,55 @@ export type Endianness = 'BE' | 'LE';
 
 export type Encoding = 'ascii' | 'utf8' | 'utf16le' | 'ucs2' | 'base64' | 'hex';
 
+export interface WalkableBufferOptions {
+    /** The `Buffer` to read and walk. */
+    buffer: Buffer;
+    /**
+     * The endianness to read integers with. `LE` little-endian or `BE` big-endian.
+     *
+     * _Defaults to `LE`_
+     */
+    endianness?: Endianness;
+    /**
+     * The encoding to read strings with.
+     * Valid string encodings are `ascii`, `utf8`, `utf16le`, `ucs2`(alias of `utf16le`), `base64`, `hex`.
+     *
+     * _Defaults to `utf8`_
+     */
+    encoding?: Encoding;
+    /**
+     * The starting position of the cursor.
+     *
+     * _Defaults to `0`_
+     */
+    initialCursor?: number;
+}
+
 export default class WalkableBuffer {
-    public static isEndianness(endianness: any): endianness is Endianness {
+    public static isEndianness(endianness: string): endianness is Endianness {
         return typeof endianness === 'string' && (endianness === 'LE' || endianness === 'BE');
     }
 
-    private sourceBuffer: Buffer;
+    private cursor: number;
+    private readonly sourceBuffer: Buffer;
     private endianness!: Endianness;
     private encoding!: Encoding;
 
-    /**
-     * @param sourceBuffer The `Buffer` to read and walk.
-     * @param endianness The endianness to read integers with. `LE` little-endian or `BE` big-endian.
-     * @param encoding The encoding to read strings with.
-     * Valid string encodings are `ascii`, `utf8`, `utf16le`, `ucs2`(alias of `utf16le`), `base64`, `hex`.
-     * @param cursor The starting position of the cursor. _Defaults to `0`_
-     */
-    constructor(sourceBuffer: Buffer, endianness: Endianness = 'LE', encoding: Encoding = 'utf8', private cursor = 0) {
-        if (this.cursor > (sourceBuffer.length - 1)) {
-            throw new Error(`Invalid cursor '${this.cursor}'`);
-        }
+    constructor(readonly options: WalkableBufferOptions) {
+        const sourceBuffer = options.buffer;
+        const initialCursor = options.initialCursor || DEFAULT_INITIAL_CURSOR;
+        const endianness = options.endianness || DEFAULT_ENDIANNESS;
+        const encoding = options.encoding || DEFAULT_ENCODING;
 
-        this.sourceBuffer = Buffer.from(sourceBuffer);
+        if (!sourceBuffer || !Buffer.isBuffer(sourceBuffer)) {
+            throw new Error('No sourceBuffer in options!');
+        }
+        this.sourceBuffer = Buffer.from(sourceBuffer); // Make sure to copy, not reference.
+
+        if ((sourceBuffer.length - 1) < initialCursor || initialCursor < 0) {
+            throw new Error(`Invalid initialCursor '${initialCursor}'`);
+        }
+        this.cursor = initialCursor;
 
         this.setEndianness(endianness);
         this.setEncoding(encoding);
