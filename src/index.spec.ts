@@ -183,6 +183,83 @@ describe('integer functions', () => {
                     expect(() => walkableBuffer.get(SHORT, 'NOT' as any)).toThrow(/invalid endianness/i);
                 });
             });
+
+            describe('signed', () => {
+                let ff: Buffer;
+                let ffWB: WalkableBuffer;
+                let ze: Buffer;
+                let zeWB: WalkableBuffer;
+
+                beforeEach(() => {
+                    ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                    zeWB = new WalkableBuffer({ buffer: ze });
+
+                    ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                    ffWB = new WalkableBuffer({ buffer: ff });
+
+                    buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
+
+                test('reads default (signed) LE', () => {
+                    expect(zeWB.get(6, 'LE')).toBe(0);
+                    expect(ffWB.get(6, 'LE')).toBe(-1);
+                    expect(walkableBuffer.get(6, 'LE')).toBe(93751404007680);
+                });
+
+                test('reads default (signed) BE', () => {
+                    expect(zeWB.get(6, 'BE')).toBe(0);
+                    expect(ffWB.get(6, 'BE')).toBe(-1);
+                    expect(walkableBuffer.get(6, 'BE')).toBe(73588229205);
+                });
+
+                test('reads signed LE', () => {
+                    expect(zeWB.get(6, 'LE', true)).toBe(0);
+                    expect(ffWB.get(6, 'LE', true)).toBe(-1);
+                    expect(walkableBuffer.get(6, 'LE', true)).toBe(93751404007680);
+                });
+
+                test('reads signed BE', () => {
+                    expect(zeWB.get(6, 'BE', true)).toBe(0);
+                    expect(ffWB.get(6, 'BE', true)).toBe(-1);
+                    expect(walkableBuffer.get(6, 'BE', true)).toBe(73588229205);
+                });
+
+                test('reads unsigned LE', () => {
+                    expect(zeWB.get(6, 'LE', false)).toBe(0);
+                    expect(ffWB.get(6, 'LE', false)).toBe(281474976710655);
+                    expect(walkableBuffer.get(6, 'LE', false)).toBe(93751404007680);
+                });
+
+                test('reads unsigned BE', () => {
+                    expect(zeWB.get(6, 'BE', false)).toBe(0);
+                    expect(ffWB.get(6, 'BE', false)).toBe(281474976710655);
+                    expect(walkableBuffer.get(6, 'BE', false)).toBe(73588229205);
+                });
+
+                test('uses global default', () => {
+                    const signed = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(signed.get(6)).toBe(-1);
+
+                    const unsigned = new WalkableBuffer({
+                        buffer: ff,
+                        signed: false,
+                    });
+                    expect(unsigned.get(6)).toBe(281474976710655);
+
+                    const toChange = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(toChange.get(6)).toBe(-1);
+                    expect(toChange.setSigned(false)).toBe(false);
+                    expect(toChange.goTo(0)).toBe(0);
+                    expect(toChange.get(6)).toBe(281474976710655);
+                });
+            });
         });
 
         describe('peek', () => {
@@ -233,6 +310,82 @@ describe('integer functions', () => {
 
                 test('reads BE', () => {
                     expect(walkableBuffer.peek(SHORT, undefined, 'BE')).toBe(255);
+                });
+            });
+
+            describe('signed', () => {
+                let ff: Buffer;
+                let ffWB: WalkableBuffer;
+                let ze: Buffer;
+                let zeWB: WalkableBuffer;
+
+                beforeEach(() => {
+                    ze = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+                    zeWB = new WalkableBuffer({ buffer: ze });
+
+                    ff = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]);
+                    ffWB = new WalkableBuffer({ buffer: ff });
+
+                    buffer = Buffer.from([0x00, 0x11, 0x22, 0x33, 0x44, 0x55]);
+                    walkableBuffer = new WalkableBuffer({ buffer });
+                });
+
+                test('reads default (signed) LE', () => {
+                    expect(zeWB.peek(6, 0, 'LE')).toBe(0);
+                    expect(ffWB.peek(6, 0, 'LE')).toBe(-1);
+                    expect(walkableBuffer.peek(6, 0, 'LE')).toBe(93751404007680);
+                });
+
+                test('reads default (signed) BE', () => {
+                    expect(zeWB.peek(6, 0, 'BE')).toBe(0);
+                    expect(ffWB.peek(6, 0, 'BE')).toBe(-1);
+                    expect(walkableBuffer.peek(6, 0, 'BE')).toBe(73588229205);
+                });
+
+                test('reads signed LE', () => {
+                    expect(zeWB.peek(6, 0, 'LE', true)).toBe(0);
+                    expect(ffWB.peek(6, 0, 'LE', true)).toBe(-1);
+                    expect(walkableBuffer.peek(6, 0, 'LE', true)).toBe(93751404007680);
+                });
+
+                test('reads signed BE', () => {
+                    expect(zeWB.peek(6, 0, 'BE', true)).toBe(0);
+                    expect(ffWB.peek(6, 0, 'BE', true)).toBe(-1);
+                    expect(walkableBuffer.peek(6, 0, 'BE', true)).toBe(73588229205);
+                });
+
+                test('reads unsigned LE', () => {
+                    expect(zeWB.peek(6, 0, 'LE', false)).toBe(0);
+                    expect(ffWB.peek(6, 0, 'LE', false)).toBe(281474976710655);
+                    expect(walkableBuffer.peek(6, 0, 'LE', false)).toBe(93751404007680);
+                });
+
+                test('reads unsigned BE', () => {
+                    expect(zeWB.peek(6, 0, 'BE', false)).toBe(0);
+                    expect(ffWB.peek(6, 0, 'BE', false)).toBe(281474976710655);
+                    expect(walkableBuffer.peek(6, 0, 'BE', false)).toBe(73588229205);
+                });
+
+                test('uses global default', () => {
+                    const signed = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(signed.peek(6)).toBe(-1);
+
+                    const unsigned = new WalkableBuffer({
+                        buffer: ff,
+                        signed: false,
+                    });
+                    expect(unsigned.peek(6)).toBe(281474976710655);
+
+                    const toChange = new WalkableBuffer({
+                        buffer: ff,
+                        signed: true,
+                    });
+                    expect(toChange.peek(6)).toBe(-1);
+                    expect(toChange.setSigned(false)).toBe(false);
+                    expect(toChange.peek(6)).toBe(281474976710655);
                 });
             });
         });

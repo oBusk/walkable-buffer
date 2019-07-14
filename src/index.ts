@@ -82,8 +82,8 @@ export default class WalkableBuffer {
     }
 
     /** Reads integer of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps. */
-    public get(byteLength: number, endianness = this.getEndianness()): number {
-        const result = this.readInt(this.cursor, byteLength, endianness);
+    public get(byteLength: number, endianness = this.getEndianness(), signed = this.getSigned()): number {
+        const result = this.readInt(this.cursor, byteLength, endianness, signed);
         this.cursor += byteLength;
         return result;
     }
@@ -98,8 +98,13 @@ export default class WalkableBuffer {
     }
 
     /** Peeks integer of `byteLength` bytes from current cursor position plus `byteOffset`, without advancing cursor. */
-    public peek(byteLength: number, byteOffset = 0, endianness = this.getEndianness()): number {
-        return this.readInt(this.cursor + byteOffset, byteLength, endianness);
+    public peek(
+        byteLength: number,
+        byteOffset = 0,
+        endianness = this.getEndianness(),
+        signed = this.getSigned(),
+    ): number {
+        return this.readInt(this.cursor + byteOffset, byteLength, endianness, signed);
     }
 
     /** Reads 8 bytes as a 64bit `bigint`. Reads forward from `this.cursor + byteOffset`. Does not advance cursor. */
@@ -273,12 +278,20 @@ export default class WalkableBuffer {
         return this.size() - this.cursor;
     }
 
-    /** Wrapper for `Buffer.readIntLE()` and `Buffer.readIntBE()` that takes `endianness` into account. */
-    private readInt(offset: number, byteLength: number, endianness: Endianness, noAssert?: boolean): number {
+    /** Wrapper for `Buffer.readIntLE()` and `Buffer.readIntBE()` that takes `endianness` and `signed` into account. */
+    private readInt(offset: number, byteLength: number, endianness: Endianness, signed: boolean): number {
         if (endianness === 'BE') {
-            return this.buffer.readIntBE(offset, byteLength, noAssert);
+            if (signed) {
+                return this.buffer.readIntBE(offset, byteLength);
+            } else {
+                return this.buffer.readUIntBE(offset, byteLength);
+            }
         } else if (endianness === 'LE') {
-            return this.buffer.readIntLE(offset, byteLength, noAssert);
+            if (signed) {
+                return this.buffer.readIntLE(offset, byteLength);
+            } else {
+                return this.buffer.readUIntLE(offset, byteLength);
+            }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
