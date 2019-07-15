@@ -10,5 +10,3 @@ update_configs:
 
     default_reviewers:
       - "oBusk"
-    default_labels:
-      - "dependabot"
