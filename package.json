@@ -34,9 +34,9 @@
         "@pika/plugin-build-node": "^0.5.1",
         "@pika/plugin-build-web": "^0.5.1",
         "@pika/plugin-ts-standard-pkg": "^0.5.1",
+        "@pika/plugin-bundle-web": "^0.5.1",
         "@types/jest": "^24.0.16",
         "jest": "^24.8.0",
-        "pika-plugin-unpkg-field": "^1.1.0",
         "ts-jest": "^24.0.2",
         "tslint": "^5.18.0",
         "typedoc": "^0.15.0",
@@ -62,7 +62,10 @@
                 "@pika/plugin-build-web"
             ],
             [
-                "pika-plugin-unpkg-field"
+                "@pika/plugin-bundle-web",
+                {
+                    "entrypoint": "unpkg"
+                }
             ]
         ]
     }
