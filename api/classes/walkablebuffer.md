@@ -12,17 +12,17 @@ Create instance providing `WalkableBufferOptions`, with the `buffer` option as r
 
 * **WalkableBuffer**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 * [constructor](walkablebuffer.md#constructor)
 
-#### Properties
+### Properties
 
 * [options](walkablebuffer.md#options)
 
-#### Methods
+### Methods
 
 * [get](walkablebuffer.md#get)
 * [getBigInt](walkablebuffer.md#getbigint)
@@ -52,7 +52,7 @@ Create instance providing `WalkableBufferOptions`, with the `buffer` option as r
 
 \+ **new WalkableBuffer**(`options`: `Readonly<WalkableBufferOptions>`): *[WalkableBuffer](walkablebuffer.md)*
 
-*Defined in [index.ts:73](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L73)*
+*Defined in [index.ts:73](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L73)*
 
 **Parameters:**
 
@@ -68,7 +68,7 @@ Name | Type |
 
 • **options**: *`Readonly<WalkableBufferOptions>`*
 
-*Defined in [index.ts:75](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L75)*
+*Defined in [index.ts:75](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L75)*
 
 ## Methods
 
@@ -76,7 +76,7 @@ Name | Type |
 
 ▸ **get**(`byteLength`: number, `endianness`: "BE" | "LE", `signed`: boolean): *number*
 
-*Defined in [index.ts:98](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L98)*
+*Defined in [index.ts:98](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L98)*
 
 Reads integer of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps.
 
@@ -96,7 +96,7 @@ ___
 
 ▸ **getBigInt**(`endianness`: "BE" | "LE", `signed`: boolean): *bigint*
 
-*Defined in [index.ts:123](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L123)*
+*Defined in [index.ts:123](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L123)*
 
 Reads the next 8 bytes as a `bigint`.
 
@@ -115,7 +115,7 @@ ___
 
 ▸ **getBuffer**(`byteLength?`: undefined | number): *`Buffer`*
 
-*Defined in [index.ts:321](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L321)*
+*Defined in [index.ts:321](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L321)*
 
 Gets a `Buffer` of size `byteLength`. If no `size` is specified, returns remaining buffer.
 
@@ -133,7 +133,7 @@ ___
 
 ▸ **getCurrentPos**(): *number*
 
-*Defined in [index.ts:360](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L360)*
+*Defined in [index.ts:360](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L360)*
 
 Returns current cursor position
 
@@ -145,7 +145,7 @@ ___
 
 ▸ **getEncoding**(): *[Encoding](../README.md#encoding)*
 
-*Defined in [index.ts:404](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L404)*
+*Defined in [index.ts:404](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L404)*
 
 Gets the instance current default text encoding.
 
@@ -157,7 +157,7 @@ ___
 
 ▸ **getEndianness**(): *[Endianness](../README.md#endianness)*
 
-*Defined in [index.ts:379](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L379)*
+*Defined in [index.ts:379](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L379)*
 
 Returns the instance default endianness
 
@@ -169,7 +169,7 @@ ___
 
 ▸ **getSigned**(): *boolean*
 
-*Defined in [index.ts:431](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L431)*
+*Defined in [index.ts:431](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L431)*
 
 Get the instance current `signed`. If numbers that are read should be signed rather than unsigned.
 
@@ -181,7 +181,7 @@ ___
 
 ▸ **getSizedString**(`sizeOfSize`: number, `endianness`: "BE" | "LE", `encoding`: "ascii" | "utf8" | "utf16le" | "ucs2" | "base64" | "hex"): *string*
 
-*Defined in [index.ts:284](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L284)*
+*Defined in [index.ts:284](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L284)*
 
 Reads a string with size-describer in front of it. Usually for names and such.
 
@@ -208,7 +208,7 @@ ___
 
 ▸ **getSourceBuffer**(): *`Buffer`*
 
-*Defined in [index.ts:455](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L455)*
+*Defined in [index.ts:455](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L455)*
 
 **Returns:** *`Buffer`*
 
@@ -222,7 +222,7 @@ ___
 
 ▸ **getString**(`byteLength`: number, `encoding`: "ascii" | "utf8" | "utf16le" | "ucs2" | "base64" | "hex"): *string*
 
-*Defined in [index.ts:201](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L201)*
+*Defined in [index.ts:201](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L201)*
 
 Reads strings of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps.
 
@@ -241,7 +241,7 @@ ___
 
 ▸ **goTo**(`byteOffset`: number): *number*
 
-*Defined in [index.ts:365](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L365)*
+*Defined in [index.ts:365](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L365)*
 
 Moves cursor to byte-position `byteOffset`
 
@@ -259,7 +259,7 @@ ___
 
 ▸ **peek**(`byteLength`: number, `byteOffset`: number, `endianness`: "BE" | "LE", `signed`: boolean): *number*
 
-*Defined in [index.ts:146](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L146)*
+*Defined in [index.ts:146](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L146)*
 
 Peeks integer of `byteLength` bytes from current cursor position plus `byteOffset`, without advancing cursor.
 
@@ -280,7 +280,7 @@ ___
 
 ▸ **peekBigInt**(`byteOffset`: number, `endianness`: "BE" | "LE", `signed`: boolean): *bigint*
 
-*Defined in [index.ts:176](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L176)*
+*Defined in [index.ts:176](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L176)*
 
 Reads 8 bytes as a `bigint`. Reads forward from from current cursor position plus `byteOffset`.
 Does not advance cursor.
@@ -301,7 +301,7 @@ ___
 
 ▸ **peekString**(`byteLength`: number, `byteOffset`: number, `encoding`: "ascii" | "utf8" | "utf16le" | "ucs2" | "base64" | "hex"): *string*
 
-*Defined in [index.ts:228](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L228)*
+*Defined in [index.ts:228](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L228)*
 
 Peek string of `byteLength` bytes from current cursor position plus `byteOffset` without advancing cursor.
 
@@ -321,7 +321,7 @@ ___
 
 ▸ **setEncoding**(`encoding`: [Encoding](../README.md#encoding)): *[Encoding](../README.md#encoding)*
 
-*Defined in [index.ts:415](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L415)*
+*Defined in [index.ts:415](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L415)*
 
 Sets the instance default text encoding.
 
@@ -343,7 +343,7 @@ ___
 
 ▸ **setEndianness**(`endianness`: [Endianness](../README.md#endianness)): *[Endianness](../README.md#endianness)*
 
-*Defined in [index.ts:390](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L390)*
+*Defined in [index.ts:390](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L390)*
 
 Sets the instances default endianness.
 
@@ -365,7 +365,7 @@ ___
 
 ▸ **setSigned**(`signed`: boolean): *boolean*
 
-*Defined in [index.ts:440](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L440)*
+*Defined in [index.ts:440](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L440)*
 
 Set the instance current `signed`. If numbers that are read should be signed rather than unsigned.
 
@@ -385,7 +385,7 @@ ___
 
 ▸ **size**(): *number*
 
-*Defined in [index.ts:460](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L460)*
+*Defined in [index.ts:460](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L460)*
 
 **Returns:** *number*
 
@@ -397,7 +397,7 @@ ___
 
 ▸ **sizeRemainingBuffer**(): *number*
 
-*Defined in [index.ts:465](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L465)*
+*Defined in [index.ts:465](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L465)*
 
 **Returns:** *number*
 
@@ -409,7 +409,7 @@ ___
 
 ▸ **skip**(`byteLength`: number): *number*
 
-*Defined in [index.ts:347](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L347)*
+*Defined in [index.ts:347](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L347)*
 
 Advances cursor without reading any data.
 
@@ -427,7 +427,7 @@ ___
 
 ▸ **isEndianness**(`check`: string): *boolean*
 
-*Defined in [index.ts:65](https://github.com/oBusk/walkable-buffer/blob/b22512c/src/index.ts#L65)*
+*Defined in [index.ts:65](https://github.com/oBusk/walkable-buffer/blob/80c88e9/src/index.ts#L65)*
 
 Asserts that `check` is either string `LE` or string `BE`.
 
