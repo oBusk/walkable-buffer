@@ -17,9 +17,6 @@
         "version": "npm run build && npm run docs && git add api && git add api -u",
         "docs": "typedoc --out api --mode file --excludeExternals --excludeNotExported --excludePrivate --excludeProtected --tsconfig src/tsconfig.app.json --theme markdown --readme none"
     },
-    "pre-commit": [
-        "precommit"
-    ],
     "keywords": [
         "binary",
         "buffer",
