@@ -23,7 +23,7 @@
         "walk"
     ],
     "engines": {
-        "node": ">=10.4.0"
+        "node": "^10.15.3 ||  >=12.0.0"
     },
     "dependencies": {
         "@types/node": "^10.4.0",
