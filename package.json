@@ -6,8 +6,8 @@
     "license": "MIT",
     "repository": "git+https://github.com/oBusk/walkable-buffer.git",
     "scripts": {
-        "build": "pack build",
-        "deploy": "pack publish",
+        "build": "pika build",
+        "deploy": "pika publish",
         "jest": "jest",
         "test": "jest",
         "posttest": "npm run typecheck && npm run lint",
