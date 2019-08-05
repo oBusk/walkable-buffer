@@ -5,20 +5,20 @@ cache:
 
 jobs:
   include:
-    - stage: lint
+    - name: "Lint and Typecheck"
       node_js: stable
       script: npm run lint && npm run typecheck
-    - stage: test
-      node_js: lts/dubnium # just test in lts
-      script: npm run jest
-    - stage: test
-      node_js: stable # test and coveralls
+    - name: "Tests (coveralls)"
+      node_js: stable # Only run coveralls on stable
       script: npm run jest
       after_success: cat coverage/lcov.info | npx coveralls
-    - stage: test
-      node_js: stable # make sure build works and all that
+    - name: "Tests"
+      node_js: # Test in all supported versions
+        - lts/dubnium
+      script: npm run jest
+    - name: "Build"
+      node_js: stable
       script: npm run build
-    - stage: test
-      name: "Test Generating Documentation"
+    - name: "Generate Documentation"
       node_js: stable
       script: npm run docs
