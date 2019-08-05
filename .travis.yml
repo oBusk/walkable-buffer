@@ -18,3 +18,7 @@ jobs:
     - stage: test
       node_js: stable # make sure build works and all that
       script: npm run build
+    - stage: test
+      name: "Test Generating Documentation"
+      node_js: stable
+      script: npm run docs
