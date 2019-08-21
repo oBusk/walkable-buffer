@@ -7,7 +7,11 @@
             4
         ],
         "interface-name": false,
+        "invalid-void": true,
         "no-bitwise": false,
+        "no-floating-promises": true,
+        "no-for-in": true,
+        "no-promise-as-boolean": true,
         "object-literal-sort-keys": [
             true,
             "locale-compare",
