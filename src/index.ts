@@ -284,6 +284,8 @@ export default class WalkableBuffer {
     public getSizedString(
         /**
          * The length in bytes of the integer to use as length for the string.
+         *
+         * > _If not provided, defaults to LONG (4 bytes)._
          */
         sizeOfSize = LONG,
         /**
