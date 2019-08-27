@@ -62,7 +62,7 @@ export interface WalkableBufferOptions {
  */
 export default class WalkableBuffer {
     /** Asserts that `check` is either string `LE` or string `BE`. */
-    public static isEndianness(check: string): check is Endianness {
+    static isEndianness(check: string): check is Endianness {
         return typeof check === 'string' && (check === 'LE' || check === 'BE');
     }
 
@@ -95,7 +95,7 @@ export default class WalkableBuffer {
     }
 
     /** Reads integer of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps. */
-    public get(
+    get(
         /** The length in bytes to read */
         byteLength: number,
         /**
@@ -120,7 +120,7 @@ export default class WalkableBuffer {
     }
 
     /** Reads the next 8 bytes as a `bigint`. */
-    public getBigInt(
+    getBigInt(
         /**
          * The endianness of the read action. `LE` for LittleEndian, `BE` for BigEndian.
          *
@@ -143,7 +143,7 @@ export default class WalkableBuffer {
     }
 
     /** Peeks integer of `byteLength` bytes from current cursor position plus `byteOffset`, without advancing cursor. */
-    public peek(
+    peek(
         /** The length in bytes to read */
         byteLength: number,
         /**
@@ -173,7 +173,7 @@ export default class WalkableBuffer {
      * Reads 8 bytes as a `bigint`. Reads forward from from current cursor position plus `byteOffset`.
      * Does not advance cursor.
      */
-    public peekBigInt(
+    peekBigInt(
         /**
          * The offset from the current `cursor` to start reading from. Both positive for later in buffer, or negative
          * for looking back.
@@ -198,7 +198,7 @@ export default class WalkableBuffer {
     }
 
     /** Reads strings of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps. */
-    public getString(
+    getString(
         /** The length in bytes to read */
         byteLength: number,
         /**
@@ -225,7 +225,7 @@ export default class WalkableBuffer {
     }
 
     /** Peek string of `byteLength` bytes from current cursor position plus `byteOffset` without advancing cursor. */
-    public peekString(
+    peekString(
         /** The length in bytes to read */
         byteLength: number,
         /**
@@ -281,7 +281,7 @@ export default class WalkableBuffer {
      *
      * This method will also take the double bytelength into account for `utf16` and `ucs2`.
      */
-    public getSizedString(
+    getSizedString(
         /**
          * The length in bytes of the integer to use as length for the string.
          *
@@ -320,7 +320,7 @@ export default class WalkableBuffer {
     }
 
     /** Gets a `Buffer` of size `byteLength`. If no `size` is specified, returns remaining buffer. */
-    public getBuffer(
+    getBuffer(
         /**
          * The length of the `Buffer` to extract. If omitted, returns `Buffer` between current cursor and end of buffer.
          *
@@ -346,7 +346,7 @@ export default class WalkableBuffer {
     }
 
     /** Advances cursor without reading any data. */
-    public skip(byteLength: number): number {
+    skip(byteLength: number): number {
         const max = this.size() - this.getCurrentPos();
 
         if (byteLength < 1 || byteLength > max) {
@@ -359,12 +359,12 @@ export default class WalkableBuffer {
     }
 
     /** Returns current cursor position */
-    public getCurrentPos(): number {
+    getCurrentPos(): number {
         return this.cursor;
     }
 
     /** Moves cursor to byte-position `byteOffset` */
-    public goTo(byteOffset: number): number {
+    goTo(byteOffset: number): number {
         const max = this.size() - 1;
 
         if (byteOffset < 0 || byteOffset > max) {
@@ -378,7 +378,7 @@ export default class WalkableBuffer {
     }
 
     /** Returns the instance default endianness */
-    public getEndianness(): Endianness {
+    getEndianness(): Endianness {
         return this.endianness;
     }
 
@@ -389,7 +389,7 @@ export default class WalkableBuffer {
      *
      * @returns The newly set `endianness`.
      */
-    public setEndianness(
+    setEndianness(
         /** Either `BE` for big-endian or `LE` for little-endian. */
         endianness: Endianness,
     ): Endianness {
@@ -403,7 +403,7 @@ export default class WalkableBuffer {
     }
 
     /** Gets the instance current default text encoding. */
-    public getEncoding(): Encoding {
+    getEncoding(): Encoding {
         return this.encoding;
     }
 
@@ -414,7 +414,7 @@ export default class WalkableBuffer {
      *
      * @returns The newly set `encoding`.
      */
-    public setEncoding(
+    setEncoding(
         /**
          * Valid text encodings are `ascii`, `utf8`, `utf16le`, `ucs2`(alias of `utf16le`), `base64`, `hex`.
          */
@@ -430,7 +430,7 @@ export default class WalkableBuffer {
     }
 
     /** Get the instance current `signed`. If numbers that are read should be signed rather than unsigned. */
-    public getSigned(): boolean {
+    getSigned(): boolean {
         return this.signed;
     }
 
@@ -439,7 +439,7 @@ export default class WalkableBuffer {
      *
      * @returns The newly set `signed` boolean.
      */
-    public setSigned(signed: boolean): boolean {
+    setSigned(signed: boolean): boolean {
         if (typeof signed === 'boolean') {
             this.signed = signed;
         } else {
@@ -454,17 +454,17 @@ export default class WalkableBuffer {
      *
      * Note that this will not be `===` the buffer provided on creation, as a copy is made on creation.
      */
-    public getSourceBuffer(): Buffer {
+    getSourceBuffer(): Buffer {
         return this.buffer;
     }
 
     /** @returns the size in bytes of the full buffer. */
-    public size(): number {
+    size(): number {
         return this.buffer.length;
     }
 
     /** @returns the number of bytes from current cursor to the end of the buffer.  */
-    public sizeRemainingBuffer(): number {
+    sizeRemainingBuffer(): number {
         return this.size() - this.cursor;
     }
 
