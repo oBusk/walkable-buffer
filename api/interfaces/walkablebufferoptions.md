@@ -30,7 +30,7 @@ can be useful since most data in buffers will be of same endianness or encoding.
 
 • **buffer**: *Buffer*
 
-*Defined in [index.ts:30](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L30)*
+*Defined in [index.ts:30](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L30)*
 
 The `Buffer` to read and walk.
 
@@ -40,7 +40,7 @@ ___
 
 • **encoding**? : *[Encoding](../README.md#encoding)*
 
-*Defined in [index.ts:49](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L49)*
+*Defined in [index.ts:49](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L49)*
 
 The encoding to read text with.
 Valid text encodings are `ascii`, `utf8`, `utf16le`, `ucs2`(alias of `utf16le`), `base64`, `hex`.
@@ -53,7 +53,7 @@ ___
 
 • **endianness**? : *[Endianness](../README.md#endianness)*
 
-*Defined in [index.ts:42](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L42)*
+*Defined in [index.ts:42](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L42)*
 
 The endianness to read numbers with. `LE` little-endian or `BE` big-endian.
 
@@ -65,7 +65,7 @@ ___
 
 • **initialCursor**? : *undefined | number*
 
-*Defined in [index.ts:36](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L36)*
+*Defined in [index.ts:36](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L36)*
 
 The starting position of the cursor.
 
@@ -77,7 +77,7 @@ ___
 
 • **signed**? : *undefined | false | true*
 
-*Defined in [index.ts:55](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L55)*
+*Defined in [index.ts:55](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L55)*
 
 If number functions (`getBigInt()`) should default to read numbers as signed integers
 

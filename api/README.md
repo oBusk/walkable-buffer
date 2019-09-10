@@ -2,6 +2,8 @@
 
 [Globals](README.md)
 
+# walkable-buffer
+
 ## Index
 
 ### Classes
@@ -35,7 +37,7 @@
 
 Ƭ **Encoding**: *"ascii" | "utf8" | "utf16le" | "ucs2" | "base64" | "hex"*
 
-*Defined in [index.ts:19](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L19)*
+*Defined in [index.ts:19](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L19)*
 
 ___
 
@@ -43,7 +45,7 @@ ___
 
 Ƭ **Endianness**: *"BE" | "LE"*
 
-*Defined in [index.ts:17](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L17)*
+*Defined in [index.ts:17](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L17)*
 
 The endianness to read numbers with.
 
@@ -56,7 +58,7 @@ The endianness to read numbers with.
 
 • **BYTE**: *1* =  OCTET
 
-*Defined in [index.ts:2](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L2)*
+*Defined in [index.ts:2](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L2)*
 
 ___
 
@@ -64,7 +66,7 @@ ___
 
 • **DEFAULT_ENCODING**: *[Encoding](README.md#encoding)* = "utf8"
 
-*Defined in [index.ts:7](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L7)*
+*Defined in [index.ts:7](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L7)*
 
 ___
 
@@ -72,7 +74,7 @@ ___
 
 • **DEFAULT_ENDIANNESS**: *[Endianness](README.md#endianness)* = "LE"
 
-*Defined in [index.ts:6](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L6)*
+*Defined in [index.ts:6](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L6)*
 
 ___
 
@@ -80,7 +82,7 @@ ___
 
 • **DEFAULT_INITIAL_CURSOR**: *number* = 0
 
-*Defined in [index.ts:8](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L8)*
+*Defined in [index.ts:8](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L8)*
 
 ___
 
@@ -88,7 +90,7 @@ ___
 
 • **DEFAULT_SIGNED**: *true* = true
 
-*Defined in [index.ts:9](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L9)*
+*Defined in [index.ts:9](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L9)*
 
 ___
 
@@ -96,7 +98,7 @@ ___
 
 • **LONG**: *4* = 4
 
-*Defined in [index.ts:4](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L4)*
+*Defined in [index.ts:4](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L4)*
 
 ___
 
@@ -104,7 +106,7 @@ ___
 
 • **LONGLONG**: *8* = 8
 
-*Defined in [index.ts:5](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L5)*
+*Defined in [index.ts:5](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L5)*
 
 ___
 
@@ -112,7 +114,7 @@ ___
 
 • **OCTET**: *1* = 1
 
-*Defined in [index.ts:1](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L1)*
+*Defined in [index.ts:1](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L1)*
 
 ___
 
@@ -120,4 +122,4 @@ ___
 
 • **SHORT**: *2* = 2
 
-*Defined in [index.ts:3](https://github.com/oBusk/walkable-buffer/blob/03ae00d/src/index.ts#L3)*
+*Defined in [index.ts:3](https://github.com/oBusk/walkable-buffer/blob/8e60145/src/index.ts#L3)*
