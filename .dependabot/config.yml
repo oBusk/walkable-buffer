@@ -9,10 +9,6 @@ update_configs:
           version_requirement: ">=11"
     automerged_updates:
       - match:
-          dependency_type: "production"
           update_type: "semver:patch"
-      - match:
-          dependency_type: "development"
-          update_type: "semver:minor"
     default_reviewers:
       - "oBusk"
