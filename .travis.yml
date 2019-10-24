@@ -12,13 +12,11 @@ jobs:
       node_js: stable
       script: npm run jest
       after_success: cat coverage/lcov.info | npx coveralls
-    - node_js:
+    - name: "Tests" # Test in all supported versions (except stable, it was tested in previous job)
+      node_js:
         - lts/erbium
         - lts/dubnium
       script: npm run jest
-      jobs:
-        include:
-          name: "Tests" # Test in all supported versions (except stable, it was tested in previous job)
     - name: "Build"
       node_js: stable
       script: npm run build
