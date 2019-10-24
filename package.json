@@ -62,7 +62,10 @@
                 }
             ],
             [
-                "@pika/plugin-build-web"
+                "@pika/plugin-build-web",
+                {
+                    "entrypoint": "module"
+                }
             ],
             [
                 "@pika/plugin-bundle-web",
