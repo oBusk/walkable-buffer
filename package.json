@@ -23,10 +23,10 @@
         "walk"
     ],
     "engines": {
-        "node": "^10.15.3 ||  >=12.0.0"
+        "node": "^10.17.0 ||  ^12.13.0 || >=13.0.0"
     },
     "volta": {
-        "node": "12.11.1"
+        "node": "13.0.1"
     },
     "dependencies": {
         "@types/node": "^10.14.0",
@@ -38,13 +38,13 @@
         "@pika/plugin-build-web": "^0.7.0",
         "@pika/plugin-bundle-web": "^0.7.0",
         "@pika/plugin-ts-standard-pkg": "^0.7.0",
-        "@types/jest": "^24.0.18",
+        "@types/jest": "^24.0.19",
         "jest": "^24.9.0",
         "ts-jest": "^24.1.0",
         "tslint": "^5.20.0",
         "typedoc": "^0.15.0",
-        "typedoc-plugin-markdown": "^2.2.10",
-        "typescript": "^3.6.3",
+        "typedoc-plugin-markdown": "^2.2.11",
+        "typescript": "^3.6.4",
         "typescript-tslint-plugin": "^0.5.4"
     },
     "@pika/pack": {

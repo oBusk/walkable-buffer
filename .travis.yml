@@ -15,6 +15,7 @@ jobs:
     - name: "Tests"
       node_js: # Test in all supported versions
         - lts/dubnium
+        - lts/erbium
       script: npm run jest
     - name: "Build"
       node_js: stable
