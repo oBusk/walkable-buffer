@@ -17,8 +17,6 @@ jobs:
       node_js: stable
       script: npm run jest
       after_success: cat coverage/lcov.info | npx coveralls
-    - name: "Tests"
-      script: npm run jest
     - name: "Build"
       node_js: stable
       script: npm run build
