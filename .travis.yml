@@ -1,4 +1,9 @@
 language: node_js
+
+node_js:
+  - lts/erbium
+  - lts/dubnium
+
 cache:
   directories:
     - $HOME/.npm
@@ -8,14 +13,11 @@ jobs:
     - name: "Lint and Typecheck"
       node_js: stable
       script: npm run lint && npm run typecheck
-    - name: "Tests (coveralls)" # Only run coveralls on stable
+    - name: "Tests (coveralls)"
       node_js: stable
       script: npm run jest
       after_success: cat coverage/lcov.info | npx coveralls
-    - name: "Tests" # Test in all supported versions (except stable, it was tested in previous job)
-      node_js:
-        - lts/erbium
-        - lts/dubnium
+    - name: "Tests"
       script: npm run jest
     - name: "Build"
       node_js: stable
