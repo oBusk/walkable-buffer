@@ -70,7 +70,10 @@
             [
                 "@pika/plugin-bundle-web",
                 {
-                    "entrypoint": "unpkg"
+                    "entrypoint": [
+                        "unpkg",
+                        "jsdeliver"
+                    ]
                 }
             ]
         ]
