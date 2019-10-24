@@ -10,13 +10,12 @@ cache:
 
 jobs:
   include:
+    - name: "stable (with coveralls)"
+      node_js: stable
+      after_success: cat coverage/lcov.info | npx coveralls
     - name: "Lint and Typecheck"
       node_js: stable
       script: npm run lint && npm run typecheck
-    - name: "Tests (coveralls)"
-      node_js: stable
-      script: npm run jest
-      after_success: cat coverage/lcov.info | npx coveralls
     - name: "Build"
       node_js: stable
       script: npm run build
