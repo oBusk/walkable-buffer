@@ -1,4 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
     "typescript.tsdk": "node_modules/typescript/lib"
 }
