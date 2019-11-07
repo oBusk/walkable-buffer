@@ -1,10 +1,4 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "javascript.format.semicolons": "insert",
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "typescript.format.semicolons": "insert",
-    "typescript.preferences.quoteStyle": "single",
     "typescript.tsdk": "node_modules/typescript/lib"
 }

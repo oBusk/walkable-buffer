@@ -74,10 +74,10 @@ export default class WalkableBuffer {
 
     constructor(readonly options: Readonly<WalkableBufferOptions>) {
         const buffer = options.buffer;
-        const initialCursor = options.initialCursor ?? DEFAULT_INITIAL_CURSOR;
-        const endianness = options.endianness ?? DEFAULT_ENDIANNESS;
-        const encoding = options.encoding ?? DEFAULT_ENCODING;
-        const signed = options.signed ?? DEFAULT_SIGNED;
+        const initialCursor = options.initialCursor || DEFAULT_INITIAL_CURSOR;
+        const endianness = options.endianness || DEFAULT_ENDIANNESS;
+        const encoding = options.encoding || DEFAULT_ENCODING;
+        const signed = options.signed != null ? options.signed : DEFAULT_SIGNED;
 
         if (!buffer || !Buffer.isBuffer(buffer)) {
             throw new Error('No buffer in options!');
