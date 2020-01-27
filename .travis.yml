@@ -23,17 +23,27 @@ jobs:
     - name: "Lint and Typecheck"
       node_js: stable
       script: npm run lint && npm run typecheck
-    - name: "Build"
+    - name: "Build 🐧"
       node_js: stable
-      os:
-        - linux
-        - osx
-        - windows
+      os: linux
       script: npm run build
-    - name: "Generate Documentation"
+    - name: "Build ⛰"
       node_js: stable
-      os:
-        - linux
-        - osx
-        - windows
+      os: osx
+      script: npm run build
+    - name: "Build ◼"
+      node_js: stable
+      os: windows
+      script: npm run build
+    - name: "Generate Documentation 🐧"
+      node_js: stable
+      os: linux
+      script: npm run docs
+    - name: "Generate Documentation ⛰"
+      node_js: stable
+      os: osx
+      script: npm run docs
+    - name: "Generate Documentation ◼"
+      node_js: stable
+      os: windows
       script: npm run docs
