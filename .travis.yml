@@ -5,6 +5,11 @@ node_js:
   - lts/erbium
   - lts/dubnium
 
+os:
+  - linux
+  - osx
+  - windows
+
 cache:
   directories:
     - $HOME/.npm
