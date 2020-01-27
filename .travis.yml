@@ -4,7 +4,7 @@ node_js:
   - 10.15.3
   - lts/erbium
   - lts/dubnium
-  - stable
+  - node
 
 os:
   - linux
@@ -18,32 +18,32 @@ cache:
 jobs:
   include:
     - name: "coveralls"
-      node_js: stable
+      node_js: node
       after_success: cat coverage/lcov.info | npx coveralls
     - name: "Lint and Typecheck"
-      node_js: stable
+      node_js: node
       script: npm run lint && npm run typecheck
     - name: "Build 🐧"
-      node_js: stable
+      node_js: node
       os: linux
       script: npm run build
     - name: "Build ⛰"
-      node_js: stable
+      node_js: node
       os: osx
       script: npm run build
     - name: "Build ◼"
-      node_js: stable
+      node_js: node
       os: windows
       script: npm run build
     - name: "Generate Documentation 🐧"
-      node_js: stable
+      node_js: node
       os: linux
       script: npm run docs
     - name: "Generate Documentation ⛰"
-      node_js: stable
+      node_js: node
       os: osx
       script: npm run docs
     - name: "Generate Documentation ◼"
-      node_js: stable
+      node_js: node
       os: windows
       script: npm run docs
