@@ -1,14 +1,11 @@
 language: node_js
 
+os: linux
+
 node_js:
   - lts/erbium
   - lts/dubnium
   - node
-
-os:
-  - linux
-  - osx
-  - windows
 
 cache:
   directories:
@@ -25,27 +22,27 @@ jobs:
     - name: "Lint and Typecheck"
       node_js: node
       script: npm run lint && npm run typecheck
-    - name: "Build 🐧"
+    - name: "Build"
       node_js: node
       os: linux
       script: npm run build
-    - name: "Build ⛰"
+    - name: "Build"
       node_js: node
       os: osx
       script: npm run build
-    - name: "Build ◼"
+    - name: "Build"
       node_js: node
       os: windows
       script: npm run build
-    - name: "Generate Documentation 🐧"
+    - name: "Generate Documentation"
       node_js: node
       os: linux
       script: npm run docs
-    - name: "Generate Documentation ⛰"
+    - name: "Generate Documentation"
       node_js: node
       os: osx
       script: npm run docs
-    - name: "Generate Documentation ◼"
+    - name: "Generate Documentation"
       node_js: node
       os: windows
       script: npm run docs
