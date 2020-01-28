@@ -13,36 +13,36 @@ cache:
 
 jobs:
   include:
-    - name: "Google Cloud Environment"
+    - name: "Google Cloud Environment (Node 10.15.3)"
       os: linux
       node_js: 10.15.3
-    - name: "coveralls"
+    - name: "Coverage"
       node_js: node
       after_success: cat coverage/lcov.info | npx coveralls
     - name: "Lint and Typecheck"
       node_js: node
       script: npm run lint && npm run typecheck
-    - name: "Build"
+    - name: "Build (linux)"
       node_js: node
       os: linux
       script: npm run build
-    - name: "Build"
+    - name: "Build (osx)"
       node_js: node
       os: osx
       script: npm run build
-    - name: "Build"
+    - name: "Build (windows)"
       node_js: node
       os: windows
       script: npm run build
-    - name: "Generate Documentation"
+    - name: "Generate Documentation (linux)"
       node_js: node
       os: linux
       script: npm run docs
-    - name: "Generate Documentation"
+    - name: "Generate Documentation (osx)"
       node_js: node
       os: osx
       script: npm run docs
-    - name: "Generate Documentation"
+    - name: "Generate Documentation (windows)"
       node_js: node
       os: windows
       script: npm run docs
