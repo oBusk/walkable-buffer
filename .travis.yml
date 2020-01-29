@@ -21,27 +21,15 @@ jobs:
     - name: "Lint and Typecheck"
       node_js: node
       script: npm run lint && npm run typecheck
-    - name: "Build (linux)"
+    - name: "Build and Docs (linux)"
       node_js: node
       os: linux
-      script: npm run build
-    - name: "Build (osx)"
+      script: npm run build && npm run docs
+    - name: "Build and Docs (osx)"
       node_js: node
       os: osx
-      script: npm run build
-    - name: "Build (windows)"
+      script: npm run build && npm run docs
+    - name: "Build and Docs (windows)"
       node_js: node
       os: windows
-      script: npm run build
-    - name: "Generate Documentation (linux)"
-      node_js: node
-      os: linux
-      script: npm run docs
-    - name: "Generate Documentation (osx)"
-      node_js: node
-      os: osx
-      script: npm run docs
-    - name: "Generate Documentation (windows)"
-      node_js: node
-      os: windows
-      script: npm run docs
+      script: npm run build && npm run docs
