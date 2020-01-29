@@ -1,7 +1,8 @@
 language: node_js
 
+os: linux
+
 node_js:
-  - 10.15.3
   - lts/erbium
   - lts/dubnium
 
@@ -11,15 +12,36 @@ cache:
 
 jobs:
   include:
-    - name: "stable (with coveralls)"
-      node_js: stable
+    - name: "Google Cloud Environment (Node 10.15.3)"
+      os: linux
+      node_js: 10.15.3
+    - name: "node (With coverage)"
+      node_js: node
       after_success: cat coverage/lcov.info | npx coveralls
     - name: "Lint and Typecheck"
-      node_js: stable
+      node_js: node
       script: npm run lint && npm run typecheck
-    - name: "Build"
-      node_js: stable
+    - name: "Build (linux)"
+      node_js: node
+      os: linux
       script: npm run build
-    - name: "Generate Documentation"
-      node_js: stable
+    - name: "Build (osx)"
+      node_js: node
+      os: osx
+      script: npm run build
+    - name: "Build (windows)"
+      node_js: node
+      os: windows
+      script: npm run build
+    - name: "Generate Documentation (linux)"
+      node_js: node
+      os: linux
+      script: npm run docs
+    - name: "Generate Documentation (osx)"
+      node_js: node
+      os: osx
+      script: npm run docs
+    - name: "Generate Documentation (windows)"
+      node_js: node
+      os: windows
       script: npm run docs
