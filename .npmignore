@@ -1,0 +1,16 @@
+dist/**/*.spec.*
+dist.module/**/*.spec.*
+coverage/
+.vscode/
+.dependabot/
+api/
+src/
+.editorconfig
+.gitignore
+.npmignore
+.travis.yml
+jest.config.js
+tsconfig.json
+tsconfig.module.json
+tslint.json
+*.tgz
