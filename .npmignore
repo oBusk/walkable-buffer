@@ -3,7 +3,6 @@ dist.module/**/*.spec.*
 coverage/
 .vscode/
 .dependabot/
-api/
 src/
 .editorconfig
 .gitignore
