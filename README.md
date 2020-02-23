@@ -39,11 +39,6 @@ const b = wb.getBigInt(null, false); // 18_446_744_073_709_551_615n
 
 The library is deployed with detailed `.d.ts` typings which should help in usage.
 
-There is also generated API documentation. See
-
-* [WalkableBuffer](https://github.com/oBusk/walkable-buffer/blob/master/api/classes/walkablebuffer.md)
-* [WalkableBufferOptions](https://github.com/oBusk/walkable-buffer/blob/master/api/interfaces/walkablebufferoptions.md)
-
 ## License
 
 MIT © Oscar Busk

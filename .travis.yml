@@ -33,15 +33,3 @@ jobs:
       node_js: node
       os: windows
       script: npm run build
-    - name: "Generate Documentation (linux)"
-      node_js: node
-      os: linux
-      script: npm run docs
-    - name: "Generate Documentation (osx)"
-      node_js: node
-      os: osx
-      script: npm run docs
-    - name: "Generate Documentation (windows)"
-      node_js: node
-      os: windows
-      script: npm run docs
