@@ -66,11 +66,11 @@ export default class WalkableBuffer {
         return typeof check === 'string' && (check === 'LE' || check === 'BE');
     }
 
-    private cursor: number;
-    private readonly buffer: Buffer;
-    private endianness!: Endianness;
-    private encoding!: Encoding;
-    private signed!: boolean;
+    #cursor: number;
+    readonly #buffer: Buffer;
+    #endianness!: Endianness;
+    #encoding!: Encoding;
+    #signed!: boolean;
 
     constructor(readonly options: Readonly<WalkableBufferOptions>) {
         const buffer = options.buffer;
@@ -82,12 +82,12 @@ export default class WalkableBuffer {
         if (!buffer || !Buffer.isBuffer(buffer)) {
             throw new Error('No buffer in options!');
         }
-        this.buffer = Buffer.from(buffer); // Make sure to copy, not reference.
+        this.#buffer = Buffer.from(buffer); // Make sure to copy, not reference.
 
         if ((buffer.length - 1) < initialCursor || initialCursor < 0) {
             throw new Error(`Invalid initialCursor '${initialCursor}'`);
         }
-        this.cursor = initialCursor;
+        this.#cursor = initialCursor;
 
         this.setEndianness(endianness);
         this.setEncoding(encoding);
@@ -111,10 +111,10 @@ export default class WalkableBuffer {
          */
         signed = this.getSigned(),
     ): number {
-        const result = this.readInt(this.cursor, byteLength, endianness, signed);
+        const result = this.readInt(this.#cursor, byteLength, endianness, signed);
 
         // Only do this if the read didn't throw
-        this.cursor += byteLength;
+        this.#cursor += byteLength;
 
         return result;
     }
@@ -134,10 +134,10 @@ export default class WalkableBuffer {
          */
         signed = this.getSigned(),
     ): bigint {
-        const result: bigint = this.readBigInt(this.cursor, endianness, signed);
+        const result: bigint = this.readBigInt(this.#cursor, endianness, signed);
 
         // Only do this if the read didn't throw
-        this.cursor += 8;
+        this.#cursor += 8;
 
         return result;
     }
@@ -166,7 +166,7 @@ export default class WalkableBuffer {
          */
         signed = this.getSigned(),
     ): number {
-        return this.readInt(this.cursor + byteOffset, byteLength, endianness, signed);
+        return this.readInt(this.#cursor + byteOffset, byteLength, endianness, signed);
     }
 
     /**
@@ -194,7 +194,7 @@ export default class WalkableBuffer {
          */
         signed = this.getSigned(),
     ): bigint {
-        return this.readBigInt(this.cursor + byteOffset, endianness, signed);
+        return this.readBigInt(this.#cursor + byteOffset, endianness, signed);
     }
 
     /** Reads strings of `byteLength` bytes from current cursor position and advances cursor `byteLength` steps. */
@@ -209,7 +209,7 @@ export default class WalkableBuffer {
          */
         encoding = this.getEncoding(),
     ): string {
-        const max = this.size() - this.cursor;
+        const max = this.size() - this.#cursor;
 
         if (byteLength < 0 || byteLength > max) {
             throw new Error(
@@ -217,10 +217,10 @@ export default class WalkableBuffer {
             );
         }
 
-        return this.buffer.toString(
+        return this.#buffer.toString(
             encoding,
-            this.cursor,
-            this.cursor += byteLength,
+            this.#cursor,
+            this.#cursor += byteLength,
         );
     }
 
@@ -264,7 +264,7 @@ export default class WalkableBuffer {
             );
         }
 
-        return this.buffer.toString(
+        return this.#buffer.toString(
             encoding,
             startPos,
             startPos + byteLength,
@@ -314,7 +314,7 @@ export default class WalkableBuffer {
         try {
             return this.getString(size, encoding);
         } catch (e) {
-            this.cursor -= sizeOfSize;
+            this.#cursor -= sizeOfSize;
             throw e;
         }
     }
@@ -329,8 +329,8 @@ export default class WalkableBuffer {
         byteLength?: number,
     ): Buffer {
         if (byteLength == null) {
-            const result = this.buffer.slice(this.cursor);
-            this.cursor = this.buffer.length;
+            const result = this.#buffer.slice(this.#cursor);
+            this.#cursor = this.#buffer.length;
             return result;
         } else {
             const max = this.size() - this.getCurrentPos();
@@ -341,7 +341,7 @@ export default class WalkableBuffer {
                 );
             }
 
-            return this.buffer.slice(this.cursor, this.cursor += byteLength);
+            return this.#buffer.slice(this.#cursor, this.#cursor += byteLength);
         }
     }
 
@@ -355,12 +355,12 @@ export default class WalkableBuffer {
             );
         }
 
-        return this.cursor += byteLength;
+        return this.#cursor += byteLength;
     }
 
     /** Returns current cursor position */
     getCurrentPos(): number {
-        return this.cursor;
+        return this.#cursor;
     }
 
     /** Moves cursor to byte-position `byteOffset` */
@@ -374,12 +374,12 @@ export default class WalkableBuffer {
             );
         }
 
-        return this.cursor = byteOffset;
+        return this.#cursor = byteOffset;
     }
 
     /** Returns the instance default endianness */
     getEndianness(): Endianness {
-        return this.endianness;
+        return this.#endianness;
     }
 
     /**
@@ -394,7 +394,7 @@ export default class WalkableBuffer {
         endianness: Endianness,
     ): Endianness {
         if (WalkableBuffer.isEndianness(endianness)) {
-            this.endianness = endianness;
+            this.#endianness = endianness;
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
@@ -404,7 +404,7 @@ export default class WalkableBuffer {
 
     /** Gets the instance current default text encoding. */
     getEncoding(): Encoding {
-        return this.encoding;
+        return this.#encoding;
     }
 
     /**
@@ -421,7 +421,7 @@ export default class WalkableBuffer {
         encoding: Encoding,
     ): Encoding {
         if (Buffer.isEncoding(encoding)) {
-            this.encoding = encoding;
+            this.#encoding = encoding;
         } else {
             throw new Error(`Invalid encoding '${encoding}'`);
         }
@@ -431,7 +431,7 @@ export default class WalkableBuffer {
 
     /** Get the instance current `signed`. If numbers that are read should be signed rather than unsigned. */
     getSigned(): boolean {
-        return this.signed;
+        return this.#signed;
     }
 
     /**
@@ -441,7 +441,7 @@ export default class WalkableBuffer {
      */
     setSigned(signed: boolean): boolean {
         if (typeof signed === 'boolean') {
-            this.signed = signed;
+            this.#signed = signed;
         } else {
             throw new Error(`Invalid value for signed '${signed}'`);
         }
@@ -455,32 +455,32 @@ export default class WalkableBuffer {
      * Note that this will not be `===` the buffer provided on creation, as a copy is made on creation.
      */
     getSourceBuffer(): Buffer {
-        return this.buffer;
+        return this.#buffer;
     }
 
     /** @returns the size in bytes of the full buffer. */
     size(): number {
-        return this.buffer.length;
+        return this.#buffer.length;
     }
 
     /** @returns the number of bytes from current cursor to the end of the buffer.  */
     sizeRemainingBuffer(): number {
-        return this.size() - this.cursor;
+        return this.size() - this.#cursor;
     }
 
     /** Wrapper for `Buffer.readIntLE()` and `Buffer.readIntBE()` that takes `endianness` and `signed` into account. */
     private readInt(offset: number, byteLength: number, endianness: Endianness, signed: boolean): number {
         if (endianness === 'BE') {
             if (signed) {
-                return this.buffer.readIntBE(offset, byteLength);
+                return this.#buffer.readIntBE(offset, byteLength);
             } else {
-                return this.buffer.readUIntBE(offset, byteLength);
+                return this.#buffer.readUIntBE(offset, byteLength);
             }
         } else if (endianness === 'LE') {
             if (signed) {
-                return this.buffer.readIntLE(offset, byteLength);
+                return this.#buffer.readIntLE(offset, byteLength);
             } else {
-                return this.buffer.readUIntLE(offset, byteLength);
+                return this.#buffer.readUIntLE(offset, byteLength);
             }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
@@ -489,8 +489,8 @@ export default class WalkableBuffer {
 
     /** Wrapper to read `bigint` from `this.buffer` */
     private readBigInt(offset: number, endianness: string, signed: boolean) {
-        const first = this.buffer[offset];
-        const last = this.buffer[offset + 7];
+        const first = this.#buffer[offset];
+        const last = this.#buffer[offset + 7];
         if (first === undefined || last === undefined) {
             throw new Error('Out of bounds');
         }
@@ -516,13 +516,13 @@ export default class WalkableBuffer {
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L78-L96
     private readBigUInt64LE(offset: number, first: number, last: number) {
         const lo = first +
-            this.buffer[++offset] * 2 ** 8 +
-            this.buffer[++offset] * 2 ** 16 +
-            this.buffer[++offset] * 2 ** 24;
+            this.#buffer[++offset] * 2 ** 8 +
+            this.#buffer[++offset] * 2 ** 16 +
+            this.#buffer[++offset] * 2 ** 24;
 
-        const hi = this.buffer[++offset] +
-            this.buffer[++offset] * 2 ** 8 +
-            this.buffer[++offset] * 2 ** 16 +
+        const hi = this.#buffer[++offset] +
+            this.#buffer[++offset] * 2 ** 8 +
+            this.#buffer[++offset] * 2 ** 16 +
             last * 2 ** 24;
 
         return BigInt(lo) + (BigInt(hi) << BigInt(32));
@@ -531,13 +531,13 @@ export default class WalkableBuffer {
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L98-L116
     private readBigUInt64BE(offset: number, first: number, last: number) {
         const hi = first * 2 ** 24 +
-            this.buffer[++offset] * 2 ** 16 +
-            this.buffer[++offset] * 2 ** 8 +
-            this.buffer[++offset];
+            this.#buffer[++offset] * 2 ** 16 +
+            this.#buffer[++offset] * 2 ** 8 +
+            this.#buffer[++offset];
 
-        const lo = this.buffer[++offset] * 2 ** 24 +
-            this.buffer[++offset] * 2 ** 16 +
-            this.buffer[++offset] * 2 ** 8 +
+        const lo = this.#buffer[++offset] * 2 ** 24 +
+            this.#buffer[++offset] * 2 ** 16 +
+            this.#buffer[++offset] * 2 ** 8 +
             last;
 
         return (BigInt(hi) << BigInt(32)) + BigInt(lo);
@@ -545,27 +545,27 @@ export default class WalkableBuffer {
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L118-L134
     private readBigInt64LE(offset: number, first: number, last: number) {
-        const val = this.buffer[offset + 4] +
-            this.buffer[offset + 5] * 2 ** 8 +
-            this.buffer[offset + 6] * 2 ** 16 +
+        const val = this.#buffer[offset + 4] +
+            this.#buffer[offset + 5] * 2 ** 8 +
+            this.#buffer[offset + 6] * 2 ** 16 +
             (last << 24); // Overflow
         return (BigInt(val) << BigInt(32)) +
             BigInt(first +
-                this.buffer[++offset] * 2 ** 8 +
-                this.buffer[++offset] * 2 ** 16 +
-                this.buffer[++offset] * 2 ** 24);
+                this.#buffer[++offset] * 2 ** 8 +
+                this.#buffer[++offset] * 2 ** 16 +
+                this.#buffer[++offset] * 2 ** 24);
     }
 
     // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L136-L152
     private readBigInt64BE(offset: number, first: number, last: number) {
         const val = (first << 24) + // Overflow
-            this.buffer[++offset] * 2 ** 16 +
-            this.buffer[++offset] * 2 ** 8 +
-            this.buffer[++offset];
+            this.#buffer[++offset] * 2 ** 16 +
+            this.#buffer[++offset] * 2 ** 8 +
+            this.#buffer[++offset];
         return (BigInt(val) << BigInt(32)) +
-            BigInt(this.buffer[++offset] * 2 ** 24 +
-                this.buffer[++offset] * 2 ** 16 +
-                this.buffer[++offset] * 2 ** 8 +
+            BigInt(this.#buffer[++offset] * 2 ** 24 +
+                this.#buffer[++offset] * 2 ** 16 +
+                this.#buffer[++offset] * 2 ** 8 +
                 last);
     }
 }
