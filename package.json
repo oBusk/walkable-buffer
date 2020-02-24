@@ -22,6 +22,7 @@
         "require": "./dist.module/index.js"
     },
     "main": "./dist/index.js",
+    "typings": "./dist/index.d.ts",
     "module": "./dist.module/index.js",
     "sideEffects": false,
     "scripts": {
@@ -46,6 +47,5 @@
         "tslint": "^6.0.0",
         "typescript": "^3.8.2",
         "typescript-tslint-plugin": "^0.5.5"
-    },
-    "typings": "dist/index.d.ts"
+    }
 }
