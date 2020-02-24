@@ -21,7 +21,7 @@
         "import": "./dist/index.js",
         "require": "./dist.module/index.js"
     },
-    "main": "./dist.module/index.js",
+    "main": "./dist/index.js",
     "module": "./dist.module/index.js",
     "sideEffects": false,
     "scripts": {
