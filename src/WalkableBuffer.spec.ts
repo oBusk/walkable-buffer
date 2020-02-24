@@ -1,4 +1,5 @@
-import WalkableBuffer, { BYTE, LONG, LONGLONG, SHORT } from './index';
+import { BYTE, LONG, LONGLONG, SHORT } from './constants';
+import { WalkableBuffer } from './WalkableBuffer';
 
 describe('constructor', () => {
     describe('parameters', () => {
