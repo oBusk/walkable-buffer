@@ -10,7 +10,12 @@
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "MIT",
     "repository": "git+https://github.com/oBusk/walkable-buffer.git",
-    "sideEffects": false,
+    "engines": {
+        "node": "~10.15.3 || ^10.18.0 || ^12.14.0 || >=13.6.0"
+    },
+    "volta": {
+        "node": "13.7.0"
+    },
     "scripts": {
         "build": "rimraf dist/ dist.module/ && tsc -p tsconfig.app.json && tsc -P tsconfig.module.app.json",
         "jest": "jest",
@@ -20,12 +25,6 @@
         "test:watch": "jest --watch --updateSnapshot",
         "typecheck": "tsc --noEmit",
         "version": "npm run build"
-    },
-    "engines": {
-        "node": "~10.15.3 || ^10.18.0 || ^12.14.0 || >=13.6.0"
-    },
-    "volta": {
-        "node": "13.7.0"
     },
     "dependencies": {
         "@types/node": "^10.15.0",
@@ -42,5 +41,6 @@
     },
     "main": "dist/index.js",
     "module": "dist.module/index.js",
+    "sideEffects": false,
     "typings": "dist/index.d.ts"
 }
