@@ -14,8 +14,16 @@
         "node": "~10.16.2 || ^10.19.0 || ^12.16.0 || >=13.9.0"
     },
     "volta": {
-        "node": "13.9.0"
+        "node": "10.19.0"
     },
+    "type": "module",
+    "exports": {
+        "import": "./dist/index.js",
+        "require": "./dist.module/index.js"
+    },
+    "main": "./dist.module/index.js",
+    "module": "./dist.module/index.js",
+    "sideEffects": false,
     "scripts": {
         "build": "rimraf dist/ dist.module/ && tsc -p tsconfig.app.json && tsc -P tsconfig.module.app.json",
         "jest": "jest",
@@ -39,8 +47,5 @@
         "typescript": "^3.8.2",
         "typescript-tslint-plugin": "^0.5.5"
     },
-    "main": "dist/index.js",
-    "module": "dist.module/index.js",
-    "sideEffects": false,
     "typings": "dist/index.d.ts"
 }
