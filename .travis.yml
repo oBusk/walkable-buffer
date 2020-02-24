@@ -12,9 +12,9 @@ cache:
 
 jobs:
   include:
-    - name: "Google Cloud Environment (Node 10.15.3)"
+    - name: "Google Cloud Environment (Node 10.16.2)"
       os: linux
-      node_js: 10.15.3
+      node_js: 10.16.2
     - name: "node (With coverage)"
       node_js: node
       after_success: cat coverage/lcov.info | npx coveralls
