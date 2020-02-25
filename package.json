@@ -9,7 +9,14 @@
     ],
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "MIT",
-    "repository": "git+https://github.com/oBusk/walkable-buffer.git",
+    "homepage": "https://github.com/oBusk/walkable-buffer#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/oBusk/walkable-buffer.git"
+    },
+    "bugs": {
+        "url": "https://github.com/oBusk/walkable-buffer/issues"
+    },
     "engines": {
         "node": "~10.16.2 || ^10.19.0 || ^12.16.0 || >=13.9.0"
     },
