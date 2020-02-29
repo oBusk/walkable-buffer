@@ -1,5 +1,5 @@
-import { Endianness } from './Endianness';
 import { Encoding } from './Encoding';
+import { Endianness } from './Endianness';
 
 /**
  * The options to provide into the constructor of `WalkableBuffer`.
