@@ -27,7 +27,7 @@
     "main": "./dist/index.js",
     "sideEffects": false,
     "scripts": {
-        "build": "rimraf dist/ && tsc -p",
+        "build": "rimraf dist/ && tsc",
         "jest": "jest",
         "lint": "tslint --project tsconfig.json --format stylish",
         "posttest": "npm run typecheck && npm run lint",
