@@ -23,17 +23,11 @@
     "volta": {
         "node": "10.19.0"
     },
-    "type": "module",
-    "exports": {
-        "import": "./dist/index.js",
-        "require": "./dist.module/index.js"
-    },
+    "type": "commonjs",
     "main": "./dist/index.js",
-    "typings": "./dist/index.d.ts",
-    "module": "./dist.module/index.js",
     "sideEffects": false,
     "scripts": {
-        "build": "rimraf dist/ dist.module/ && tsc -p tsconfig.app.json && tsc -P tsconfig.module.app.json",
+        "build": "rimraf dist/ && tsc -p",
         "jest": "jest",
         "lint": "tslint --project tsconfig.json --format stylish",
         "posttest": "npm run typecheck && npm run lint",
