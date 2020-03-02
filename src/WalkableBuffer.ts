@@ -1,6 +1,6 @@
 import { DEFAULT_ENCODING, DEFAULT_ENDIANNESS, DEFAULT_INITIAL_CURSOR, DEFAULT_SIGNED, LONG } from './constants';
 import { Encoding } from './Encoding';
-import { Endianness } from './Endianness';
+import { Endianness, isEndianness } from './Endianness';
 import { WalkableBufferOptions } from './WalkableBufferOptions';
 
 /**
@@ -9,11 +9,6 @@ import { WalkableBufferOptions } from './WalkableBufferOptions';
  * Create instance providing `WalkableBufferOptions`, with the `buffer` option as required.
  */
 export class WalkableBuffer {
-    /** Asserts that `check` is either string `LE` or string `BE`. */
-    static isEndianness(check: string): check is Endianness {
-        return typeof check === 'string' && (check === 'LE' || check === 'BE');
-    }
-
     #cursor: number;
     readonly #buffer: Buffer;
     #endianness!: Endianness;
@@ -317,7 +312,7 @@ export class WalkableBuffer {
 
         if (byteOffset < 0 || byteOffset > max) {
             throw new Error(
-                `The value of "byteLength" is out of range. `
+                `The value of "byteOffset" is out of range. `
                 + `It must be >= 0 and <= ${max}. Received ${byteOffset}`,
             );
         }
@@ -341,7 +336,7 @@ export class WalkableBuffer {
         /** Either `BE` for big-endian or `LE` for little-endian. */
         endianness: Endianness,
     ): Endianness {
-        if (WalkableBuffer.isEndianness(endianness)) {
+        if (isEndianness(endianness)) {
             this.#endianness = endianness;
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
