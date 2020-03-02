@@ -1,11 +1,11 @@
 # Walkable Buffer
 
 [![npm version](https://badgen.net/npm/v/walkable-buffer)](https://www.npmjs.com/package/walkable-buffer)
-[![install size](https://badgen.net/packagephobia/publish/walkable-buffer)](https://packagephobia.now.sh/result?p=walkable-buffer)
-[![minified size](https://badgen.net/bundlephobia/min/walkable-buffer)](https://bundlephobia.com/result?p=walkable-buffer)
+[![Node.js CI](https://github.com/oBusk/walkable-buffer/workflows/Node.js%20CI/badge.svg)](https://github.com/oBusk/walkable-buffer/actions)
+[![codecov](https://codecov.io/gh/oBusk/walkable-buffer/branch/master/graph/badge.svg)](https://codecov.io/gh/oBusk/walkable-buffer)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=oBusk/walkable-buffer)](https://dependabot.com)
-[![Build Status](https://travis-ci.com/oBusk/walkable-buffer.svg?branch=master)](https://travis-ci.com/oBusk/walkable-buffer)
-[![Coverage Status](https://coveralls.io/repos/github/oBusk/walkable-buffer/badge.svg?branch=master)](https://coveralls.io/github/oBusk/walkable-buffer?branch=master)
+[![Bundlesize](https://img.shields.io/bundlephobia/minzip/walkable-buffer)](https://bundlephobia.com/result?p=walkable-buffer)
+[![Bundle Watched](https://img.shields.io/badge/bundle-watched-blue.svg)](https://bundlewatch.io)
 
 > 🚶🛡️ A class for easily reading data from binary Buffers
 
