@@ -1,8 +1,4 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-    "javascript.format.semicolons": "insert",
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.format.semicolons": "insert",
-    "typescript.preferences.quoteStyle": "single",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "typescript.tsdk": "node_modules/typescript/lib"
 }

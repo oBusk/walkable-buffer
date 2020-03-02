@@ -1,7 +1,8 @@
-'use strict';
-
 module.exports = {
-    rootDir: 'src',
-    testEnvironment: 'node',
-    preset: 'ts-jest'
+    roots: ["<rootDir>/src/"],
+    transform: {
+        "\\.ts$": "ts-jest"
+    },
+    testRegex: "\\.spec\\.(ts|js)$",
+    moduleFileExtensions: ["ts", "js", "json"]
 };
