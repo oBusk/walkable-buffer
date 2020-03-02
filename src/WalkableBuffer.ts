@@ -1,5 +1,5 @@
 import { DEFAULT_ENCODING, DEFAULT_ENDIANNESS, DEFAULT_INITIAL_CURSOR, DEFAULT_SIGNED, LONG } from './constants';
-import { Encoding } from './Encoding';
+import { Encoding, isEncoding } from './Encoding';
 import { Endianness, isEndianness } from './Endianness';
 import { WalkableBufferOptions } from './WalkableBufferOptions';
 
@@ -363,7 +363,7 @@ export class WalkableBuffer {
          */
         encoding: Encoding,
     ): Encoding {
-        if (Buffer.isEncoding(encoding)) {
+        if (isEncoding(encoding)) {
             this.#encoding = encoding;
         } else {
             throw new Error(`Invalid encoding '${encoding}'`);
