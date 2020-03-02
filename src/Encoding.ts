@@ -25,6 +25,7 @@ export type Encoding =
     | 'binary'
     | 'hex';
 
+/** Ensures if `check` is one of the supported `Encoding`s. */
 export function isEncoding(check: string): check is Encoding {
     return Buffer.isEncoding(check)!;
 }
