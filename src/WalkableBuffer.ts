@@ -1,3 +1,4 @@
+import { readBigInt64BE, readBigInt64LE, readBigUInt64BE, readBigUInt64LE } from 'read-bigint';
 import { DEFAULT_ENCODING, DEFAULT_ENDIANNESS, DEFAULT_INITIAL_CURSOR, DEFAULT_SIGNED, LONG } from './constants';
 import { Encoding, isEncoding } from './Encoding';
 import { Endianness, isEndianness } from './Endianness';
@@ -432,83 +433,22 @@ export class WalkableBuffer {
 
     /** Wrapper to read `bigint` from `this.buffer` */
     private readBigInt(offset: number, endianness: string, signed: boolean) {
-        const first = this.#buffer[offset];
-        const last = this.#buffer[offset + 7];
-        if (first === undefined || last === undefined) {
-            throw new Error('Out of bounds');
-        }
         let result: bigint;
         if (endianness === 'LE') {
             if (signed) {
-                result = this.readBigInt64LE(offset, first, last);
+                result = readBigInt64LE(this.#buffer, offset);
             } else {
-                result = this.readBigUInt64LE(offset, first, last);
+                result = readBigUInt64LE(this.#buffer, offset);
             }
         } else if (endianness === 'BE') {
             if (signed) {
-                result = this.readBigInt64BE(offset, first, last);
+                result = readBigInt64BE(this.#buffer, offset);
             } else {
-                result = this.readBigUInt64BE(offset, first, last);
+                result = readBigUInt64BE(this.#buffer, offset);
             }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
         return result;
-    }
-
-    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L78-L96
-    private readBigUInt64LE(offset: number, first: number, last: number) {
-        const lo = first +
-            this.#buffer[++offset] * 2 ** 8 +
-            this.#buffer[++offset] * 2 ** 16 +
-            this.#buffer[++offset] * 2 ** 24;
-
-        const hi = this.#buffer[++offset] +
-            this.#buffer[++offset] * 2 ** 8 +
-            this.#buffer[++offset] * 2 ** 16 +
-            last * 2 ** 24;
-
-        return BigInt(lo) + (BigInt(hi) << BigInt(32));
-    }
-
-    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L98-L116
-    private readBigUInt64BE(offset: number, first: number, last: number) {
-        const hi = first * 2 ** 24 +
-            this.#buffer[++offset] * 2 ** 16 +
-            this.#buffer[++offset] * 2 ** 8 +
-            this.#buffer[++offset];
-
-        const lo = this.#buffer[++offset] * 2 ** 24 +
-            this.#buffer[++offset] * 2 ** 16 +
-            this.#buffer[++offset] * 2 ** 8 +
-            last;
-
-        return (BigInt(hi) << BigInt(32)) + BigInt(lo);
-    }
-
-    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L118-L134
-    private readBigInt64LE(offset: number, first: number, last: number) {
-        const val = this.#buffer[offset + 4] +
-            this.#buffer[offset + 5] * 2 ** 8 +
-            this.#buffer[offset + 6] * 2 ** 16 +
-            (last << 24); // Overflow
-        return (BigInt(val) << BigInt(32)) +
-            BigInt(first +
-                this.#buffer[++offset] * 2 ** 8 +
-                this.#buffer[++offset] * 2 ** 16 +
-                this.#buffer[++offset] * 2 ** 24);
-    }
-
-    // based on https://github.com/nodejs/node/blob/v12.6.0/lib/internal/buffer.js#L136-L152
-    private readBigInt64BE(offset: number, first: number, last: number) {
-        const val = (first << 24) + // Overflow
-            this.#buffer[++offset] * 2 ** 16 +
-            this.#buffer[++offset] * 2 ** 8 +
-            this.#buffer[++offset];
-        return (BigInt(val) << BigInt(32)) +
-            BigInt(this.#buffer[++offset] * 2 ** 24 +
-                this.#buffer[++offset] * 2 ** 16 +
-                this.#buffer[++offset] * 2 ** 8 +
-                last);
     }
 }
