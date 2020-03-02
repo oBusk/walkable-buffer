@@ -15,30 +15,30 @@
 npm install walkable-buffer
 ```
 
-* If using Typescript, Typescript `>=3.8` is required.
+-   If using Typescript, Typescript `>=3.8` is required.
 
-* [Supported Node versions](./package.json#L24-L26) aim to be
-[Latest current and LTS](https://nodejs.org/en/download/releases/) as well as trying to keep up to date
-with the latest supported node in
-[Google cloud functions](https://cloud.google.com/functions/docs/concepts/nodejs-10-runtime).
+-   [Supported Node versions](./package.json#L24-L26) aim to be
+    [Latest current and LTS](https://nodejs.org/en/download/releases/) as well as trying to keep up to date
+    with the latest supported node in
+    [Google cloud functions](https://cloud.google.com/functions/docs/concepts/nodejs-10-runtime).
 
 ## Usage
 
 ```js
-import fs from 'fs';
-import WalkableBuffer from 'walkable-buffer';
+import fs from "fs";
+import WalkableBuffer from "walkable-buffer";
 
-const buffer = fs.readFileSync('./temp');
+const buffer = fs.readFileSync("./temp");
 const wb = new WalkableBuffer({
     buffer,
     // Set instance defaults
-    endianness: 'LE',
-    encoding: 'utf8',
-    signed: true,
+    endianness: "LE",
+    encoding: "utf8",
+    signed: true
 });
 
-const v = wb.get(6, 'BE'); // 140 737 488 355 327
-const s = wb.getString(16, 'utf16le'); // "Hellö höw åre yö"
+const v = wb.get(6, "BE"); // 140 737 488 355 327
+const s = wb.getString(16, "utf16le"); // "Hellö höw åre yö"
 const b = wb.getBigInt(null, false); // 18_446_744_073_709_551_615n
 ```
 

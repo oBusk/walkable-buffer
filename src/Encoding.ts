@@ -16,16 +16,16 @@
  * > https://nodejs.org/docs/latest-v10.x/api/buffer.html#buffer_buffers_and_character_encodings
  */
 export type Encoding =
-    | 'ascii'
-    | 'utf8'
-    | 'utf16le'
-    | 'ucs2'
-    | 'base64'
-    | 'latin1'
-    | 'binary'
-    | 'hex';
+    | "ascii"
+    | "utf8"
+    | "utf16le"
+    | "ucs2"
+    | "base64"
+    | "latin1"
+    | "binary"
+    | "hex";
 
 /** Ensures if `check` is one of the supported `Encoding`s. */
 export function isEncoding(check: string): check is Encoding {
-    return Buffer.isEncoding(check)!;
+    return !!Buffer.isEncoding(check);
 }
