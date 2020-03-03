@@ -1443,7 +1443,7 @@ describe("string functions", () => {
             const buffer = wBuf.getBuffer();
 
             expect(buffer).toBeInstanceOf(Buffer);
-            expect(buffer.length).toBe(0x0c);
+            expect(buffer).toHaveLength(0x0c);
             expect(wBuf.getCurrentPos()).toBe(0x10);
         });
 
@@ -1451,7 +1451,7 @@ describe("string functions", () => {
             const buffer = wBuf.getBuffer(1);
 
             expect(buffer).toBeInstanceOf(Buffer);
-            expect(buffer.length).toBe(1);
+            expect(buffer).toHaveLength(1);
             expect(wBuf.getCurrentPos()).toBe(0x05);
         });
 
@@ -1459,7 +1459,7 @@ describe("string functions", () => {
             const buffer = wBuf.getBuffer(0x0c);
 
             expect(buffer).toBeInstanceOf(Buffer);
-            expect(buffer.length).toBe(0x0c);
+            expect(buffer).toHaveLength(0x0c);
             expect(wBuf.getCurrentPos()).toBe(0x10);
         });
 
@@ -1679,7 +1679,7 @@ describe("string functions", () => {
             const buffer = wBuf.getSourceBuffer();
 
             expect(buffer).toBeInstanceOf(Buffer);
-            expect(buffer.length).toBe(0x08);
+            expect(buffer).toHaveLength(0x08);
         });
     });
 
