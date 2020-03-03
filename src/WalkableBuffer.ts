@@ -278,7 +278,7 @@ export class WalkableBuffer {
     ): Buffer {
         if (byteLength == null) {
             const result = this.buffer.slice(this.cursor);
-            this.cursor = this.buffer.length;
+            this.cursor = this.size();
             return result;
         } else {
             this.rangeCheck(
