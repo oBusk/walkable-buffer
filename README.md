@@ -6,6 +6,7 @@
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=oBusk/walkable-buffer)](https://dependabot.com)
 [![Bundlesize](https://img.shields.io/bundlephobia/minzip/walkable-buffer)](https://bundlephobia.com/result?p=walkable-buffer)
 [![Bundle Watched](https://img.shields.io/badge/bundle-watched-blue.svg)](https://bundlewatch.io)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 > 🚶🛡️ A class for easily reading data from binary Buffers
 
