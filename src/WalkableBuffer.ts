@@ -174,13 +174,7 @@ export class WalkableBuffer {
          */
         encoding = this.getEncoding(),
     ): string {
-        const max = this.size() - this.cursor;
-
-        if (byteLength < 0 || byteLength > max) {
-            throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`,
-            );
-        }
+        this.rangeCheck("byteLength", byteLength, 0, this.size() - this.cursor);
 
         return this.buffer.toString(
             encoding,
@@ -210,24 +204,17 @@ export class WalkableBuffer {
     ): string {
         const size = this.size();
         const cursor = this.getCurrentPos();
-        const minByteOffset = -cursor;
-        const maxByteOffset = size - cursor - 1; // Since size has to be greater than zero
 
-        if (byteOffset < minByteOffset || byteOffset > maxByteOffset) {
-            throw new Error(
-                `The value of "byteOffset" is out of range.` +
-                    ` It must be >= ${minByteOffset} and <= ${maxByteOffset}. Recieved ${byteOffset}`,
-            );
-        }
+        this.rangeCheck(
+            "byteOffset",
+            byteOffset,
+            -cursor,
+            size - cursor - 1 /* Since size has to be greater than zero */,
+        );
 
         const startPos = cursor + byteOffset;
-        const max = size - startPos;
 
-        if (byteLength < 0 || byteLength > max) {
-            throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`,
-            );
-        }
+        this.rangeCheck("byteLength", byteLength, 0, size - startPos);
 
         return this.buffer.toString(encoding, startPos, startPos + byteLength);
     }
@@ -294,13 +281,12 @@ export class WalkableBuffer {
             this.cursor = this.buffer.length;
             return result;
         } else {
-            const max = this.size() - this.getCurrentPos();
-
-            if (byteLength < 1 || byteLength > max) {
-                throw new Error(
-                    `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
-                );
-            }
+            this.rangeCheck(
+                "byteLength",
+                byteLength,
+                1,
+                this.size() - this.getCurrentPos(),
+            );
 
             return this.buffer.slice(this.cursor, (this.cursor += byteLength));
         }
@@ -308,13 +294,12 @@ export class WalkableBuffer {
 
     /** Advances cursor without reading any data. */
     skip(byteLength: number): number {
-        const max = this.size() - this.getCurrentPos();
-
-        if (byteLength < 1 || byteLength > max) {
-            throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
-            );
-        }
+        this.rangeCheck(
+            "byteLength",
+            byteLength,
+            1,
+            this.size() - this.getCurrentPos(),
+        );
 
         return (this.cursor += byteLength);
     }
@@ -326,14 +311,7 @@ export class WalkableBuffer {
 
     /** Moves cursor to byte-position `byteOffset` */
     goTo(byteOffset: number): number {
-        const max = this.size() - 1;
-
-        if (byteOffset < 0 || byteOffset > max) {
-            throw new Error(
-                `The value of "byteOffset" is out of range. ` +
-                    `It must be >= 0 and <= ${max}. Received ${byteOffset}`,
-            );
-        }
+        this.rangeCheck("byteOffset", byteOffset, 0, this.size() - 1);
 
         return (this.cursor = byteOffset);
     }
@@ -476,5 +454,19 @@ export class WalkableBuffer {
             throw new Error(`Invalid endianness '${endianness}'`);
         }
         return result;
+    }
+
+    private rangeCheck(
+        name: string,
+        value: number,
+        floor: number,
+        ceil: number,
+    ): void | never {
+        if (value < floor || value > ceil) {
+            throw new Error(
+                `The value of "${name}" is out of range. ` +
+                    `It must be >= min and <= ${ceil}. Received ${value}`,
+            );
+        }
     }
 }
