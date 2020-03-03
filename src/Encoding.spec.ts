@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isEncoding } from "./Encoding";
 
 describe("isEncoding", () => {
