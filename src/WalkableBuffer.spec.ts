@@ -13,14 +13,14 @@ describe("constructor", () => {
         test("basic case", () => {
             const walkableBuffer = new WalkableBuffer({ buffer });
             expect(walkableBuffer.getSourceBuffer().toString()).toBe(
-                buffer.toString()
+                buffer.toString(),
             );
         });
 
         test("throws when providing no or incorrect buffer", () => {
             expect(() => new WalkableBuffer({ buffer: null as any })).toThrow();
             expect(
-                () => new WalkableBuffer({ buffer: { a: 1, b: 2 } as any })
+                () => new WalkableBuffer({ buffer: { a: 1, b: 2 } as any }),
             ).toThrow();
         });
 
@@ -40,8 +40,8 @@ describe("constructor", () => {
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        endianness: "QQ" as any
-                    })
+                        endianness: "QQ" as any,
+                    }),
             ).toThrow(/Invalid endianness/);
         });
 
@@ -61,8 +61,8 @@ describe("constructor", () => {
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        encoding: "STEVEN" as any
-                    })
+                        encoding: "STEVEN" as any,
+                    }),
             ).toThrow(/Invalid encoding/);
         });
 
@@ -72,7 +72,7 @@ describe("constructor", () => {
 
             const five = new WalkableBuffer({
                 buffer,
-                initialCursor: 5
+                initialCursor: 5,
             });
             expect(five.getCurrentPos()).toBe(5);
         });
@@ -80,14 +80,14 @@ describe("constructor", () => {
         test("providing invalid initialCursor", () => {
             expect(
                 () =>
-                    new WalkableBuffer({ buffer, initialCursor: LONGLONG - 1 })
+                    new WalkableBuffer({ buffer, initialCursor: LONGLONG - 1 }),
             ).not.toThrow();
             expect(
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        initialCursor: LONGLONG
-                    })
+                        initialCursor: LONGLONG,
+                    }),
             ).toThrow(/Invalid initialCursor/);
         });
 
@@ -97,13 +97,13 @@ describe("constructor", () => {
 
             const signed = new WalkableBuffer({
                 buffer,
-                signed: true
+                signed: true,
             });
             expect(signed.getSigned()).toBe(true);
 
             const unsigned = new WalkableBuffer({
                 buffer,
-                signed: false
+                signed: false,
             });
             expect(unsigned.getSigned()).toBe(false);
         });
@@ -113,8 +113,8 @@ describe("constructor", () => {
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        signed: "hello" as any
-                    })
+                        signed: "hello" as any,
+                    }),
             ).toThrow();
         });
     });
@@ -201,7 +201,7 @@ describe("integer functions", () => {
 
                 test("reads NOT (throws)", () => {
                     expect(() =>
-                        walkableBuffer.get(SHORT, "NOT" as any)
+                        walkableBuffer.get(SHORT, "NOT" as any),
                     ).toThrow(/invalid endianness/i);
                 });
             });
@@ -239,7 +239,7 @@ describe("integer functions", () => {
                     expect(zeWB.get(6, "LE", true)).toBe(0);
                     expect(ffWB.get(6, "LE", true)).toBe(-1);
                     expect(walkableBuffer.get(6, "LE", true)).toBe(
-                        93751404007680
+                        93751404007680,
                     );
                 });
 
@@ -253,7 +253,7 @@ describe("integer functions", () => {
                     expect(zeWB.get(6, "LE", false)).toBe(0);
                     expect(ffWB.get(6, "LE", false)).toBe(281474976710655);
                     expect(walkableBuffer.get(6, "LE", false)).toBe(
-                        93751404007680
+                        93751404007680,
                     );
                 });
 
@@ -261,26 +261,26 @@ describe("integer functions", () => {
                     expect(zeWB.get(6, "BE", false)).toBe(0);
                     expect(ffWB.get(6, "BE", false)).toBe(281474976710655);
                     expect(walkableBuffer.get(6, "BE", false)).toBe(
-                        73588229205
+                        73588229205,
                     );
                 });
 
                 test("uses global default", () => {
                     const signed = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(signed.get(6)).toBe(-1);
 
                     const unsigned = new WalkableBuffer({
                         buffer: ff,
-                        signed: false
+                        signed: false,
                     });
                     expect(unsigned.get(6)).toBe(281474976710655);
 
                     const toChange = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(toChange.get(6)).toBe(-1);
                     expect(toChange.setSigned(false)).toBe(false);
@@ -313,7 +313,7 @@ describe("integer functions", () => {
                 test("handles negative byteOffset", () => {
                     walkableBuffer = new WalkableBuffer({
                         buffer,
-                        initialCursor: 1
+                        initialCursor: 1,
                     });
 
                     expect(walkableBuffer.peek(BYTE)).toBe(-1);
@@ -334,13 +334,13 @@ describe("integer functions", () => {
 
                 test("reads LE", () => {
                     expect(walkableBuffer.peek(SHORT, undefined, "LE")).toBe(
-                        -256
+                        -256,
                     );
                 });
 
                 test("reads BE", () => {
                     expect(walkableBuffer.peek(SHORT, undefined, "BE")).toBe(
-                        255
+                        255,
                     );
                 });
             });
@@ -366,7 +366,7 @@ describe("integer functions", () => {
                     expect(zeWB.peek(6, 0, "LE")).toBe(0);
                     expect(ffWB.peek(6, 0, "LE")).toBe(-1);
                     expect(walkableBuffer.peek(6, 0, "LE")).toBe(
-                        93751404007680
+                        93751404007680,
                     );
                 });
 
@@ -380,7 +380,7 @@ describe("integer functions", () => {
                     expect(zeWB.peek(6, 0, "LE", true)).toBe(0);
                     expect(ffWB.peek(6, 0, "LE", true)).toBe(-1);
                     expect(walkableBuffer.peek(6, 0, "LE", true)).toBe(
-                        93751404007680
+                        93751404007680,
                     );
                 });
 
@@ -388,7 +388,7 @@ describe("integer functions", () => {
                     expect(zeWB.peek(6, 0, "BE", true)).toBe(0);
                     expect(ffWB.peek(6, 0, "BE", true)).toBe(-1);
                     expect(walkableBuffer.peek(6, 0, "BE", true)).toBe(
-                        73588229205
+                        73588229205,
                     );
                 });
 
@@ -396,7 +396,7 @@ describe("integer functions", () => {
                     expect(zeWB.peek(6, 0, "LE", false)).toBe(0);
                     expect(ffWB.peek(6, 0, "LE", false)).toBe(281474976710655);
                     expect(walkableBuffer.peek(6, 0, "LE", false)).toBe(
-                        93751404007680
+                        93751404007680,
                     );
                 });
 
@@ -404,26 +404,26 @@ describe("integer functions", () => {
                     expect(zeWB.peek(6, 0, "BE", false)).toBe(0);
                     expect(ffWB.peek(6, 0, "BE", false)).toBe(281474976710655);
                     expect(walkableBuffer.peek(6, 0, "BE", false)).toBe(
-                        73588229205
+                        73588229205,
                     );
                 });
 
                 test("uses global default", () => {
                     const signed = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(signed.peek(6)).toBe(-1);
 
                     const unsigned = new WalkableBuffer({
                         buffer: ff,
-                        signed: false
+                        signed: false,
                     });
                     expect(unsigned.peek(6)).toBe(281474976710655);
 
                     const toChange = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(toChange.peek(6)).toBe(-1);
                     expect(toChange.setSigned(false)).toBe(false);
@@ -445,7 +445,7 @@ describe("integer functions", () => {
                         0x00,
                         0x00,
                         0x00,
-                        0x00
+                        0x00,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -461,12 +461,12 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
                     expect(walkableBuffer.getBigInt().toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                 });
 
@@ -479,12 +479,12 @@ describe("integer functions", () => {
                         0x00,
                         0x00,
                         0x00,
-                        0x80
+                        0x80,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
                     expect(walkableBuffer.getBigInt().toString()).toBe(
-                        "-9223372036854775807"
+                        "-9223372036854775807",
                     );
                 });
             });
@@ -499,14 +499,14 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
 
                 test("advances position", () => {
                     expect(walkableBuffer.getBigInt().toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                     expect(walkableBuffer.getCurrentPos()).toBe(8);
                 });
@@ -519,7 +519,7 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -544,7 +544,7 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -569,32 +569,32 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
 
                 test("reads default (LE)", () => {
                     expect(walkableBuffer.getBigInt().toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                 });
 
                 test("reads LE", () => {
                     expect(walkableBuffer.getBigInt("LE").toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                 });
 
                 test("reads BE", () => {
                     expect(walkableBuffer.getBigInt("BE").toString()).toBe(
-                        "-129"
+                        "-129",
                     );
                 });
 
                 test("reads NOT (throws)", () => {
                     expect(() =>
-                        walkableBuffer.getBigInt("NOT" as any)
+                        walkableBuffer.getBigInt("NOT" as any),
                     ).toThrow(/invalid endianness/i);
                 });
             });
@@ -614,7 +614,7 @@ describe("integer functions", () => {
                         0x00,
                         0x00,
                         0x00,
-                        0x00
+                        0x00,
                     ]);
                     zeWB = new WalkableBuffer({ buffer: ze });
 
@@ -626,7 +626,7 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0xff
+                        0xff,
                     ]);
                     ffWB = new WalkableBuffer({ buffer: ff });
 
@@ -638,7 +638,7 @@ describe("integer functions", () => {
                         0x44,
                         0x55,
                         0x66,
-                        0x77
+                        0x77,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -647,7 +647,7 @@ describe("integer functions", () => {
                     expect(zeWB.getBigInt("LE").toString()).toBe("0");
                     expect(ffWB.getBigInt("LE").toString()).toBe("-1");
                     expect(walkableBuffer.getBigInt("LE").toString()).toBe(
-                        "8603657889541918976"
+                        "8603657889541918976",
                     );
                 });
 
@@ -655,7 +655,7 @@ describe("integer functions", () => {
                     expect(zeWB.getBigInt("BE").toString()).toBe("0");
                     expect(ffWB.getBigInt("BE").toString()).toBe("-1");
                     expect(walkableBuffer.getBigInt("BE").toString()).toBe(
-                        "4822678189205111"
+                        "4822678189205111",
                     );
                 });
 
@@ -663,7 +663,7 @@ describe("integer functions", () => {
                     expect(zeWB.getBigInt("LE", true).toString()).toBe("0");
                     expect(ffWB.getBigInt("LE", true).toString()).toBe("-1");
                     expect(
-                        walkableBuffer.getBigInt("LE", true).toString()
+                        walkableBuffer.getBigInt("LE", true).toString(),
                     ).toBe("8603657889541918976");
                 });
 
@@ -671,54 +671,54 @@ describe("integer functions", () => {
                     expect(zeWB.getBigInt("BE", true).toString()).toBe("0");
                     expect(ffWB.getBigInt("BE", true).toString()).toBe("-1");
                     expect(
-                        walkableBuffer.getBigInt("BE", true).toString()
+                        walkableBuffer.getBigInt("BE", true).toString(),
                     ).toBe("4822678189205111");
                 });
 
                 test("reads unsigned LE", () => {
                     expect(zeWB.getBigInt("LE", false).toString()).toBe("0");
                     expect(ffWB.getBigInt("LE", false).toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
                     expect(
-                        walkableBuffer.getBigInt("LE", false).toString()
+                        walkableBuffer.getBigInt("LE", false).toString(),
                     ).toBe("8603657889541918976");
                 });
 
                 test("reads unsigned BE", () => {
                     expect(zeWB.getBigInt("BE", false).toString()).toBe("0");
                     expect(ffWB.getBigInt("BE", false).toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
                     expect(
-                        walkableBuffer.getBigInt("BE", false).toString()
+                        walkableBuffer.getBigInt("BE", false).toString(),
                     ).toBe("4822678189205111");
                 });
 
                 test("uses global default", () => {
                     const signed = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(signed.getBigInt().toString()).toBe("-1");
 
                     const unsigned = new WalkableBuffer({
                         buffer: ff,
-                        signed: false
+                        signed: false,
                     });
                     expect(unsigned.getBigInt().toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
 
                     const toChange = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(toChange.getBigInt().toString()).toBe("-1");
                     expect(toChange.setSigned(false)).toBe(false);
                     expect(toChange.goTo(0)).toBe(0);
                     expect(toChange.getBigInt().toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
                 });
             });
@@ -735,7 +735,7 @@ describe("integer functions", () => {
                         0x00,
                         0x00,
                         0x00,
-                        0x00
+                        0x00,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -751,12 +751,12 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
                     expect(walkableBuffer.peekBigInt().toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                 });
 
@@ -769,12 +769,12 @@ describe("integer functions", () => {
                         0x00,
                         0x00,
                         0x00,
-                        0x80
+                        0x80,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
                     expect(walkableBuffer.peekBigInt().toString()).toBe(
-                        "-9223372036854775807"
+                        "-9223372036854775807",
                     );
                 });
             });
@@ -789,14 +789,14 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
 
                 test("does not advances position", () => {
                     expect(walkableBuffer.peekBigInt().toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                     expect(walkableBuffer.getCurrentPos()).toBe(0);
                 });
@@ -809,7 +809,7 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -834,7 +834,7 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -857,32 +857,32 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0x7f
+                        0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
 
                 test("reads default (LE)", () => {
                     expect(walkableBuffer.peekBigInt().toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                 });
 
                 test("reads LE", () => {
                     expect(walkableBuffer.peekBigInt(0, "LE").toString()).toBe(
-                        "9223372036854775807"
+                        "9223372036854775807",
                     );
                 });
 
                 test("reads BE", () => {
                     expect(walkableBuffer.peekBigInt(0, "BE").toString()).toBe(
-                        "-129"
+                        "-129",
                     );
                 });
 
                 test("reads NOT (throws)", () => {
                     expect(() =>
-                        walkableBuffer.peekBigInt(0, "NOT" as any)
+                        walkableBuffer.peekBigInt(0, "NOT" as any),
                     ).toThrow(/invalid endianness/i);
                 });
             });
@@ -902,7 +902,7 @@ describe("integer functions", () => {
                         0x00,
                         0x00,
                         0x00,
-                        0x00
+                        0x00,
                     ]);
                     zeWB = new WalkableBuffer({ buffer: ze });
 
@@ -914,7 +914,7 @@ describe("integer functions", () => {
                         0xff,
                         0xff,
                         0xff,
-                        0xff
+                        0xff,
                     ]);
                     ffWB = new WalkableBuffer({ buffer: ff });
 
@@ -926,7 +926,7 @@ describe("integer functions", () => {
                         0x44,
                         0x55,
                         0x66,
-                        0x77
+                        0x77,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -935,7 +935,7 @@ describe("integer functions", () => {
                     expect(zeWB.peekBigInt(0, "LE").toString()).toBe("0");
                     expect(ffWB.peekBigInt(0, "LE").toString()).toBe("-1");
                     expect(walkableBuffer.peekBigInt(0, "LE").toString()).toBe(
-                        "8603657889541918976"
+                        "8603657889541918976",
                     );
                 });
 
@@ -943,78 +943,78 @@ describe("integer functions", () => {
                     expect(zeWB.peekBigInt(0, "BE").toString()).toBe("0");
                     expect(ffWB.peekBigInt(0, "BE").toString()).toBe("-1");
                     expect(walkableBuffer.peekBigInt(0, "BE").toString()).toBe(
-                        "4822678189205111"
+                        "4822678189205111",
                     );
                 });
 
                 test("reads signed LE", () => {
                     expect(zeWB.peekBigInt(0, "LE", true).toString()).toBe("0");
                     expect(ffWB.peekBigInt(0, "LE", true).toString()).toBe(
-                        "-1"
+                        "-1",
                     );
                     expect(
-                        walkableBuffer.peekBigInt(0, "LE", true).toString()
+                        walkableBuffer.peekBigInt(0, "LE", true).toString(),
                     ).toBe("8603657889541918976");
                 });
 
                 test("reads signed BE", () => {
                     expect(zeWB.peekBigInt(0, "BE", true).toString()).toBe("0");
                     expect(ffWB.peekBigInt(0, "BE", true).toString()).toBe(
-                        "-1"
+                        "-1",
                     );
                     expect(
-                        walkableBuffer.peekBigInt(0, "BE", true).toString()
+                        walkableBuffer.peekBigInt(0, "BE", true).toString(),
                     ).toBe("4822678189205111");
                 });
 
                 test("reads unsigned LE", () => {
                     expect(zeWB.peekBigInt(0, "LE", false).toString()).toBe(
-                        "0"
+                        "0",
                     );
                     expect(ffWB.peekBigInt(0, "LE", false).toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
                     expect(
-                        walkableBuffer.peekBigInt(0, "LE", false).toString()
+                        walkableBuffer.peekBigInt(0, "LE", false).toString(),
                     ).toBe("8603657889541918976");
                 });
 
                 test("reads unsigned BE", () => {
                     expect(zeWB.peekBigInt(0, "BE", false).toString()).toBe(
-                        "0"
+                        "0",
                     );
                     expect(ffWB.peekBigInt(0, "BE", false).toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
                     expect(
-                        walkableBuffer.peekBigInt(0, "BE", false).toString()
+                        walkableBuffer.peekBigInt(0, "BE", false).toString(),
                     ).toBe("4822678189205111");
                 });
 
                 test("uses global default", () => {
                     const signed = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(signed.peekBigInt().toString()).toBe("-1");
 
                     const unsigned = new WalkableBuffer({
                         buffer: ff,
-                        signed: false
+                        signed: false,
                     });
                     expect(unsigned.peekBigInt().toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
 
                     const toChange = new WalkableBuffer({
                         buffer: ff,
-                        signed: true
+                        signed: true,
                     });
                     expect(toChange.peekBigInt().toString()).toBe("-1");
                     expect(toChange.setSigned(false)).toBe(false);
                     expect(toChange.goTo(0)).toBe(0);
                     expect(toChange.peekBigInt().toString()).toBe(
-                        "18446744073709551615"
+                        "18446744073709551615",
                     );
                 });
             });
@@ -1049,11 +1049,11 @@ describe("string functions", () => {
             0x6c,
             0x00,
             0xb4,
-            0x03
+            0x03,
         ]); // Hellö Worlδ in uni16le
         u16walkableBuffer = new WalkableBuffer({
             buffer: u16buffer,
-            encoding: "utf16le"
+            encoding: "utf16le",
         });
     });
 
@@ -1077,11 +1077,11 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]); // Hellö Worlδ in Unicode
                 const u8WalkableBuffer = new WalkableBuffer({
                     buffer: u8Buffer,
-                    encoding: "utf8"
+                    encoding: "utf8",
                 });
 
                 expect(u8WalkableBuffer.getString(0xd)).toBe("Hellö Worlδ");
@@ -1091,7 +1091,7 @@ describe("string functions", () => {
                 const asciiBuffer = Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f]); // Hello in ascii
                 const asciiWalkableBuffer = new WalkableBuffer({
                     buffer: asciiBuffer,
-                    encoding: "ascii"
+                    encoding: "ascii",
                 });
 
                 expect(asciiWalkableBuffer.getString(0x5)).toBe("Hello");
@@ -1099,7 +1099,7 @@ describe("string functions", () => {
 
             test("throws on invalid encoding", () => {
                 expect(() =>
-                    u16walkableBuffer.getString(1, "notAnEncoding" as any)
+                    u16walkableBuffer.getString(1, "notAnEncoding" as any),
                 ).toThrow(/unknown encoding/i);
             });
         });
@@ -1122,7 +1122,7 @@ describe("string functions", () => {
 
             test("fails when reading outside buffer, without advancing cursor", () => {
                 expect(() =>
-                    u16walkableBuffer.getString(0xb * 2 + 1)
+                    u16walkableBuffer.getString(0xb * 2 + 1),
                 ).toThrow();
                 expect(u16walkableBuffer.getCurrentPos()).toBe(0);
             });
@@ -1148,11 +1148,11 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]); // Hellö Worlδ in Unicode
                 const u8WalkableBuffer = new WalkableBuffer({
                     buffer: u8Buffer,
-                    encoding: "utf8"
+                    encoding: "utf8",
                 });
 
                 expect(u8WalkableBuffer.peekString(0xd)).toBe("Hellö Worlδ");
@@ -1162,7 +1162,7 @@ describe("string functions", () => {
                 const asciiBuffer = Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f]); // Hello in ascii
                 const asciiWalkableBuffer = new WalkableBuffer({
                     buffer: asciiBuffer,
-                    encoding: "ascii"
+                    encoding: "ascii",
                 });
 
                 expect(asciiWalkableBuffer.peekString(0x5)).toBe("Hello");
@@ -1170,7 +1170,7 @@ describe("string functions", () => {
 
             test("throws on invalid encoding", () => {
                 expect(() =>
-                    u16walkableBuffer.peekString(1, 0, "notAnEncoding" as any)
+                    u16walkableBuffer.peekString(1, 0, "notAnEncoding" as any),
                 ).toThrow(/unknown encoding/i);
             });
         });
@@ -1187,7 +1187,7 @@ describe("string functions", () => {
                 wBuf = new WalkableBuffer({
                     buffer: u16buffer,
                     encoding: "utf16le",
-                    initialCursor: startingPosition
+                    initialCursor: startingPosition,
                 });
             });
 
@@ -1204,11 +1204,11 @@ describe("string functions", () => {
                     expect(() => wBuf.peekString(-1)).toThrow(/out of range/i));
                 test("handles maxiumum size", () =>
                     expect(() =>
-                        wBuf.peekString(length - startingPosition)
+                        wBuf.peekString(length - startingPosition),
                     ).not.toThrow());
                 test("throws on maximum size + 1", () =>
                     expect(() =>
-                        wBuf.peekString(length - startingPosition + 1)
+                        wBuf.peekString(length - startingPosition + 1),
                     ).toThrow(/out of range/i));
             });
 
@@ -1217,18 +1217,18 @@ describe("string functions", () => {
                     expect(wBuf.peekString(0x5 * 2)).toBe("Worlδ"));
                 test("minimum byteOffset", () =>
                     expect(wBuf.peekString(0xb * 2, minByteOffset)).toBe(
-                        "Hellö Worlδ"
+                        "Hellö Worlδ",
                     ));
                 test("minimum byteOffset - 1 (should throw)", () =>
                     expect(() => wBuf.peekString(1, minByteOffset - 1)).toThrow(
-                        /byteOffset/
+                        /byteOffset/,
                     ));
                 // Only reads last byte, cant make actual character
                 test("maximum byteOffset", () =>
                     expect(wBuf.peekString(1, 0x9)).toBe(""));
                 test("maximym byteOffset + 1 (should throw)", () =>
                     expect(() => wBuf.peekString(1, maxByteOffset + 1)).toThrow(
-                        /byteOffset/
+                        /byteOffset/,
                     ));
             });
         });
@@ -1252,10 +1252,10 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]),
                 encoding: "utf8",
-                endianness: "LE"
+                endianness: "LE",
             });
 
             expect(u8le.getSizedString(SHORT)).toBe("Hellö Worlδ");
@@ -1279,10 +1279,10 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]),
                 encoding: "utf8",
-                endianness: "BE"
+                endianness: "BE",
             });
 
             expect(u8be.getSizedString(SHORT)).toBe("Hellö Worlδ");
@@ -1317,10 +1317,10 @@ describe("string functions", () => {
                     0x6c,
                     0x00,
                     0xb4,
-                    0x03
+                    0x03,
                 ]),
                 encoding: "utf16le",
-                endianness: "LE"
+                endianness: "LE",
             });
 
             expect(u16le.getSizedString()).toBe("Hellö Worlδ");
@@ -1345,14 +1345,14 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]),
                 encoding: "utf16le",
-                endianness: "LE"
+                endianness: "LE",
             });
 
             expect(wBuf.getSizedString(SHORT, "BE", "utf8")).toBe(
-                "Hellö Worlδ"
+                "Hellö Worlδ",
             );
             expect(wBuf.getCurrentPos()).toBe(0x0f);
         });
@@ -1374,10 +1374,10 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]),
                 encoding: "utf8",
-                endianness: "LE"
+                endianness: "LE",
             });
 
             expect(() => u8le.getSizedString(SHORT)).toThrow(/out of range/i);
@@ -1401,10 +1401,10 @@ describe("string functions", () => {
                     0x72,
                     0x6c,
                     0xce,
-                    0xb4
+                    0xb4,
                 ]),
                 encoding: "utf8",
-                endianness: "LE"
+                endianness: "LE",
             });
 
             expect(() => u8le.getSizedString(SHORT)).not.toThrow();
@@ -1433,9 +1433,9 @@ describe("string functions", () => {
                     0x0c,
                     0x0d,
                     0x0e,
-                    0x0f
+                    0x0f,
                 ]),
-                initialCursor: 0x04
+                initialCursor: 0x04,
             });
         });
 
@@ -1495,9 +1495,9 @@ describe("string functions", () => {
                     0x0c,
                     0x0d,
                     0x0e,
-                    0x0f
+                    0x0f,
                 ]),
-                initialCursor: 0x04
+                initialCursor: 0x04,
             });
         });
 
@@ -1548,9 +1548,9 @@ describe("string functions", () => {
                     0x0c,
                     0x0d,
                     0x0e,
-                    0x0f
+                    0x0f,
                 ]),
-                initialCursor: 0x04
+                initialCursor: 0x04,
             });
         });
 
@@ -1652,7 +1652,7 @@ describe("string functions", () => {
 
                 test("set NOT (throws)", () => {
                     expect(() => wBuf.setEncoding("NOT" as any)).toThrow(
-                        /invalid encoding/i
+                        /invalid encoding/i,
                     );
                     expect(wBuf.getEncoding()).toBe("utf8");
                 });
@@ -1671,9 +1671,9 @@ describe("string functions", () => {
                     0x04,
                     0x05,
                     0x06,
-                    0x07
+                    0x07,
                 ]),
-                initialCursor: 0x02
+                initialCursor: 0x02,
             });
 
             const buffer = wBuf.getSourceBuffer();
@@ -1694,9 +1694,9 @@ describe("string functions", () => {
                     0x04,
                     0x05,
                     0x06,
-                    0x07
+                    0x07,
                 ]),
-                initialCursor: 0x02
+                initialCursor: 0x02,
             });
 
             const buffer = wBuf.getSourceBuffer();
@@ -1717,14 +1717,14 @@ describe("string functions", () => {
                 0x04,
                 0x05,
                 0x06,
-                0x07
+                0x07,
             ]);
         });
 
         test("when cursor is 0", () => {
             const wBuf = new WalkableBuffer({
                 buffer,
-                initialCursor: 0
+                initialCursor: 0,
             });
 
             expect(wBuf.sizeRemainingBuffer()).toBe(8);
@@ -1733,7 +1733,7 @@ describe("string functions", () => {
         test("when cursor is 4", () => {
             const wBuf = new WalkableBuffer({
                 buffer,
-                initialCursor: 4
+                initialCursor: 4,
             });
 
             expect(wBuf.sizeRemainingBuffer()).toBe(4);
@@ -1742,7 +1742,7 @@ describe("string functions", () => {
         test("when cursor is 7", () => {
             const wBuf = new WalkableBuffer({
                 buffer,
-                initialCursor: 7
+                initialCursor: 7,
             });
 
             expect(wBuf.sizeRemainingBuffer()).toBe(1);

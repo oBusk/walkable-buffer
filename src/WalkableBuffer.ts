@@ -2,14 +2,14 @@ import {
     readBigInt64BE,
     readBigInt64LE,
     readBigUInt64BE,
-    readBigUInt64LE
+    readBigUInt64LE,
 } from "read-bigint";
 import {
     DEFAULT_ENCODING,
     DEFAULT_ENDIANNESS,
     DEFAULT_INITIAL_CURSOR,
     DEFAULT_SIGNED,
-    LONG
+    LONG,
 } from "./constants";
 import { Encoding, isEncoding } from "./Encoding";
 import { Endianness, isEndianness } from "./Endianness";
@@ -64,13 +64,13 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        signed = this.getSigned()
+        signed = this.getSigned(),
     ): number {
         const result = this.readInt(
             this.cursor,
             byteLength,
             endianness,
-            signed
+            signed,
         );
 
         // Only do this if the read didn't throw
@@ -92,7 +92,7 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        signed = this.getSigned()
+        signed = this.getSigned(),
     ): bigint {
         const result: bigint = this.readBigInt(this.cursor, endianness, signed);
 
@@ -124,13 +124,13 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        signed = this.getSigned()
+        signed = this.getSigned(),
     ): number {
         return this.readInt(
             this.cursor + byteOffset,
             byteLength,
             endianness,
-            signed
+            signed,
         );
     }
 
@@ -157,7 +157,7 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        signed = this.getSigned()
+        signed = this.getSigned(),
     ): bigint {
         return this.readBigInt(this.cursor + byteOffset, endianness, signed);
     }
@@ -172,20 +172,20 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        encoding = this.getEncoding()
+        encoding = this.getEncoding(),
     ): string {
         const max = this.size() - this.cursor;
 
         if (byteLength < 0 || byteLength > max) {
             throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`
+                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`,
             );
         }
 
         return this.buffer.toString(
             encoding,
             this.cursor,
-            (this.cursor += byteLength)
+            (this.cursor += byteLength),
         );
     }
 
@@ -206,7 +206,7 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        encoding = this.getEncoding()
+        encoding = this.getEncoding(),
     ): string {
         const size = this.size();
         const cursor = this.getCurrentPos();
@@ -216,7 +216,7 @@ export class WalkableBuffer {
         if (byteOffset < minByteOffset || byteOffset > maxByteOffset) {
             throw new Error(
                 `The value of "byteOffset" is out of range.` +
-                    ` It must be >= ${minByteOffset} and <= ${maxByteOffset}. Recieved ${byteOffset}`
+                    ` It must be >= ${minByteOffset} and <= ${maxByteOffset}. Recieved ${byteOffset}`,
             );
         }
 
@@ -225,7 +225,7 @@ export class WalkableBuffer {
 
         if (byteLength < 0 || byteLength > max) {
             throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`
+                `The value of "byteLength" is out of range. It must be >= 0 and <= ${max}. Received ${byteLength}`,
             );
         }
 
@@ -264,7 +264,7 @@ export class WalkableBuffer {
          *
          * > _If not provided, will use the default that was provided when creating the instance._
          */
-        encoding = this.getEncoding()
+        encoding = this.getEncoding(),
     ): string {
         let size = this.get(sizeOfSize, endianness);
 
@@ -287,7 +287,7 @@ export class WalkableBuffer {
          *
          * Has to be `1>=` and not exceed the buffer.
          */
-        byteLength?: number
+        byteLength?: number,
     ): Buffer {
         if (byteLength == null) {
             const result = this.buffer.slice(this.cursor);
@@ -298,7 +298,7 @@ export class WalkableBuffer {
 
             if (byteLength < 1 || byteLength > max) {
                 throw new Error(
-                    `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`
+                    `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
                 );
             }
 
@@ -312,7 +312,7 @@ export class WalkableBuffer {
 
         if (byteLength < 1 || byteLength > max) {
             throw new Error(
-                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`
+                `The value of "byteLength" is out of range. It must be >= 1 and <= ${max}. Received ${byteLength}`,
             );
         }
 
@@ -331,7 +331,7 @@ export class WalkableBuffer {
         if (byteOffset < 0 || byteOffset > max) {
             throw new Error(
                 `The value of "byteOffset" is out of range. ` +
-                    `It must be >= 0 and <= ${max}. Received ${byteOffset}`
+                    `It must be >= 0 and <= ${max}. Received ${byteOffset}`,
             );
         }
 
@@ -352,7 +352,7 @@ export class WalkableBuffer {
      */
     setEndianness(
         /** Either `BE` for big-endian or `LE` for little-endian. */
-        endianness: Endianness
+        endianness: Endianness,
     ): Endianness {
         if (isEndianness(endianness)) {
             this.endianness = endianness;
@@ -379,7 +379,7 @@ export class WalkableBuffer {
         /**
          * Valid text encodings are `ascii`, `utf8`, `utf16le`, `ucs2`(alias of `utf16le`), `base64`, `hex`.
          */
-        encoding: Encoding
+        encoding: Encoding,
     ): Encoding {
         if (isEncoding(encoding)) {
             this.encoding = encoding;
@@ -434,7 +434,7 @@ export class WalkableBuffer {
         offset: number,
         byteLength: number,
         endianness: Endianness,
-        signed: boolean
+        signed: boolean,
     ): number {
         if (endianness === "BE") {
             if (signed) {
@@ -457,7 +457,7 @@ export class WalkableBuffer {
     private readBigInt(
         offset: number,
         endianness: string,
-        signed: boolean
+        signed: boolean,
     ): bigint {
         let result: bigint;
         if (endianness === "LE") {

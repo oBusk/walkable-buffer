@@ -35,7 +35,7 @@ const wb = new WalkableBuffer({
     // Set instance defaults
     endianness: "LE",
     encoding: "utf8",
-    signed: true
+    signed: true,
 });
 
 const v = wb.get(6, "BE"); // 140 737 488 355 327
