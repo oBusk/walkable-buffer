@@ -16,8 +16,6 @@
 npm install walkable-buffer
 ```
 
--   If using Typescript, Typescript `>=3.8` is required.
-
 -   [Supported Node versions](./package.json#L21) aim to be
     [Latest current and LTS](https://nodejs.org/en/download/releases/) as well as trying to keep up to date
     with the latest supported node in
