@@ -119,7 +119,7 @@ describe("constructor", () => {
     });
 
     describe("buffer copying", () => {
-        test("changes to original array not reflected in walkable buffer", () => {
+        test("changes to original array reflected in walkable buffer", () => {
             const buffer = Buffer.from("ABCD");
 
             const wBuf = new WalkableBuffer({ buffer });
@@ -127,8 +127,8 @@ describe("constructor", () => {
             buffer.write("XXXX", 0, 4);
 
             expect(buffer.toString()).toBe("XXXX");
-            expect(wBuf.getString(4)).toBe("ABCD");
-            expect(wBuf.getSourceBuffer().toString()).toBe("ABCD");
+            expect(wBuf.getString(4)).toBe("XXXX");
+            expect(wBuf.getSourceBuffer().toString()).toBe("XXXX");
         });
     });
 });

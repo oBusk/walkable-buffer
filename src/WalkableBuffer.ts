@@ -37,7 +37,7 @@ export class WalkableBuffer {
         if (!buffer || !Buffer.isBuffer(buffer)) {
             throw new Error("No buffer in options!");
         }
-        this.buffer = Buffer.from(buffer); // Make sure to copy, not reference.
+        this.buffer = buffer;
 
         if (buffer.length - 1 < initialCursor || initialCursor < 0) {
             throw new Error(`Invalid initialCursor '${initialCursor}'`);
