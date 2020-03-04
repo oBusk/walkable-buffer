@@ -52,10 +52,12 @@ const v = wb.get(
     6 /* byteLength */,
     "BE" /* endianness - Override instance default for this operation */,
 ); // => 140 737 488 355 327
+
 const s = wb.getString(
     16 /* byteLength */,
     "utf16le" /* encoding - overrides instance default */,
 ); // => "Hellö höw åre yö"
+
 const b = wb.getBigInt(
     null /* endianness - null/undefined to use instance default */,
     false /* signed - override isntance default */,
@@ -79,7 +81,7 @@ configured settings if none is provided.
 #### Defaults in Constructor
 
 You can set the instance defaults when creating the instance by configuring it in the
-[`WalkableBufferoptions`](src/WalkableBufferOptions.ts) provided to the constructor.
+[`WalkableBufferOptions`](src/WalkableBufferOptions.ts) provided to the constructor.
 
 ```js
 import WalkableBuffer from "walkable-buffer";
@@ -128,20 +130,20 @@ import WalkableBuffer from "walkable-buffer";
 
 const wb = new WalkableBuffer({
     buffer,
-    initialCursor: false,
+    initialCursor: 8, // First `get` operation will start at byteOffset 8
 });
 ```
 
 #### Manipulate Cursor
 
-The following "walking" operations will advance the cursor to the first byte after the data read:
+The following "walking" operations will advance the cursor to the first byte after data is read:
 
 -   `get()`
 -   `getBigInt()`
 -   `getString()`
 -   `getSizedString()`
 
-The following operations will read the data _without_ manipulating the cursor:
+The following operations will read data _without_ manipulating the cursor:
 
 -   `peek()`
 -   `peekBigInt()`
@@ -159,11 +161,14 @@ And to get the current position of the cursor, use `getCurrentPos()`.
 
 -   `get(byteLength, endianness, signed)` - Read `byteLength` as a signed/unsigned integer,
     reading with `endianness`, and advancing cursor `byteLength`.
+
 -   `peek(byteLength, byteOffset, endianness, signed)` - Read `byteLength` at cursor + `byteOffset` as a
     signed/unsigned integer, _without_ manipulating the cursor.
+
 -   `getBigInt(endianness, signed)` - Read the next 8 bytes as a signed/unsigned
     [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
     , reading with `endianness`, and advancing cursor 8 steps.
+
 -   `peekBigInt(byteOffset, endianness, signed)` - Read 8 bytes at `byteOffset` as a signed/unsigned
     [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
     , reading with `endianness`, _without_ manipulating the cursor.
@@ -172,15 +177,16 @@ And to get the current position of the cursor, use `getCurrentPos()`.
 
 -   `getString(byteLength, encoding)` - Read the next `byteLength` bytes as a string, using `encoding`,
     and advances cursor `byteLength`.
--   `peekString(byteLength, byteOffset, encoding)` - Read the `byteLength` bytes at cursor
-    -   `byteOffset`
-        as a string, using `encoding`, _without_ manipulating the cursor.
--   `getSizedString(sizeOfSize, endianness, encoding)` - Read the next `sizeOfSize` as a
-    integer with `endianness` to get byte-length, reads that many bytes as a string with `encoding`.
+
+-   `peekString(byteLength, byteOffset, encoding)` - Read the `byteLength` bytes at
+    cursor - `byteOffset` as a string, using `encoding`, _without_ manipulating the cursor.
+
+-   `getSizedString(sizeOfSize, endianness, encoding)` - Read the next `sizeOfSize` as an _unsigned_
+    integer with `endianness` to get byte-length, then reads that many bytes as a string with `encoding`.
 
 ### Buffer
 
-You can get the Buffer of WalkableBuffer back by running `getSourceBuffer()`.
+You can get the entire Buffer of WalkableBuffer back by running `getSourceBuffer()`.
 
 You can also get Buffer of a specific `byteLength` from current cursor by running
 `getBuffer(byteLength)`. If called without `byteLength`, returns a buffer being a split from
