@@ -1383,7 +1383,7 @@ describe("string functions", () => {
             expect(u8le.getCurrentPos()).toBe(0);
         });
 
-        test("handles descriptor being value 0", () => {
+        test("handles size being value 0", () => {
             const u8le = new WalkableBuffer({
                 buffer: Buffer.from([
                     0x00,
@@ -1408,6 +1408,24 @@ describe("string functions", () => {
 
             expect(() => u8le.getSizedString(SHORT)).not.toThrow();
             expect(u8le.getCurrentPos()).toBe(0x02);
+        });
+
+        test("never reads size as signed", () => {
+            const bigArray = new Array<number>(129);
+
+            bigArray[0] = 0x80; // Int8 => -128, Uint8 => 128
+
+            bigArray.fill(0x74 /* utf8 => 't' */, 1 /* leave size intact */);
+
+            const u8le = new WalkableBuffer({
+                buffer: Buffer.from(bigArray),
+                encoding: "utf8",
+                endianness: "LE",
+                signed: true, // Important to make default signed
+            });
+
+            expect(u8le.getSizedString(BYTE)).toMatch(/^t*$/); // Should throw if size is read as signed integer (-128)
+            expect(u8le.getCurrentPos()).toBe(129);
         });
     });
 

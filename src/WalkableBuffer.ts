@@ -224,8 +224,11 @@ export class WalkableBuffer {
      *
      * This method is a shortcut for and works the same as:
      *
-     *     const length = wb.get(LONG);
-     *     const string = wb.getString(length);
+     *     const sizeOfSize = LONG;
+     *     const endianness = wb.getEndianness();
+     *     const encoding = wb.getEncoding();
+     *     const length = wb.get(sizeOfSize, endianness, false); // Always reads the size as unsigned integer
+     *     const string = wb.getString(length, encoding);
      *
      * This method will also take the double bytelength into account for `utf16` and `ucs2`.
      */
@@ -253,7 +256,11 @@ export class WalkableBuffer {
          */
         encoding = this.getEncoding(),
     ): string {
-        let size = this.get(sizeOfSize, endianness);
+        let size = this.get(
+            sizeOfSize,
+            endianness,
+            false /* We expect all size descriptors to be unsigned as nothing can have negative size. */,
+        );
 
         if (encoding === "utf16le" || encoding === "ucs2") {
             size = size * 2;
@@ -324,7 +331,7 @@ export class WalkableBuffer {
     /**
      * Sets the instances default endianness.
      *
-     * Either `BE` for big-endian or `LE` for little-endian.
+     * Either `BE` for big-endian or `LE` for little-endi an.
      *
      * @returns The newly set `endianness`.
      */
