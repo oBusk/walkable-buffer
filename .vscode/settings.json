@@ -1,8 +1,7 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-    "javascript.format.semicolons": "insert",
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.format.semicolons": "insert",
-    "typescript.preferences.quoteStyle": "single",
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.options": {
+        "ignorePath": ".gitignore"
+    }
 }

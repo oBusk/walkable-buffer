@@ -1,0 +1,30 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jest/style",
+        "plugin:prettier/recommended"
+    ],
+    "overrides": [
+        {
+            "files": ["src/**/*.ts"],
+            "parserOptions": {
+                "project": "./tsconfig.json"
+            },
+            "extends": [
+                "plugin:@typescript-eslint/recommended-requiring-type-checking"
+            ]
+        },
+        {
+            "files": ["src/**/*.spec.ts"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off"
+            }
+        }
+    ]
+}
