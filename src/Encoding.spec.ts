@@ -15,8 +15,23 @@ describe("isEncoding", () => {
     it("handle falsy cases", () => {
         expect(isEncoding("HE")).toBe(false);
         expect(isEncoding("XX")).toBe(false);
-        expect(isEncoding({} as any)).toBe(false);
-        expect(isEncoding(123 as any)).toBe(false);
-        expect(isEncoding(undefined as any)).toBe(false);
+        expect(
+            isEncoding(
+                // @ts-expect-error
+                {},
+            ),
+        ).toBe(false);
+        expect(
+            isEncoding(
+                // @ts-expect-error
+                123,
+            ),
+        ).toBe(false);
+        expect(
+            isEncoding(
+                // @ts-expect-error
+                undefined,
+            ),
+        ).toBe(false);
     });
 });

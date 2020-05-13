@@ -17,9 +17,19 @@ describe("constructor", () => {
         });
 
         test("throws when providing no or incorrect buffer", () => {
-            expect(() => new WalkableBuffer({ buffer: null as any })).toThrow();
             expect(
-                () => new WalkableBuffer({ buffer: { a: 1, b: 2 } as any }),
+                () =>
+                    new WalkableBuffer({
+                        // @ts-expect-error
+                        buffer: null,
+                    }),
+            ).toThrow();
+            expect(
+                () =>
+                    new WalkableBuffer({
+                        // @ts-expect-error
+                        buffer: { a: 1, b: 2 },
+                    }),
             ).toThrow();
         });
 
@@ -39,7 +49,8 @@ describe("constructor", () => {
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        endianness: "QQ" as any,
+                        // @ts-expect-error
+                        endianness: "QQ",
                     }),
             ).toThrow(/Invalid endianness/);
         });
@@ -60,7 +71,8 @@ describe("constructor", () => {
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        encoding: "STEVEN" as any,
+                        // @ts-expect-error
+                        encoding: "STEVEN",
                     }),
             ).toThrow(/Invalid encoding/);
         });
@@ -112,7 +124,8 @@ describe("constructor", () => {
                 () =>
                     new WalkableBuffer({
                         buffer,
-                        signed: "hello" as any,
+                        // @ts-expect-error
+                        signed: "hello",
                     }),
             ).toThrow();
         });
@@ -200,7 +213,8 @@ describe("integer functions", () => {
 
                 test("reads NOT (throws)", () => {
                     expect(() =>
-                        walkableBuffer.get(SHORT, "NOT" as any),
+                        // @ts-expect-error
+                        walkableBuffer.get(SHORT, "NOT"),
                     ).toThrow(/invalid endianness/i);
                 });
             });
@@ -593,7 +607,8 @@ describe("integer functions", () => {
 
                 test("reads NOT (throws)", () => {
                     expect(() =>
-                        walkableBuffer.getBigInt("NOT" as any),
+                        // @ts-expect-error
+                        walkableBuffer.getBigInt("NOT"),
                     ).toThrow(/invalid endianness/i);
                 });
             });
@@ -881,7 +896,8 @@ describe("integer functions", () => {
 
                 test("reads NOT (throws)", () => {
                     expect(() =>
-                        walkableBuffer.peekBigInt(0, "NOT" as any),
+                        // @ts-expect-error
+                        walkableBuffer.peekBigInt(0, "NOT"),
                     ).toThrow(/invalid endianness/i);
                 });
             });
@@ -1098,7 +1114,11 @@ describe("string functions", () => {
 
             test("throws on invalid encoding", () => {
                 expect(() =>
-                    u16walkableBuffer.getString(1, "notAnEncoding" as any),
+                    u16walkableBuffer.getString(
+                        1,
+                        //@ts-expect-error
+                        "notAnEncoding",
+                    ),
                 ).toThrow(/unknown encoding/i);
             });
         });
@@ -1169,7 +1189,12 @@ describe("string functions", () => {
 
             test("throws on invalid encoding", () => {
                 expect(() =>
-                    u16walkableBuffer.peekString(1, 0, "notAnEncoding" as any),
+                    u16walkableBuffer.peekString(
+                        1,
+                        0,
+                        // @ts-expect-error
+                        "notAnEncoding",
+                    ),
                 ).toThrow(/unknown encoding/i);
             });
         });
@@ -1623,7 +1648,12 @@ describe("string functions", () => {
                 });
 
                 test("set NOT (throws)", () => {
-                    expect(() => wBuf.setEndianness("NOT" as any)).toThrow();
+                    expect(() =>
+                        wBuf.setEndianness(
+                            // @ts-expect-error
+                            "NOT",
+                        ),
+                    ).toThrow();
                     expect(wBuf.getEndianness()).toBe("LE");
                 });
             });
@@ -1668,9 +1698,12 @@ describe("string functions", () => {
                 });
 
                 test("set NOT (throws)", () => {
-                    expect(() => wBuf.setEncoding("NOT" as any)).toThrow(
-                        /invalid encoding/i,
-                    );
+                    expect(() =>
+                        wBuf.setEncoding(
+                            // @ts-expect-error
+                            "NOT",
+                        ),
+                    ).toThrow(/invalid encoding/i);
                     expect(wBuf.getEncoding()).toBe("utf8");
                 });
             });

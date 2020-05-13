@@ -9,8 +9,23 @@ describe("isEndianness", () => {
     it("handle falsy cases", () => {
         expect(isEndianness("HE")).toBe(false);
         expect(isEndianness("XX")).toBe(false);
-        expect(isEndianness({} as any)).toBe(false);
-        expect(isEndianness(123 as any)).toBe(false);
-        expect(isEndianness(undefined as any)).toBe(false);
+        expect(
+            isEndianness(
+                // @ts-expect-error
+                {},
+            ),
+        ).toBe(false);
+        expect(
+            isEndianness(
+                // @ts-expect-error
+                123,
+            ),
+        ).toBe(false);
+        expect(
+            isEndianness(
+                // @ts-expect-error
+                undefined,
+            ),
+        ).toBe(false);
     });
 });
