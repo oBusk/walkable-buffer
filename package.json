@@ -36,7 +36,7 @@
             },
             {
                 "path": "dist?(.module)/!(WalkableBuffer|*.spec).js",
-                "maxSize": "0.3kB"
+                "maxSize": "0.4kB"
             }
         ]
     },
