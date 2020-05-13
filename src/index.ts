@@ -1,6 +1,15 @@
-export * from "./constants";
-export { Encoding } from "./Encoding";
-export { Endianness } from "./Endianness";
-export * from "./WalkableBuffer";
-export { WalkableBuffer as default } from "./WalkableBuffer";
+export {
+    BYTE,
+    DEFAULT_ENCODING,
+    DEFAULT_ENDIANNESS,
+    DEFAULT_INITIAL_CURSOR,
+    DEFAULT_SIGNED,
+    LONG,
+    LONGLONG,
+    OCTET,
+    SHORT,
+} from "./constants";
+export { Encoding, isEncoding } from "./Encoding";
+export { Endianness, isEndianness } from "./Endianness";
+export { WalkableBuffer as default, WalkableBuffer } from "./WalkableBuffer";
 export { WalkableBufferOptions } from "./WalkableBufferOptions";
