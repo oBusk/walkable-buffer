@@ -57,7 +57,7 @@
         "read-bigint": "^0.1.2"
     },
     "devDependencies": {
-        "@types/jest": "^25.2.3",
+        "@types/jest": "^26.0.0",
         "@types/node": "^10.17.26",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
