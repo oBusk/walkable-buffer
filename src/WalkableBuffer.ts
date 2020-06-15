@@ -342,7 +342,7 @@ export class WalkableBuffer {
         if (isEndianness(endianness)) {
             this.endianness = endianness;
         } else {
-            throw new Error(`Invalid endianness '${endianness}'`);
+            throw new Error(`Invalid endianness '${endianness as string}'`);
         }
 
         return this.getEndianness();
@@ -369,7 +369,7 @@ export class WalkableBuffer {
         if (isEncoding(encoding)) {
             this.encoding = encoding;
         } else {
-            throw new Error(`Invalid encoding '${encoding}'`);
+            throw new Error(`Invalid encoding '${encoding as string}'`);
         }
 
         return this.getEncoding();
@@ -389,7 +389,7 @@ export class WalkableBuffer {
         if (typeof signed === "boolean") {
             this.signed = signed;
         } else {
-            throw new Error(`Invalid value for signed '${signed}'`);
+            throw new Error(`Invalid value for signed '${signed as string}'`);
         }
 
         return this.getSigned();
@@ -434,7 +434,7 @@ export class WalkableBuffer {
                 return this.buffer.readUIntLE(offset, byteLength);
             }
         } else {
-            throw new Error(`Invalid endianness '${endianness}'`);
+            throw new Error(`Invalid endianness '${endianness as string}'`);
         }
     }
 
