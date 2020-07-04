@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "javascript"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow: 
+      - dependency-type: "production"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    versioning-strategy: increase-if-necessary
