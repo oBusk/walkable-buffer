@@ -1,12 +1,12 @@
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: "/"
-    schedule:
-      interval: daily
-    allow: 
-      - dependency-type: production
-    commit-message:
-      prefix: chore
-      include: scope
-    versioning-strategy: increase-if-necessary
+    - package-ecosystem: npm
+      directory: "/"
+      schedule:
+          interval: daily
+      allow:
+          - dependency-type: production
+      commit-message:
+          prefix: chore
+          include: scope
+      versioning-strategy: increase-if-necessary
