@@ -1,6 +1,6 @@
 {
     "name": "walkable-buffer",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "🚶🛡️ A class for easily reading data from binary Buffers",
     "keywords": [
         "binary",
