@@ -1,7 +1,8 @@
 # Walkable Buffer
 
-[![npm version](https://badgen.net/npm/v/walkable-buffer)](https://www.npmjs.com/package/walkable-buffer)
+[![NPM Version](https://img.shields.io/npm/v/walkable-buffer)](https://www.npmjs.com/package/walkable-buffer)
 [![Node.js CI](https://github.com/oBusk/walkable-buffer/workflows/Node.js%20CI/badge.svg)](https://github.com/oBusk/walkable-buffer/actions)
+[![Dependabot: enabled](https://badgen.net/badge/dependabot/enabled/green?icon=dependabot)](https://github.com/oBusk/walkable-buffer/network/updates)
 [![codecov](https://codecov.io/gh/oBusk/walkable-buffer/branch/master/graph/badge.svg)](https://codecov.io/gh/oBusk/walkable-buffer)
 [![Bundlesize](https://img.shields.io/bundlephobia/minzip/walkable-buffer)](https://bundlephobia.com/result?p=walkable-buffer)
 [![Bundle Watched](https://img.shields.io/badge/bundle-watched-blue.svg)](https://bundlewatch.io)
@@ -15,10 +16,10 @@
 npm install walkable-buffer
 ```
 
--   [Supported Node versions](./package.json#L21) aim to be
+-   [Supported Node versions](./package.json#L20) aim to be
     [Latest current and LTS](https://nodejs.org/en/download/releases/) as well as trying to keep up to date
     with the latest supported node in
-    [Google cloud functions](https://cloud.google.com/functions/docs/concepts/nodejs-10-runtime).
+    [Google cloud functions](https://cloud.google.com/functions/docs/concepts/nodejs-runtime).
 
 ## Usage
 
