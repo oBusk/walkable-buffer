@@ -268,7 +268,7 @@ export class WalkableBuffer {
 
         try {
             return this.getString(size, encoding);
-        } catch (e) {
+        } catch (e: unknown) {
             this.cursor -= sizeOfSize;
             throw e;
         }
