@@ -18,11 +18,11 @@
         "url": "https://github.com/oBusk/walkable-buffer/issues"
     },
     "engines": {
-        "node": "^10.20.1 || ^12.16.3 || >=14.7.0"
+        "node": "^10.20.1 || ^12.16.3 || >=14.9.0"
     },
     "volta": {
-        "node": "14.7.0",
-        "npm": "6.14.7"
+        "node": "14.9.0",
+        "npm": "6.14.8"
     },
     "type": "commonjs",
     "main": "dist/index.js",
@@ -55,24 +55,24 @@
         "bundlewatch": "bundlewatch"
     },
     "dependencies": {
-        "read-bigint": "^0.1.3"
+        "read-bigint": "^0.1.4"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.8",
-        "@types/node": "^14.0.27",
-        "@typescript-eslint/eslint-plugin": "^3.8.0",
-        "@typescript-eslint/parser": "^3.8.0",
+        "@types/jest": "^26.0.10",
+        "@types/node": "^14.6.1",
+        "@typescript-eslint/eslint-plugin": "^3.10.1",
+        "@typescript-eslint/parser": "^3.10.1",
         "bundlewatch": "^0.2.7",
-        "eslint": "^7.6.0",
+        "eslint": "^7.7.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-jest": "^23.20.0",
         "eslint-plugin-prettier": "^3.1.4",
         "husky": "^4.2.5",
-        "jest": "^26.2.2",
-        "lint-staged": "^10.2.11",
-        "prettier": "^2.0.5",
+        "jest": "^26.4.2",
+        "lint-staged": "^10.2.13",
+        "prettier": "^2.1.1",
         "rimraf": "^3.0.2",
-        "ts-jest": "^26.1.4",
-        "typescript": "^3.9.7"
+        "ts-jest": "^26.3.0",
+        "typescript": "^4.0.2"
     }
 }
