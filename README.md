@@ -4,7 +4,6 @@
 [![Node.js CI](https://github.com/oBusk/walkable-buffer/workflows/Node.js%20CI/badge.svg)](https://github.com/oBusk/walkable-buffer/actions?query=workflow%3A%22Node.js+CI%22)
 [![CodeQL](https://github.com/oBusk/walkable-buffer/workflows/CodeQL/badge.svg)](https://github.com/oBusk/walkable-buffer/actions?query=workflow%3ACodeQL)
 [![Dependabot: enabled](https://badgen.net/badge/dependabot/enabled/green?icon=dependabot)](https://github.com/oBusk/walkable-buffer/network/updates)
-[![Dependabot: enabled](https://badgen.net/badge/dependabot/enabled/green?icon=dependabot)](https://github.com/oBusk/walkable-buffer/network/updates)
 [![codecov](https://codecov.io/gh/oBusk/walkable-buffer/branch/master/graph/badge.svg)](https://codecov.io/gh/oBusk/walkable-buffer)
 [![Bundlesize](https://img.shields.io/bundlephobia/minzip/walkable-buffer)](https://bundlephobia.com/result?p=walkable-buffer)
 [![Bundle Watched](https://img.shields.io/badge/bundle-watched-blue.svg)](https://bundlewatch.io)
