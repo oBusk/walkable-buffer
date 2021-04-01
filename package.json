@@ -21,8 +21,8 @@
         "node": "^10.20.1 || ^12.16.3 || ^14.14.0 || >=15.0.0"
     },
     "volta": {
-        "node": "15.11.0",
-        "npm": "7.6.0"
+        "node": "15.13.0",
+        "npm": "7.7.6"
     },
     "type": "commonjs",
     "main": "dist/index.js",
@@ -39,40 +39,43 @@
                 "path": "dist?(.module)/!(WalkableBuffer|*.spec).js",
                 "maxSize": "0.5kB"
             }
-        ]
+        ],
+        "ci": {
+            "trackBranches": [
+                "main"
+            ]
+        }
+    },
+    "simple-git-hooks": {
+        "pre-commit": "npx lint-staged && npm test"
     },
     "scripts": {
         "version": "npm run build",
         "build": "rimraf dist/ dist.module/ && tsc && tsc -P tsconfig.module.json",
         "lint": "eslint **/*.{ts,js,json} --ignore-path .gitignore",
         "lint-fix": "eslint **/*.{ts,js,json} --ignore-path .gitignore --fix",
-        "prettier": "prettier **/*.{md,yml,yaml} --ignore-path .gitignore --check",
-        "prettier-fix": "prettier **/*.{md,yml,yaml} --ignore-path .gitignore --write",
-        "postlint": "npm run prettier",
-        "postlint-fix": "npm run prettier-fix",
-        "test": "jest",
-        "test-coverage": "jest --coverage",
-        "bundlewatch": "bundlewatch"
+        "postlint": "prettier **/*.{md,yml,yaml} --ignore-path .gitignore --check",
+        "postlint-fix": "prettier **/*.{md,yml,yaml} --ignore-path .gitignore --write",
+        "test": "jest"
     },
     "dependencies": {
         "read-bigint": "^0.1.4"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.20",
-        "@types/node": "^14.14.31",
-        "@typescript-eslint/eslint-plugin": "^4.16.1",
-        "@typescript-eslint/parser": "^4.16.1",
-        "bundlewatch": "^0.3.2",
-        "eslint": "^7.21.0",
+        "@types/jest": "^26.0.22",
+        "@types/node": "^14.14.37",
+        "@typescript-eslint/eslint-plugin": "^4.20.0",
+        "@typescript-eslint/parser": "^4.20.0",
+        "eslint": "^7.23.0",
         "eslint-config-prettier": "^8.1.0",
-        "eslint-plugin-jest": "^24.1.5",
+        "eslint-plugin-jest": "^24.3.2",
         "eslint-plugin-prettier": "^3.3.1",
-        "husky": "^4.3.8",
         "jest": "^26.6.3",
         "lint-staged": "^10.5.4",
         "prettier": "^2.2.1",
         "rimraf": "^3.0.2",
-        "ts-jest": "^26.5.3",
-        "typescript": "^4.2.2"
+        "simple-git-hooks": "^2.2.0",
+        "ts-jest": "^26.5.4",
+        "typescript": "^4.2.3"
     }
 }
