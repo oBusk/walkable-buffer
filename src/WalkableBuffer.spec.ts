@@ -451,14 +451,7 @@ describe("integer functions", () => {
             describe("values", () => {
                 test("can get 0", () => {
                     buffer = Buffer.from([
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -467,14 +460,7 @@ describe("integer functions", () => {
 
                 test("can get maximum number", () => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -485,14 +471,7 @@ describe("integer functions", () => {
 
                 test("can get minimum number", () => {
                     buffer = Buffer.from([
-                        0x01,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x80,
+                        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -505,14 +484,7 @@ describe("integer functions", () => {
             describe("positioning", () => {
                 beforeEach(() => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -526,13 +498,7 @@ describe("integer functions", () => {
 
                 test("throws if trying to get more than left and does not advance position when failing", () => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -542,22 +508,8 @@ describe("integer functions", () => {
 
                 test("throws if trying to get more than left and does not advance position when failing", () => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f, 0xff,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -575,14 +527,7 @@ describe("integer functions", () => {
             describe("endianness", () => {
                 beforeEach(() => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -621,38 +566,17 @@ describe("integer functions", () => {
 
                 beforeEach(() => {
                     ze = Buffer.from([
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ]);
                     zeWB = new WalkableBuffer({ buffer: ze });
 
                     ff = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
                     ]);
                     ffWB = new WalkableBuffer({ buffer: ff });
 
                     buffer = Buffer.from([
-                        0x00,
-                        0x11,
-                        0x22,
-                        0x33,
-                        0x44,
-                        0x55,
-                        0x66,
-                        0x77,
+                        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -742,14 +666,7 @@ describe("integer functions", () => {
             describe("values", () => {
                 test("can get 0", () => {
                     buffer = Buffer.from([
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -758,14 +675,7 @@ describe("integer functions", () => {
 
                 test("can get maximum number", () => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -776,14 +686,7 @@ describe("integer functions", () => {
 
                 test("can get minimum number", () => {
                     buffer = Buffer.from([
-                        0x01,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x80,
+                        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -796,14 +699,7 @@ describe("integer functions", () => {
             describe("positioning", () => {
                 beforeEach(() => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -817,13 +713,7 @@ describe("integer functions", () => {
 
                 test("throws if trying to get more than left and does not advance position when failing", () => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -833,22 +723,8 @@ describe("integer functions", () => {
 
                 test("throws if trying to get more than left and does not advance position when failing", () => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f, 0xff,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
 
@@ -864,14 +740,7 @@ describe("integer functions", () => {
             describe("endianness", () => {
                 beforeEach(() => {
                     buffer = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0x7f,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -910,38 +779,17 @@ describe("integer functions", () => {
 
                 beforeEach(() => {
                     ze = Buffer.from([
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ]);
                     zeWB = new WalkableBuffer({ buffer: ze });
 
                     ff = Buffer.from([
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
-                        0xff,
+                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
                     ]);
                     ffWB = new WalkableBuffer({ buffer: ff });
 
                     buffer = Buffer.from([
-                        0x00,
-                        0x11,
-                        0x22,
-                        0x33,
-                        0x44,
-                        0x55,
-                        0x66,
-                        0x77,
+                        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                     ]);
                     walkableBuffer = new WalkableBuffer({ buffer });
                 });
@@ -1043,28 +891,8 @@ describe("string functions", () => {
 
     beforeEach(() => {
         u16buffer = Buffer.from([
-            0x48,
-            0x00,
-            0x65,
-            0x00,
-            0x6c,
-            0x00,
-            0x6c,
-            0x00,
-            0xf6,
-            0x00,
-            0x20,
-            0x00,
-            0x57,
-            0x00,
-            0x6f,
-            0x00,
-            0x72,
-            0x00,
-            0x6c,
-            0x00,
-            0xb4,
-            0x03,
+            0x48, 0x00, 0x65, 0x00, 0x6c, 0x00, 0x6c, 0x00, 0xf6, 0x00, 0x20,
+            0x00, 0x57, 0x00, 0x6f, 0x00, 0x72, 0x00, 0x6c, 0x00, 0xb4, 0x03,
         ]); // Hellö Worlδ in uni16le
         u16walkableBuffer = new WalkableBuffer({
             buffer: u16buffer,
@@ -1080,19 +908,8 @@ describe("string functions", () => {
         describe("encoding", () => {
             test("read string as utf-8", () => {
                 const u8Buffer = Buffer.from([
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57, 0x6f, 0x72,
+                    0x6c, 0xce, 0xb4,
                 ]); // Hellö Worlδ in Unicode
                 const u8WalkableBuffer = new WalkableBuffer({
                     buffer: u8Buffer,
@@ -1155,19 +972,8 @@ describe("string functions", () => {
         describe("encoding", () => {
             test("read string as utf-8", () => {
                 const u8Buffer = Buffer.from([
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57, 0x6f, 0x72,
+                    0x6c, 0xce, 0xb4,
                 ]); // Hellö Worlδ in Unicode
                 const u8WalkableBuffer = new WalkableBuffer({
                     buffer: u8Buffer,
@@ -1262,21 +1068,8 @@ describe("string functions", () => {
         test("utf-8, LE, SHORT size-describer", () => {
             const u8le = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x0d,
-                    0x00,
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0x0d, 0x00, 0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57,
+                    0x6f, 0x72, 0x6c, 0xce, 0xb4,
                 ]),
                 encoding: "utf8",
                 endianness: "LE",
@@ -1289,21 +1082,8 @@ describe("string functions", () => {
         test("utf-8, BE, SHORT size-describer", () => {
             const u8be = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x0d,
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0x00, 0x0d, 0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57,
+                    0x6f, 0x72, 0x6c, 0xce, 0xb4,
                 ]),
                 encoding: "utf8",
                 endianness: "BE",
@@ -1316,32 +1096,9 @@ describe("string functions", () => {
         test("UTF16le, LE, LONG size-describer", () => {
             const u16le = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x0b,
-                    0x00,
-                    0x00,
-                    0x00,
-                    0x48,
-                    0x00,
-                    0x65,
-                    0x00,
-                    0x6c,
-                    0x00,
-                    0x6c,
-                    0x00,
-                    0xf6,
-                    0x00,
-                    0x20,
-                    0x00,
-                    0x57,
-                    0x00,
-                    0x6f,
-                    0x00,
-                    0x72,
-                    0x00,
-                    0x6c,
-                    0x00,
-                    0xb4,
-                    0x03,
+                    0x0b, 0x00, 0x00, 0x00, 0x48, 0x00, 0x65, 0x00, 0x6c, 0x00,
+                    0x6c, 0x00, 0xf6, 0x00, 0x20, 0x00, 0x57, 0x00, 0x6f, 0x00,
+                    0x72, 0x00, 0x6c, 0x00, 0xb4, 0x03,
                 ]),
                 encoding: "utf16le",
                 endianness: "LE",
@@ -1355,21 +1112,8 @@ describe("string functions", () => {
             /** A walkable buffer with incorrect endianness and encoding. */
             const wBuf = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x0d,
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0x00, 0x0d, 0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57,
+                    0x6f, 0x72, 0x6c, 0xce, 0xb4,
                 ]),
                 encoding: "utf16le",
                 endianness: "LE",
@@ -1384,21 +1128,8 @@ describe("string functions", () => {
         test("fails on too large size descriptor, without advancing cursor", () => {
             const u8le = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0xff,
-                    0x00,
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0xff, 0x00, 0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57,
+                    0x6f, 0x72, 0x6c, 0xce, 0xb4,
                 ]),
                 encoding: "utf8",
                 endianness: "LE",
@@ -1411,21 +1142,8 @@ describe("string functions", () => {
         test("handles size being value 0", () => {
             const u8le = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x00,
-                    0x48,
-                    0x65,
-                    0x6c,
-                    0x6c,
-                    0xc3,
-                    0xb6,
-                    0x20,
-                    0x57,
-                    0x6f,
-                    0x72,
-                    0x6c,
-                    0xce,
-                    0xb4,
+                    0x00, 0x00, 0x48, 0x65, 0x6c, 0x6c, 0xc3, 0xb6, 0x20, 0x57,
+                    0x6f, 0x72, 0x6c, 0xce, 0xb4,
                 ]),
                 encoding: "utf8",
                 endianness: "LE",
@@ -1460,22 +1178,8 @@ describe("string functions", () => {
         beforeEach(() => {
             wBuf = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x01,
-                    0x02,
-                    0x03,
-                    0x04,
-                    0x05,
-                    0x06,
-                    0x07,
-                    0x08,
-                    0x09,
-                    0x0a,
-                    0x0b,
-                    0x0c,
-                    0x0d,
-                    0x0e,
-                    0x0f,
+                    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
+                    0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                 ]),
                 initialCursor: 0x04,
             });
@@ -1522,22 +1226,8 @@ describe("string functions", () => {
         beforeEach(() => {
             wBuf = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x01,
-                    0x02,
-                    0x03,
-                    0x04,
-                    0x05,
-                    0x06,
-                    0x07,
-                    0x08,
-                    0x09,
-                    0x0a,
-                    0x0b,
-                    0x0c,
-                    0x0d,
-                    0x0e,
-                    0x0f,
+                    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
+                    0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                 ]),
                 initialCursor: 0x04,
             });
@@ -1575,22 +1265,8 @@ describe("string functions", () => {
         beforeEach(() => {
             wBuf = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x01,
-                    0x02,
-                    0x03,
-                    0x04,
-                    0x05,
-                    0x06,
-                    0x07,
-                    0x08,
-                    0x09,
-                    0x0a,
-                    0x0b,
-                    0x0c,
-                    0x0d,
-                    0x0e,
-                    0x0f,
+                    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
+                    0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                 ]),
                 initialCursor: 0x04,
             });
@@ -1714,14 +1390,7 @@ describe("string functions", () => {
         test("returns buffer", () => {
             const wBuf = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x01,
-                    0x02,
-                    0x03,
-                    0x04,
-                    0x05,
-                    0x06,
-                    0x07,
+                    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                 ]),
                 initialCursor: 0x02,
             });
@@ -1737,14 +1406,7 @@ describe("string functions", () => {
         test("gets size matching actual buffer", () => {
             const wBuf = new WalkableBuffer({
                 buffer: Buffer.from([
-                    0x00,
-                    0x01,
-                    0x02,
-                    0x03,
-                    0x04,
-                    0x05,
-                    0x06,
-                    0x07,
+                    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                 ]),
                 initialCursor: 0x02,
             });
@@ -1760,14 +1422,7 @@ describe("string functions", () => {
 
         beforeEach(() => {
             buffer = Buffer.from([
-                0x00,
-                0x01,
-                0x02,
-                0x03,
-                0x04,
-                0x05,
-                0x06,
-                0x07,
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             ]);
         });
 
