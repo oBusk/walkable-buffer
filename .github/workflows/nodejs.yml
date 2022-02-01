@@ -38,6 +38,7 @@ jobs:
             - name: "[node-modules-archive] Upload"
               uses: actions/upload-artifact@v2
               with:
+                  retention-days: 1
                   name: node-modules-archive
                   path: node-modules-archive.tar
 
@@ -117,6 +118,7 @@ jobs:
             - name: "[dist] Upload"
               uses: actions/upload-artifact@v2
               with:
+                  retention-days: 1
                   name: dist
                   path: |
                       dist/
@@ -187,3 +189,18 @@ jobs:
 
             - name: Run Tests
               run: npm run test-dist
+
+    cleanup:
+        needs: [lint, test-with-codecov, bundlewatch, test]
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        env:
+            CI: true
+
+        steps:
+            - name: Cleanup artifacts
+              uses: geekyeggo/delete-artifact@v1
+              with:
+                  name: |
+                      dist
+                      node-modules-archive
