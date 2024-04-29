@@ -1,10 +1,4 @@
 import {
-    readBigInt64BE,
-    readBigInt64LE,
-    readBigUInt64BE,
-    readBigUInt64LE,
-} from "read-bigint";
-import {
     DEFAULT_ENCODING,
     DEFAULT_ENDIANNESS,
     DEFAULT_INITIAL_CURSOR,
@@ -447,15 +441,15 @@ export class WalkableBuffer {
         let result: bigint;
         if (endianness === "LE") {
             if (signed) {
-                result = readBigInt64LE(this.buffer, offset);
+                result = this.buffer.readBigInt64LE(offset);
             } else {
-                result = readBigUInt64LE(this.buffer, offset);
+                result = this.buffer.readBigUInt64LE(offset);
             }
         } else if (endianness === "BE") {
             if (signed) {
-                result = readBigInt64BE(this.buffer, offset);
+                result = this.buffer.readBigInt64BE(offset);
             } else {
-                result = readBigUInt64BE(this.buffer, offset);
+                result = this.buffer.readBigUInt64BE(offset);
             }
         } else {
             throw new Error(`Invalid endianness '${endianness}'`);
