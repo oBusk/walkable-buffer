@@ -12,24 +12,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Volta Node/NPM
-              uses: volta-cli/action@v1
-
-            - name: Get cache dir, Node Version and NPM Version
-              id: node-config
-              run: |
-                  echo "::set-output name=nodev::$(node -v)"
-                  echo "::set-output name=npmv::$(npm -v)"
-                  echo "::set-output name=dir::$(npm config get cache)"
-            - name: Cache npm cache
-              uses: actions/cache@v4
+            - name: Setup node
+              uses: actions/setup-node@v4
               with:
-                  path: ${{ steps.node-config.outputs.dir }}
-                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
-                      npm-${{ runner.os }}
+                  node-version-file: package.json
+                  cache: npm
             - name: Install
               run: npm ci
 
@@ -52,9 +39,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Volta Node/NPM
-              uses: volta-cli/action@v1
-
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: package.json
+                  cache: npm
             - name: "[node-modules-archive] Download"
               uses: actions/download-artifact@v4
               with:
@@ -75,9 +64,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Volta Node/NPM
-              uses: volta-cli/action@v1
-
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: package.json
+                  cache: npm
             - name: "[node-modules-archive] Download"
               uses: actions/download-artifact@v4
               with:
@@ -102,9 +93,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Volta Node/NPM
-              uses: volta-cli/action@v1
-
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: package.json
+                  cache: npm
             - name: "[node-modules-archive] Download"
               uses: actions/download-artifact@v4
               with:
@@ -134,9 +127,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Volta Node/NPM
-              uses: volta-cli/action@v1
-
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: package.json
+                  cache: npm
             - name: "[node-modules-archive] Download"
               uses: actions/download-artifact@v4
               with:
@@ -170,11 +165,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: volta-cli/action@v1
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
-                  npm-version: "bundled"
-
             - name: "[node-modules-archive] Download"
               uses: actions/download-artifact@v4
               with:
