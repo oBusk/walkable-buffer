@@ -23,10 +23,9 @@
     "volta": {
         "node": "20.12.2"
     },
-    "type": "commonjs",
-    "main": "dist/index.js",
+    "type": "module",
     "typings": "dist/index.d.ts",
-    "module": "dist.module/index.js",
+    "module": "dist/index.js",
     "sideEffects": false,
     "bundlewatch": {
         "files": [
@@ -50,13 +49,13 @@
     },
     "scripts": {
         "version": "npm run build",
-        "build": "rimraf dist/ dist.module/ && tsc && tsc -P tsconfig.module.json",
+        "build": "rimraf dist/ && tsc",
         "lint": "eslint **/*.{ts,js,json} --ignore-path .gitignore",
         "lint-fix": "eslint **/*.{ts,js,json} --ignore-path .gitignore --fix",
         "postlint": "prettier **/*.{md,yml,yaml} --ignore-path .gitignore --check",
         "postlint-fix": "prettier **/*.{md,yml,yaml} --ignore-path .gitignore --write",
         "test": "jest --roots src/",
-        "test-dist": "jest --roots dist/"
+        "test-dist": "node --experimental-vm-modules node_modules/jest/bin/jest.js --roots dist/"
     },
     "devDependencies": {
         "@types/jest": "^29.5.12",

@@ -4,10 +4,10 @@ import {
     DEFAULT_INITIAL_CURSOR,
     DEFAULT_SIGNED,
     LONG,
-} from "./constants";
-import { Encoding, isEncoding } from "./Encoding";
-import { Endianness, isEndianness } from "./Endianness";
-import { WalkableBufferOptions } from "./WalkableBufferOptions";
+} from "./constants.js";
+import { Encoding, isEncoding } from "./Encoding.js";
+import { Endianness, isEndianness } from "./Endianness.js";
+import { WalkableBufferOptions } from "./WalkableBufferOptions.js";
 
 /**
  * > _🚶🛡️ A class for easily reading data from binary Buffers_

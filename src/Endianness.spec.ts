@@ -1,4 +1,4 @@
-import { isEndianness } from "./Endianness";
+import { isEndianness } from "./Endianness.js";
 
 describe("isEndianness", () => {
     it("handle truthy cases", () => {

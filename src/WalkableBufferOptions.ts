@@ -1,5 +1,5 @@
-import { Encoding } from "./Encoding";
-import { Endianness } from "./Endianness";
+import { Encoding } from "./Encoding.js";
+import { Endianness } from "./Endianness.js";
 
 /**
  * The options to provide into the constructor of `WalkableBuffer`.

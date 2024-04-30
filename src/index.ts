@@ -8,8 +8,8 @@ export {
     LONGLONG,
     OCTET,
     SHORT,
-} from "./constants";
-export { Encoding, isEncoding } from "./Encoding";
-export { Endianness, isEndianness } from "./Endianness";
-export { WalkableBuffer as default, WalkableBuffer } from "./WalkableBuffer";
-export { WalkableBufferOptions } from "./WalkableBufferOptions";
+} from "./constants.js";
+export { Encoding, isEncoding } from "./Encoding.js";
+export { Endianness, isEndianness } from "./Endianness.js";
+export { WalkableBuffer as default, WalkableBuffer } from "./WalkableBuffer.js";
+export { WalkableBufferOptions } from "./WalkableBufferOptions.js";

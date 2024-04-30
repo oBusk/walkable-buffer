@@ -1,4 +1,4 @@
-import { isEncoding } from "./Encoding";
+import { isEncoding } from "./Encoding.js";
 
 describe("isEncoding", () => {
     it("handle truthy cases", () => {

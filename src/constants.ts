@@ -1,5 +1,5 @@
-import { Encoding } from "./Encoding";
-import { Endianness } from "./Endianness";
+import { Encoding } from "./Encoding.js";
+import { Endianness } from "./Endianness.js";
 
 export const OCTET = 1;
 export const BYTE = OCTET;

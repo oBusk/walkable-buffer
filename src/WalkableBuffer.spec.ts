@@ -1,5 +1,5 @@
-import { BYTE, LONG, LONGLONG, SHORT } from "./constants";
-import { WalkableBuffer } from "./WalkableBuffer";
+import { BYTE, LONG, LONGLONG, SHORT } from "./constants.js";
+import { WalkableBuffer } from "./WalkableBuffer.js";
 
 describe("constructor", () => {
     describe("parameters", () => {
