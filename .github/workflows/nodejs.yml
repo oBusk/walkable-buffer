@@ -192,7 +192,7 @@ jobs:
 
         steps:
             - name: Cleanup artifacts
-              uses: geekyeggo/delete-artifact@v1
+              uses: geekyeggo/delete-artifact@v5
               with:
                   name: |
                       dist
